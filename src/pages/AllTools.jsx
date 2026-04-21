@@ -189,8 +189,11 @@ export default function AllTools() {
 
   useEffect(() => {
     document.title = '全部工具 - TG AI工具库'
-    const q = new URLSearchParams(location.search).get('q')
+    const params = new URLSearchParams(location.search)
+    const q = params.get('q')
+    const cat = params.get('category')
     if (q) setSearchQuery(q)
+    if (cat) setSelectedCategory(cat)
   }, [])
 
   // 加载工具（分类/排序变化时重新拉取）

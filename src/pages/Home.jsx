@@ -162,16 +162,20 @@ export default function Home() {
           <SectionHeader title={t('home_briefs_title')} link="/daily-briefs" />
           <div className="mb-4 text-sm text-gray-500">{t('home_briefs_sub')}</div>
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
             </div>
           ) : briefs.length === 0 ? (
             <div className="text-center py-12 text-gray-400"><p>{t('home_no_briefs')}</p></div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {briefs.map((item) => (
-                <ArticleCard key={item.id} article={item} type="brief" />
-              ))}
+            <div className="marquee-wrap">
+              <div className="marquee-track" style={{ animationDuration: `${briefs.length * 4}s` }}>
+                {[...briefs, ...briefs].map((item, idx) => (
+                  <div key={idx} className="flex-shrink-0 w-72" style={{ marginRight: '1rem' }}>
+                    <ArticleCard article={item} type="brief" />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </section>
@@ -181,16 +185,20 @@ export default function Home() {
           <SectionHeader title={t('home_reports_title')} link="/industry-reports" />
           <div className="mb-4 text-sm text-gray-500">{t('home_reports_sub')}</div>
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
             </div>
           ) : reports.length === 0 ? (
             <div className="text-center py-12 text-gray-400"><p>{t('home_no_reports')}</p></div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {reports.map((item) => (
-                <ArticleCard key={item.id} article={item} type="report" />
-              ))}
+            <div className="marquee-wrap">
+              <div className="marquee-track" style={{ animationDuration: `${reports.length * 4}s` }}>
+                {[...reports, ...reports].map((item, idx) => (
+                  <div key={idx} className="flex-shrink-0 w-72" style={{ marginRight: '1rem' }}>
+                    <ArticleCard article={item} type="report" />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </section>
