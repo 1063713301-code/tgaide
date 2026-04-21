@@ -191,20 +191,17 @@ export default function AllTools() {
     document.title = '全部工具 - TG AI工具库'
     const params = new URLSearchParams(location.search)
     const q = params.get('q')
-    const cat = params.get('category')
-    if (q) setSearchQuery(q)
-    if (cat) setSelectedCategory(cat)
-  }, [])
-
-  // 加载工具（分类/排序变化时重新拉取）
-  useEffect(() => {
+    const cat = params.get('category') || ''
+    setSearchQuery(q || '')
+    setSelectedCategory(cat)
+    // 直接用解析出的 cat 发请求，避免 state 异步更新导致用旧值 fetch
     setLoading(true)
     setError(null)
-    fetchTools({ category: selectedCategory || null, sort: sortBy })
+    fetchTools({ category: cat || null, sort: sortBy })
       .then(setAllTools)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
-  }, [selectedCategory, sortBy])
+  }, [location.search, sortBy])
 
   // 搜索防抖 300ms
   useEffect(() => {
@@ -282,7 +279,7 @@ export default function AllTools() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    onClick={() => navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left ${bgCls}`}
                   >
                     <span className="text-base w-5 text-center">{cat.icon}</span>
@@ -314,7 +311,7 @@ export default function AllTools() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    onClick={() => navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
                       isActive
                         ? 'bg-blue-600 text-white border-blue-600'
