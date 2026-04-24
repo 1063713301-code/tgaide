@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { adminFetchTools, adminDeleteTool, adminBatchDeleteTools } from '../../lib/supabase'
+import { adminFetchTools, adminDeleteTool, adminBatchDeleteTools, adminBatchUpdateTools } from '../../lib/supabase'
 import { adminLogout } from '../../hooks/useAuth'
 
 function formatDate(dateStr) {
@@ -82,6 +82,36 @@ export default function AdminToolList() {
     }
   }
 
+  // 批量上线
+  async function handleBatchPublish() {
+    const ids = [...selected]
+    setBatchBusy(true)
+    try {
+      await adminBatchUpdateTools(ids, { status: 'active' })
+      setTools((prev) => prev.map((t) => ids.includes(t.id) ? { ...t, status: 'active' } : t))
+      setSelected(new Set())
+    } catch (e) {
+      alert('操作失败：' + e.message)
+    } finally {
+      setBatchBusy(false)
+    }
+  }
+
+  // 批量下线
+  async function handleBatchUnpublish() {
+    const ids = [...selected]
+    setBatchBusy(true)
+    try {
+      await adminBatchUpdateTools(ids, { status: 'draft' })
+      setTools((prev) => prev.map((t) => ids.includes(t.id) ? { ...t, status: 'draft' } : t))
+      setSelected(new Set())
+    } catch (e) {
+      alert('操作失败：' + e.message)
+    } finally {
+      setBatchBusy(false)
+    }
+  }
+
   // 批量删除
   async function handleBatchDelete() {
     const ids = [...selected]
@@ -154,13 +184,20 @@ export default function AdminToolList() {
             )}
           </div>
           {selected.size > 0 && (
-            <button
-              onClick={handleBatchDelete}
-              disabled={batchBusy}
-              className="px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-40 whitespace-nowrap"
-            >
-              {batchBusy ? '删除中…' : `批量删除 (${selected.size})`}
-            </button>
+            <div className="flex gap-2">
+              <button onClick={handleBatchPublish} disabled={batchBusy}
+                className="px-3 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-40 whitespace-nowrap">
+                批量上线
+              </button>
+              <button onClick={handleBatchUnpublish} disabled={batchBusy}
+                className="px-3 py-2.5 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-40 whitespace-nowrap">
+                批量下线
+              </button>
+              <button onClick={handleBatchDelete} disabled={batchBusy}
+                className="px-3 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-40 whitespace-nowrap">
+                {batchBusy ? '处理中…' : `批量删除 (${selected.size})`}
+              </button>
+            </div>
           )}
         </div>
 

@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -6,6 +7,7 @@ import PdfButton from '../components/PdfButton'
 import RichTextContent from '../components/RichTextContent'
 import { fetchArticleById } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
+import QRCode from 'qrcode'
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
@@ -36,6 +38,90 @@ function DetailSkeleton() {
       <div className="skeleton h-4 w-full rounded mb-3" />
       <div className="skeleton h-4 w-5/6 rounded mb-3" />
       <div className="skeleton h-4 w-4/6 rounded mb-3" />
+    </div>
+  )
+}
+
+function ArticleShareIcon({ article, type }) {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [showQR, setShowQR] = useState(false)
+  const canvasRef = useRef(null)
+  const path = type === 'report' ? 'industry-reports' : 'daily-briefs'
+  const url = `https://tgaide.com/${path}/${article.id}`
+
+  function copyLink() {
+    navigator.clipboard.writeText(url).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
+  }
+
+  useEffect(() => {
+    if (!showQR || !canvasRef.current) return
+    QRCode.toCanvas(canvasRef.current, url, { width: 128, margin: 1 })
+  }, [showQR, url])
+
+  return (
+    <div className="absolute top-0 right-0">
+      <button onClick={() => setOpen(!open)}
+        className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-blue-500 transition-colors">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-9 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-3 w-48 space-y-1">
+          <button onClick={copyLink} className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+            {copied ? '已复制！' : '复制链接'}
+          </button>
+          <button onClick={() => setShowQR(!showQR)} className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg">
+            微信/朋友圈扫码
+          </button>
+          {showQR && <canvas ref={canvasRef} className="rounded mx-auto block" />}
+          <button onClick={() => setOpen(false)} className="w-full text-left px-3 py-2 text-sm text-gray-400 hover:bg-gray-50 rounded-lg">取消</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function ArticleShareBar({ article, type }) {
+  const [copied, setCopied] = useState(false)
+  const [showQR, setShowQR] = useState(false)
+  const canvasRef = useRef(null)
+  const path = type === 'report' ? 'industry-reports' : 'daily-briefs'
+  const url = `https://tgaide.com/${path}/${article.id}`
+
+  function copyLink() {
+    navigator.clipboard.writeText(url).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
+  }
+
+  useEffect(() => {
+    if (!showQR || !canvasRef.current) return
+    QRCode.toCanvas(canvasRef.current, url, { width: 128, margin: 1 })
+  }, [showQR, url])
+
+  return (
+    <div className="flex flex-wrap items-center gap-3 py-4 border-t border-gray-100 mb-4">
+      <span className="text-sm text-gray-500 font-medium">分享：</span>
+      <button onClick={copyLink}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        {copied ? '已复制！' : '复制链接'}
+      </button>
+      <button onClick={() => setShowQR(!showQR)}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+        </svg>
+        微信/朋友圈扫码
+      </button>
+      {showQR && (
+        <div className="w-full flex flex-col items-start gap-1 mt-1">
+          <canvas ref={canvasRef} className="rounded border border-gray-100" />
+          <p className="text-xs text-gray-400">微信扫码分享到朋友圈</p>
+        </div>
+      )}
     </div>
   )
 }
@@ -92,10 +178,11 @@ export default function ArticleDetail({ type }) {
 
         {!loading && !error && article && (
           <article>
-            <header className="mb-8 pb-6 border-b border-gray-100">
+            <header className="relative mb-8 pb-6 border-b border-gray-100">
               {article.category && (
                 <span className="inline-block mb-3 px-3 py-1 bg-blue-50 text-blue-800 rounded-full text-xs font-semibold">{article.category}</span>
               )}
+              <ArticleShareIcon article={article} type={type} />
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-snug mb-4">{article.title}</h1>
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                 <span className="flex items-center gap-1">
@@ -116,6 +203,8 @@ export default function ArticleDetail({ type }) {
             )}
 
             <div className="mb-10"><RichTextContent html={article.content} /></div>
+
+            <ArticleShareBar article={article} type={type} />
 
             {article.pdf_url && <div className="flex justify-center mb-10"><PdfButton url={article.pdf_url} /></div>}
 

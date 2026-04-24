@@ -156,6 +156,12 @@ export async function fetchTools({ category = null, search = null, sort = 'hot' 
     query = query.order('rating', { ascending: false })
   } else if (sort === 'newest') {
     query = query.order('created_at', { ascending: false })
+  } else if (sort === 'free') {
+    query = query.eq('price', '免费').order('sort_order', { ascending: false })
+  } else if (sort === 'recommended') {
+    query = query.eq('is_recommended', true).order('sort_order', { ascending: false })
+  } else if (sort === 'tg_selected') {
+    query = query.contains('tags', ['TG精选']).order('sort_order', { ascending: false })
   } else {
     // 默认按热度 = sort_order 降序
     query = query.order('sort_order', { ascending: false }).order('created_at', { ascending: false })
@@ -226,6 +232,15 @@ export async function adminFetchToolById(id) {
     .single()
   if (error) throw error
   return data
+}
+
+/** 后台：批量更新工具字段（如批量设置标签、上下线） */
+export async function adminBatchUpdateTools(ids, payload) {
+  const { error } = await supabase
+    .from('tools')
+    .update({ ...payload, updated_at: new Date().toISOString() })
+    .in('id', ids)
+  if (error) throw error
 }
 
 /** 后台：批量删除工具 */

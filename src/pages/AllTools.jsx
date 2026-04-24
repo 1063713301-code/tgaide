@@ -1,4 +1,6 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
+import { useEffect, useState, useMemo, useCallback, useRef, useLayoutEffect } from 'react'
+import { createPortal } from 'react-dom'
+import QRCode from 'qrcode'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -26,6 +28,9 @@ const SORT_OPTIONS = [
   { value: 'hot', labelKey: 'tools_sort_hot' },
   { value: 'rating', labelKey: 'tools_sort_rating' },
   { value: 'newest', labelKey: 'tools_sort_newest' },
+  { value: 'free', labelKey: 'tools_sort_free' },
+  { value: 'recommended', labelKey: 'tools_sort_recommended' },
+  { value: 'tg_selected', labelKey: 'tools_sort_tg_selected' },
 ]
 
 // 分类对应的渐变色
@@ -52,22 +57,120 @@ function ToolIcon({ tool }) {
   const [imgError, setImgError] = useState(false)
   const gradient = CATEGORY_GRADIENT[tool.category] || 'from-gray-400 to-gray-600'
 
-  if (tool.icon_url && !imgError) {
-    return (
-      <img
-        src={tool.icon_url}
-        alt={tool.name}
-        onError={() => setImgError(true)}
-        className="w-16 h-16 rounded-2xl object-cover shadow-sm"
-      />
-    )
+  return (
+    <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-gray-50 border border-gray-100">
+      {tool.icon_url && !imgError ? (
+        <img
+          src={tool.icon_url}
+          alt={tool.name}
+          onError={() => setImgError(true)}
+          className="max-w-full max-h-full object-contain"
+        />
+      ) : (
+        <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-2xl select-none`}>
+          {tool.name.charAt(0)}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── 分享弹窗 ─────────────────────────────────────
+function ShareModal({ tool, onClose }) {
+  const [copied, setCopied] = useState(false)
+  const slug = tool.slug || tool.id
+  const url = `https://tgaide.com/tools/${slug}`
+
+  function copyLink() {
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
   }
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40" onClick={onClose}>
+      <div className="bg-white rounded-2xl shadow-xl p-6 w-72" onClick={(e) => e.stopPropagation()}>
+        <h3 className="font-bold text-gray-800 mb-4 text-center">分享工具</h3>
+        <div className="space-y-2">
+          <button onClick={copyLink}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 hover:bg-gray-50 text-sm text-gray-700 transition-colors">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            {copied ? '链接已复制！' : '复制链接'}
+          </button>
+          <QRShareButton url={url} label="微信扫码分享" />
+          <QRShareButton url={url} label="QQ扫码分享" />
+        </div>
+        <button onClick={onClose} className="mt-4 w-full py-2 text-sm text-gray-400 hover:text-gray-600">取消</button>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
+function QRShareButton({ url, label }) {
+  const [show, setShow] = useState(false)
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    if (!show || !canvasRef.current) return
+    QRCode.toCanvas(canvasRef.current, url, { width: 128, margin: 1 })
+  }, [show, url])
+
+  return (
+    <div>
+      <button onClick={() => setShow(!show)}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-200 hover:bg-gray-50 text-sm text-gray-700 transition-colors">
+        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+        </svg>
+        {label}
+      </button>
+      {show && (
+        <div className="flex flex-col items-center mt-2 p-3 bg-gray-50 rounded-xl">
+          <canvas ref={canvasRef} className="rounded" />
+          <p className="text-xs text-gray-400 mt-1">{label}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── 悬浮窗 ───────────────────────────────────────
+function HoverTooltip({ tool, name, isRightEdge }) {
+  const desc = tool.full_desc || tool.description
+  const highlights = Array.isArray(tool.highlights) ? tool.highlights.slice(0, 3) : typeof tool.highlights === 'string' && tool.highlights ? tool.highlights.split('\n').filter(Boolean).slice(0, 3) : []
+  const drawbacks = Array.isArray(tool.drawbacks) ? tool.drawbacks.slice(0, 2) : typeof tool.drawbacks === 'string' && tool.drawbacks ? tool.drawbacks.split('\n').filter(Boolean).slice(0, 2) : []
 
   return (
     <div
-      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-2xl shadow-sm select-none`}
+      className={`absolute top-full mt-2 left-0 z-50 w-80 bg-gray-50 border border-gray-200 rounded-2xl shadow-lg p-4 pointer-events-none`}
     >
-      {tool.name.charAt(0)}
+      {desc && <p className="text-sm text-gray-700 mb-3 leading-relaxed">{desc}</p>}
+      {highlights.length > 0 && (
+        <div className="mb-2">
+          <p className="text-xs font-semibold text-green-600 mb-1">✅ 实测亮点</p>
+          <ul className="space-y-0.5">
+            {highlights.map((h, i) => <li key={i} className="text-xs text-gray-600">{h}</li>)}
+          </ul>
+        </div>
+      )}
+      {drawbacks.length > 0 && (
+        <div className="mb-2">
+          <p className="text-xs font-semibold text-red-500 mb-1">❌ 实测缺点</p>
+          <ul className="space-y-0.5">
+            {drawbacks.map((d, i) => <li key={i} className="text-xs text-gray-600">{d}</li>)}
+          </ul>
+        </div>
+      )}
+      {tool.tg_advice && (
+        <div className="flex items-start gap-1.5 text-xs text-blue-600 mb-2">
+          <span className="flex-shrink-0 font-semibold">💡 TG建议</span><span>{tool.tg_advice}</span>
+        </div>
+      )}
+      {tool.price && <p className="text-xs text-gray-400 mt-1">{tool.price}</p>}
     </div>
   )
 }
@@ -96,35 +199,73 @@ function StarRating({ rating }) {
 }
 
 // ─── 工具卡片 ─────────────────────────────────────
-function ToolCard({ tool, onCompare, inCompare, compareDisabled }) {
+function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) {
+  const [hoverTimer, setHoverTimer] = useState(null)
   const [showTooltip, setShowTooltip] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
   const { t, lang } = useLang()
   const name = (lang === 'en' && tool.name_en) ? tool.name_en : tool.name
-  const desc = (lang === 'en' && tool.description_en) ? tool.description_en : tool.description
-  const highlights = (lang === 'en' && tool.highlights_en) ? tool.highlights_en : tool.highlights
+
+  function handleMouseEnter() {
+    const timer = setTimeout(() => setShowTooltip(true), 300)
+    setHoverTimer(timer)
+  }
+  function handleMouseLeave() {
+    clearTimeout(hoverTimer)
+    setTimeout(() => setShowTooltip(false), 100)
+  }
+
+  const tags = Array.isArray(tool.tags) ? tool.tags : []
+
   return (
-    <div className="relative bg-white border border-gray-200 rounded-xl p-5 flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 hover:z-10"
-      onMouseEnter={() => setShowTooltip(true)} onMouseLeave={() => setShowTooltip(false)}>
+    <div
+      className="relative bg-white border border-gray-200 rounded-xl p-5 flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 hover:z-10"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* 悬浮窗（桌面端） */}
       {showTooltip && (
-        <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white border border-gray-200 text-gray-700 text-xs rounded-xl p-4 shadow-lg pointer-events-none">
-          <p className="font-semibold text-sm text-gray-900 mb-1.5">{name}</p>
-          <p className="text-gray-600 leading-relaxed mb-2">{desc}</p>
-          {highlights && <p className="text-blue-600 leading-relaxed">{highlights}</p>}
+        <div className="hidden md:block">
+          <HoverTooltip tool={tool} name={name} isRightEdge={isRightEdge} />
         </div>
       )}
-      <div className="flex items-center gap-1.5 mb-3 min-h-[22px]">
-        {tool.price === '免费' && <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">{t('tools_free')}</span>}
-        {tool.is_recommended && <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md">{t('tools_recommended')}</span>}
-        {tool.is_hot && !tool.is_recommended && <span className="text-xs font-medium bg-red-50 text-red-500 px-2 py-0.5 rounded-md">{t('tools_hot')}</span>}
-        {tool.is_new && <span className="text-xs font-medium bg-blue-50 text-blue-500 px-2 py-0.5 rounded-md">{t('tools_new')}</span>}
+
+      {/* 顶部：标签组 + 分享按钮 */}
+      <div className="flex items-center justify-between mb-3 min-h-[22px]">
+        <div className="flex items-center gap-1 flex-wrap">
+          {tool.price === '免费' && <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">{t('tools_free')}</span>}
+          {tool.is_hot && <span className="text-xs font-medium bg-red-50 text-red-500 px-2 py-0.5 rounded-md">{t('tools_hot')}</span>}
+          {tool.is_recommended && <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md">{t('tools_recommended')}</span>}
+          {tags.includes('TG精选') && <span className="text-xs font-medium bg-yellow-50 text-yellow-600 px-2 py-0.5 rounded-md">TG精选</span>}
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); setShowTooltip(false); clearTimeout(hoverTimer); setShareOpen(true) }}
+          className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-blue-500 transition-colors flex-shrink-0"
+          title="分享"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+        </button>
       </div>
-      <div className="flex justify-center mb-3"><ToolIcon tool={tool} /></div>
-      <h3 className="font-bold text-gray-900 text-center text-base mb-1.5 leading-snug">{name}</h3>
-      <p className="text-gray-500 text-sm text-center leading-relaxed flex-1 mb-3" style={{ display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
-        {desc}
-      </p>
-      <div className="flex justify-center mb-2"><StarRating rating={tool.rating} /></div>
-      <p className="text-gray-400 text-xs text-center mb-4 font-medium">{tool.price}</p>
+
+      {/* Logo */}
+      <div className="mb-3"><ToolIcon tool={tool} /></div>
+
+      {/* 名称 */}
+      <h3 className="font-bold text-gray-900 text-center text-base mb-1 leading-snug">{name}</h3>
+
+      {/* 超短功能标签 */}
+      {tool.short_tag && (
+        <p className="text-gray-400 text-xs text-center mb-2">{tool.short_tag}</p>
+      )}
+
+      {/* 评分 */}
+      <div className="flex justify-center mb-4">
+        <StarRating rating={tool.rating} />
+      </div>
+
+      {/* 底部按钮 */}
       <div className="flex gap-2 mt-auto">
         <a href={tool.official_url || '#'} target="_blank" rel="nofollow noopener noreferrer"
           onClick={(e) => !tool.official_url && e.preventDefault()}
@@ -143,6 +284,8 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled }) {
           {inCompare ? t('tools_compare_added') : t('tools_compare_add')}
         </button>
       </div>
+
+      {shareOpen && <ShareModal tool={tool} onClose={() => setShareOpen(false)} />}
     </div>
   )
 }
@@ -171,6 +314,16 @@ function CardSkeleton() {
   )
 }
 
+const SEARCH_HISTORY_KEY = 'tgaide_search_history'
+function getSearchHistory() {
+  try { return JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || '[]') } catch { return [] }
+}
+function saveSearchHistory(q) {
+  if (!q.trim()) return
+  const prev = getSearchHistory().filter(s => s !== q.trim())
+  localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify([q.trim(), ...prev].slice(0, 8)))
+}
+
 // ─── 主页面 ────────────────────────────────────────
 export default function AllTools() {
   const [allTools, setAllTools] = useState([])
@@ -181,6 +334,8 @@ export default function AllTools() {
   const [sortBy, setSortBy] = useState('hot')
   const [compareList, setCompareList] = useState(getCompare)
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [searchHistory, setSearchHistory] = useState(getSearchHistory)
+  const [showHistory, setShowHistory] = useState(false)
   const searchTimerRef = useRef(null)
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const navigate = useNavigate()
@@ -206,7 +361,13 @@ export default function AllTools() {
   // 搜索防抖 300ms
   useEffect(() => {
     clearTimeout(searchTimerRef.current)
-    searchTimerRef.current = setTimeout(() => setDebouncedSearch(searchQuery), 300)
+    searchTimerRef.current = setTimeout(() => {
+      setDebouncedSearch(searchQuery)
+      if (searchQuery.trim()) {
+        saveSearchHistory(searchQuery)
+        setSearchHistory(getSearchHistory())
+      }
+    }, 300)
     return () => clearTimeout(searchTimerRef.current)
   }, [searchQuery])
 
@@ -330,30 +491,41 @@ export default function AllTools() {
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             {/* 搜索框 */}
             <div className="relative flex-1">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowHistory(true)}
+                onBlur={() => setTimeout(() => setShowHistory(false), 150)}
                 placeholder={t('tools_search_placeholder')}
                 className="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
+                <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
+              )}
+              {showHistory && !searchQuery && searchHistory.length > 0 && (
+                <div className="absolute top-full mt-1 left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-1">
+                  <div className="flex items-center justify-between px-3 py-1.5">
+                    <span className="text-xs text-gray-400">搜索历史</span>
+                    <button onClick={() => { localStorage.removeItem(SEARCH_HISTORY_KEY); setSearchHistory([]) }} className="text-xs text-gray-400 hover:text-red-500">清除</button>
+                  </div>
+                  {searchHistory.map((h) => (
+                    <button key={h} onClick={() => { setSearchQuery(h); setShowHistory(false) }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+                      <svg className="w-3.5 h-3.5 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {h}
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
 
@@ -433,13 +605,14 @@ export default function AllTools() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTools.map((tool) => (
+              {filteredTools.map((tool, idx) => (
                 <ToolCard
                   key={tool.id}
                   tool={tool}
                   inCompare={!!compareList.find(t => t.id === tool.id)}
                   compareDisabled={compareList.length >= 3}
                   onCompare={toggleCompare}
+                  isRightEdge={(idx + 1) % 3 === 0}
                 />
               ))}
             </div>

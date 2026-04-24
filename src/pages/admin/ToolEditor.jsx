@@ -162,12 +162,17 @@ function IconUploader({ iconUrl, onChange }) {
   )
 }
 
+// slug 自动生成（简单拼音化：去除非ASCII，空格转横杠，转小写）
+function toSlug(name) {
+  return name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+}
+
 // ─── 空表单 ────────────────────────────────────────────
 const emptyForm = {
   name: '', name_en: '',
   category: '',
   description: '', description_en: '',
-  highlights: '', highlights_en: '',
+  highlights_en: '',
   keywords: '',
   rating: '5.0',
   price: '免费',
@@ -179,6 +184,14 @@ const emptyForm = {
   is_new: false,
   sort_order: '0',
   status: 'active',
+  // 新字段
+  slug: '',
+  short_tag: '',
+  full_desc: '',
+  new_highlights: '',
+  drawbacks: '',
+  tg_advice: '',
+  tags: [],
 }
 
 // ─── 表单验证 ──────────────────────────────────────────
@@ -224,7 +237,6 @@ export default function AdminToolEditor({ mode }) {
             category:       data.category       || '',
             description:    data.description    || '',
             description_en: data.description_en || '',
-            highlights:     data.highlights     || '',
             highlights_en:  data.highlights_en  || '',
             keywords:       data.keywords       || '',
             rating:         String(data.rating  ?? '5.0'),
@@ -237,6 +249,13 @@ export default function AdminToolEditor({ mode }) {
             is_new:         data.is_new         ?? false,
             sort_order:     String(data.sort_order ?? 0),
             status:         data.status         || 'active',
+            slug:           data.slug           || '',
+            short_tag:      data.short_tag      || '',
+            full_desc:      data.full_desc      || '',
+            new_highlights: Array.isArray(data.highlights) ? data.highlights.join('\n') : '',
+            drawbacks:      Array.isArray(data.drawbacks)  ? data.drawbacks.join('\n')  : '',
+            tg_advice:      data.tg_advice      || '',
+            tags:           Array.isArray(data.tags) ? data.tags : [],
           })
         })
         .catch((e) => alert('加载失败：' + e.message))
@@ -245,7 +264,14 @@ export default function AdminToolEditor({ mode }) {
   }, [mode, id])
 
   const set = (key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }))
+    setForm((prev) => {
+      const next = { ...prev, [key]: value }
+      // 名称变化时自动生成 slug（仅当 slug 为空或与旧名称生成的一致时）
+      if (key === 'name' && (!prev.slug || prev.slug === toSlug(prev.name))) {
+        next.slug = toSlug(value)
+      }
+      return next
+    })
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: '' }))
   }
 
@@ -294,7 +320,6 @@ export default function AdminToolEditor({ mode }) {
       category:       form.category,
       description:    form.description.trim(),
       description_en: form.description_en.trim(),
-      highlights:     form.highlights.trim(),
       highlights_en:  form.highlights_en.trim(),
       keywords:       form.keywords.trim(),
       rating:         parseFloat(form.rating),
@@ -307,9 +332,17 @@ export default function AdminToolEditor({ mode }) {
       is_new:         form.is_new,
       sort_order:     parseInt(form.sort_order, 10) || 0,
       status:         statusOverride || form.status,
+      slug:           form.slug.trim() || toSlug(form.name),
+      short_tag:      form.short_tag.trim(),
+      full_desc:      form.full_desc.trim(),
+      highlights:     form.new_highlights.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 3),
+      drawbacks:      form.drawbacks.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 2),
+      tg_advice:      form.tg_advice.trim(),
+      tags:           form.tags,
     }
 
     try {
+      console.log('[save] highlights:', payload.highlights, 'drawbacks:', payload.drawbacks)
       if (mode === 'new') {
         await adminCreateTool(payload)
       } else {
@@ -508,6 +541,82 @@ export default function AdminToolEditor({ mode }) {
           />
         </div>
 
+        {/* ── 悬浮窗内容 ── */}
+        <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+          <h3 className="text-sm font-semibold text-gray-700">悬浮窗内容</h3>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              Slug <span className="text-gray-400 font-normal">（URL标识，自动生成可修改）</span>
+            </label>
+            <div className="flex gap-2">
+              <input type="text" value={form.slug}
+                onChange={(e) => set('slug', e.target.value)}
+                placeholder="tool-name"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+              <button type="button"
+                onClick={() => set('slug', toSlug(form.name))}
+                className="px-3 py-2 border border-gray-200 rounded-lg text-xs text-gray-500 hover:bg-gray-50">
+                自动生成
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              超短功能标签 <span className="text-gray-400 font-normal">（≤50字）</span>
+            </label>
+            <input type="text" value={form.short_tag} maxLength={50}
+              onChange={(e) => set('short_tag', e.target.value)}
+              placeholder="如：AI合同审查"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              一句话简介 <span className="text-gray-400 font-normal">（≤50字，显示在悬浮窗顶部）</span>
+            </label>
+            <input type="text" value={form.full_desc} maxLength={50}
+              onChange={(e) => set('full_desc', e.target.value)}
+              placeholder="专为律师设计的AI合同审查工具"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              ✅ 实测亮点 <span className="text-gray-400 font-normal">（每行一条，最多3条，每条≤15字）</span>
+            </label>
+            <textarea
+              value={form.new_highlights}
+              onChange={(e) => set('new_highlights', e.target.value)}
+              placeholder={"3分钟出合同意见书\n支持300+法律场景\n批量审查效率高"}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-mono" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              ❌ 实测缺点 <span className="text-gray-400 font-normal">（每行一条，最多2条，每条≤15字）</span>
+            </label>
+            <textarea
+              value={form.drawbacks}
+              onChange={(e) => set('drawbacks', e.target.value)}
+              placeholder={"免费版每月限50次\n不支持英文合同"}
+              rows={2}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-mono" />
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 mb-1">
+              💡 TG建议 <span className="text-gray-400 font-normal">（≤20字）</span>
+            </label>
+            <input type="text" value={form.tg_advice} maxLength={30}
+              onChange={(e) => set('tg_advice', e.target.value)}
+              placeholder="适合中小律所日常合同审查"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+
         {/* ── 工具图标 ── */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -540,6 +649,24 @@ export default function AdminToolEditor({ mode }) {
                   />
                   <span className="text-sm text-gray-700 font-medium">{label}</span>
                   <span className="text-xs text-gray-400">{desc}</span>
+                </label>
+              ))}
+              {/* tags 数组标签 */}
+              {['免费', '热门', '今日推荐', 'TG精选'].map((tag) => (
+                <label key={tag} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={form.tags.includes(tag)}
+                    onChange={(e) => {
+                      const next = e.target.checked
+                        ? [...form.tags, tag]
+                        : form.tags.filter((t) => t !== tag)
+                      set('tags', next)
+                    }}
+                    className="w-4 h-4 rounded border-gray-300 text-emerald-500"
+                  />
+                  <span className="text-sm text-gray-700 font-medium">{tag}</span>
+                  <span className="text-xs text-gray-400">tags[]标签</span>
                 </label>
               ))}
             </div>
