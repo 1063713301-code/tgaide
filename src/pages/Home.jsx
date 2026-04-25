@@ -70,7 +70,7 @@ export default function Home() {
       fetchTools({ sort: 'is_hot', limit: 8 }),
       fetchTools({ sort: 'newest', limit: 8 }),
     ])
-      .then(([r, b, count, recommended, hot, newest]) => {
+      .then(([r, b, count, { data: recommended }, { data: hot }, { data: newest }]) => {
         setReports(r)
         setBriefs(b)
         setToolCount(count)

@@ -141,10 +141,10 @@ export async function uploadImageToStorage(file) {
 // ─── 工具表 CRUD ─────────────────────────────────
 
 /** 获取工具列表（支持分类筛选、搜索、排序） */
-export async function fetchTools({ category = null, search = null, sort = 'hot', limit = null } = {}) {
+export async function fetchTools({ category = null, search = null, sort = 'hot', limit = null, page = 1, pageSize = 48 } = {}) {
   let query = supabase
     .from('tools')
-    .select('*')
+    .select('*', { count: 'exact' })
     .eq('status', 'active')
 
   if (category) {
@@ -172,22 +172,19 @@ export async function fetchTools({ category = null, search = null, sort = 'hot',
   }
 
   if (limit) query = query.limit(limit)
-
-  const { data, error } = await query
-  if (error) throw error
-
-  // 搜索在客户端完成（支持模糊匹配名称和描述）
-  if (search && search.trim()) {
-    const q = search.trim().toLowerCase()
-    return (data || []).filter(
-      (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q),
-    )
+  else {
+    const from = (page - 1) * pageSize
+    query = query.range(from, from + pageSize - 1)
   }
 
-  return data || []
+  // 服务端搜索
+  if (search && search.trim()) {
+    query = query.ilike('keywords', `%${search.trim()}%`)
+  }
+
+  const { data, count, error } = await query
+  if (error) throw error
+  return { data: data || [], count: count || 0 }
 }
 
 /** 获取工具总数 */

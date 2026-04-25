@@ -327,6 +327,9 @@ function saveSearchHistory(q) {
 // ─── 主页面 ────────────────────────────────────────
 export default function AllTools() {
   const [allTools, setAllTools] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 48
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -349,20 +352,25 @@ export default function AllTools() {
     const cat = params.get('category') || ''
     setSearchQuery(q || '')
     setSelectedCategory(cat)
-    // 直接用解析出的 cat 发请求，避免 state 异步更新导致用旧值 fetch
+    setPage(1)
+    setDebouncedSearch(q || '')
+  }, [location.search])
+
+  useEffect(() => {
     setLoading(true)
     setError(null)
-    fetchTools({ category: cat || null, sort: sortBy })
-      .then(setAllTools)
+    fetchTools({ category: selectedCategory || null, sort: sortBy, search: debouncedSearch, page, pageSize: PAGE_SIZE })
+      .then(({ data, count }) => { setAllTools(data); setTotalCount(count) })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
-  }, [location.search, sortBy])
+  }, [selectedCategory, sortBy, debouncedSearch, page])
 
   // 搜索防抖 300ms
   useEffect(() => {
     clearTimeout(searchTimerRef.current)
     searchTimerRef.current = setTimeout(() => {
       setDebouncedSearch(searchQuery)
+      setPage(1)
       if (searchQuery.trim()) {
         saveSearchHistory(searchQuery)
         setSearchHistory(getSearchHistory())
@@ -371,17 +379,7 @@ export default function AllTools() {
     return () => clearTimeout(searchTimerRef.current)
   }, [searchQuery])
 
-  // 客户端搜索过滤
-  const filteredTools = useMemo(() => {
-    if (!debouncedSearch.trim()) return allTools
-    const q = debouncedSearch.trim().toLowerCase()
-    return allTools.filter(
-      (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        (t.keywords && t.keywords.toLowerCase().includes(q)),
-    )
-  }, [allTools, debouncedSearch])
+  const filteredTools = allTools
 
   const toggleCompare = useCallback((tool) => {
     setCompareList((prev) => {
@@ -533,7 +531,7 @@ export default function AllTools() {
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => { setSortBy(e.target.value); setPage(1) }}}
                 className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-2.5 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
                 {SORT_OPTIONS.map((o) => (
@@ -564,7 +562,7 @@ export default function AllTools() {
                       {' · '}
                     </span>
                   ) : null}
-                  共 <span className="font-semibold text-gray-700">{filteredTools.length}</span> {t('tools_count')}
+                  共 <span className="font-semibold text-gray-700">{totalCount}</span> {t('tools_count')}
                   {debouncedSearch && (
                     <span className="ml-1">
                       · {t('tools_search_label')}<span className="text-blue-600">{debouncedSearch}</span>」
@@ -615,6 +613,29 @@ export default function AllTools() {
                   isRightEdge={(idx + 1) % 3 === 0}
                 />
               ))}
+            </div>
+          )}
+
+          {/* 分页 */}
+          {!loading && totalCount > PAGE_SIZE && (
+            <div className="flex justify-center items-center gap-2 mt-8">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="px-4 py-2 rounded-lg border text-sm disabled:opacity-40 hover:bg-gray-50"
+              >
+                上一页
+              </button>
+              <span className="text-sm text-gray-500">
+                第 {page} / {Math.ceil(totalCount / PAGE_SIZE)} 页
+              </span>
+              <button
+                onClick={() => setPage(p => Math.min(Math.ceil(totalCount / PAGE_SIZE), p + 1))}
+                disabled={page >= Math.ceil(totalCount / PAGE_SIZE)}
+                className="px-4 py-2 rounded-lg border text-sm disabled:opacity-40 hover:bg-gray-50"
+              >
+                下一页
+              </button>
             </div>
           )}
         </div>
