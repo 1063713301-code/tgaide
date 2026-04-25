@@ -1,0 +1,2530 @@
+[
+  {
+    "id": "b39f6913-c46b-4d70-a3d3-430f3ea5fb3c",
+    "name": "小裂变AI 1.0",
+    "name_en": "",
+    "category": "营销",
+    "description": "首个全域营销Agent桌面端工具，集成私域运营全链路功能。集成小裂变SCRM、聊天管家、推客分销、GEO内容营销4大产品，内置200+功能Skills，支持企业微信私域运营、会话存档、推客分销",
+    "slug": null
+  },
+  {
+    "id": "a4cbf8e4-c3a5-4224-86fd-01a888c9e280",
+    "name": "用友好会计 2026版",
+    "name_en": "",
+    "category": "会计",
+    "description": "一键读取银行流水，自动做日记账;实时获取税局发票，轻松入账归档;根据账务税务数据，自动出具报表。",
+    "slug": null
+  },
+  {
+    "id": "b26e5578-2519-4fde-ae8d-abd045db5dcd",
+    "name": "ChatGPT Prism",
+    "name_en": "",
+    "category": "学生",
+    "description": "研协作LaTeX工作台；实测亮点：LaTeX+文献+协作一体化；实测缺点：需科学上网，国内文献库支持有限",
+    "slug": null
+  },
+  {
+    "id": "fd4ed480-779d-405b-9b9c-b8b9cefb3368",
+    "name": "犀牛卫",
+    "name_en": "",
+    "category": "会计",
+    "description": "企业尽调财税数据分析平台。\n实测亮点：财税授权数据深度，覆盖近三年纳税信息\n实测缺点：需目标企业授权，流程较繁琐",
+    "slug": null
+  },
+  {
+    "id": "0d098d5b-de8a-4c52-b467-7ee5b525543e",
+    "name": "AI易代账",
+    "name_en": "",
+    "category": "会计",
+    "description": "多智能体协作架构亮相；\n影响：代账公司基础工作自动化率提升80%；\n建议：代账机构可优先评估试用",
+    "slug": null
+  },
+  {
+    "id": "7682e7d6-6bc1-4117-814f-d71516e358c2",
+    "name": "法狗狗",
+    "name_en": "FaGouGou",
+    "category": "律师",
+    "description": "专为律师设计的AI法律检索工具，覆盖全国法规、案例、裁判文书，支持智能语义搜索。",
+    "slug": "fagougou"
+  },
+  {
+    "id": "8a3a3023-9837-4f5c-bc34-be371a1a29bd",
+    "name": "法大大",
+    "name_en": "FaDaDa",
+    "category": "律师",
+    "description": "AI驱动的电子合同与法律文件管理平台，支持合同在线签署、存证及智能风险审查。",
+    "slug": "fadada"
+  },
+  {
+    "id": "e94fec79-2a95-48f6-9a89-86f7d9174bd1",
+    "name": "无讼",
+    "name_en": "Wusong",
+    "category": "律师",
+    "description": "专业法律信息服务平台，提供海量裁判文书检索、法律知识图谱和律师社区交流。",
+    "slug": "wusong"
+  },
+  {
+    "id": "69b2698e-85cc-4469-9830-97c8f5cd322e",
+    "name": "北大法宝",
+    "name_en": "PKULaw",
+    "category": "律师",
+    "description": "北京大学法制信息中心旗下权威法律数据库，覆盖法规、案例、学术文献，AI检索助手加持。",
+    "slug": "pkulaw"
+  },
+  {
+    "id": "e19f7690-b28f-4cd9-a044-e20eff5fc442",
+    "name": "吾律AI",
+    "name_en": "",
+    "category": "律师",
+    "description": "AI全流程自动立案；30分钟完成传统15天立案流程；仅支持民事常见案由，刑事暂不可用",
+    "slug": "wulvai"
+  },
+  {
+    "id": "7892d9bd-e594-4553-8909-5c5fb01904a1",
+    "name": "Harvey AI",
+    "name_en": "Harvey AI",
+    "category": "律师",
+    "description": "专为律师事务所设计的生成式AI平台，支持合同分析、尽职调查、法律研究和文书起草。",
+    "slug": "harvey-ai"
+  },
+  {
+    "id": "1ad75830-0bd7-4bbd-8a7e-3ab264835107",
+    "name": "Casetext",
+    "name_en": "Casetext",
+    "category": "律师",
+    "description": "美国领先的AI法律研究平台，集成GPT-4的CARA功能可自动分析案件并推荐相关判例。",
+    "slug": "casetext"
+  },
+  {
+    "id": "bc389864-3b15-4c2f-b302-3be3d60b1366",
+    "name": "Kira Systems",
+    "name_en": "Kira Systems",
+    "category": "律师",
+    "description": "专业合同分析AI平台，利用机器学习自动提取合同关键条款，加速尽职调查流程。",
+    "slug": "kira-systems"
+  },
+  {
+    "id": "3d580450-8ae3-441c-9354-07e91177d36e",
+    "name": "Luminance",
+    "name_en": "Luminance",
+    "category": "律师",
+    "description": "英国AI法律科技公司，提供合同审查、尽职调查和法律文件分析的企业级AI平台。",
+    "slug": "luminance"
+  },
+  {
+    "id": "b55994aa-ff8a-4743-be48-15e303959537",
+    "name": "Westlaw Edge",
+    "name_en": "Westlaw Edge",
+    "category": "律师",
+    "description": "汤森路透旗下AI增强法律研究平台，提供判例预测、引用分析和智能法律研究功能。",
+    "slug": "westlaw-edge"
+  },
+  {
+    "id": "8c2ee97a-7706-4df0-97bb-dbebc918ad53",
+    "name": "LexisNexis AI",
+    "name_en": "LexisNexis AI",
+    "category": "律师",
+    "description": "全球顶级法律数据库LexisNexis推出的AI助手，整合海量判例和法规，支持智能法律研究。",
+    "slug": "lexisnexis-ai"
+  },
+  {
+    "id": "fb2c1441-72cf-4ef9-bafb-2f3e434d9c36",
+    "name": "法信",
+    "name_en": "FaXin",
+    "category": "律师",
+    "description": "最高人民法院旗下法律信息平台，提供权威法规、司法解释、指导案例的免费检索服务。",
+    "slug": "faxin"
+  },
+  {
+    "id": "8d75accb-7089-4fcd-98dc-4d68b581e923",
+    "name": "知产宝",
+    "name_en": "ZhiChanBao",
+    "category": "律师",
+    "description": "专注知识产权领域的AI检索分析平台，覆盖专利、商标、版权数据，支持侵权分析。",
+    "slug": "zhichan-bao"
+  },
+  {
+    "id": "ef7f2e95-b9f5-43ee-804e-b9e4de2c0273",
+    "name": "Ironclad",
+    "name_en": "Ironclad",
+    "category": "律师",
+    "description": "硅谷明星合同管理平台，AI驱动的合同工作流自动化，深受科技公司法务团队青睐。",
+    "slug": "ironclad"
+  },
+  {
+    "id": "20cbd545-1eed-4f3b-b2b2-69e23a2ad9b1",
+    "name": "Lex Machina",
+    "name_en": "Lex Machina",
+    "category": "律师",
+    "description": "领英旗下法律分析平台，通过大数据分析法官、律师、当事人的诉讼行为，辅助诉讼策略。",
+    "slug": "lex-machina"
+  },
+  {
+    "id": "02b4e4e3-71b0-46c1-b8ba-472ebefbcc7b",
+    "name": "ContractPodAi",
+    "name_en": "ContractPodAi",
+    "category": "律师",
+    "description": "企业合同生命周期管理AI平台，覆盖合同起草、谈判、审批、执行和续签全流程。",
+    "slug": "contractpod-ai"
+  },
+  {
+    "id": "5460b4cc-bd8f-4af2-8204-f4fc6a6b1bee",
+    "name": "Relativity AI",
+    "name_en": "Relativity AI",
+    "category": "律师",
+    "description": "电子取证领域领先平台，AI辅助文件审查、证据分析和诉讼数据管理，广泛用于大型诉讼。",
+    "slug": "relativity-ai"
+  },
+  {
+    "id": "f2a50ae1-19ea-4ef1-98dd-30f1ac59cffe",
+    "name": "智法AI",
+    "name_en": "ZhiFaAI",
+    "category": "律师",
+    "description": "基于大语言模型的中国法律AI助手，专注中国法律体系的文书生成、法规解读和案例分析。",
+    "slug": "zhifa-ai"
+  },
+  {
+    "id": "36c9c068-47a3-45a1-944f-699611e0a5c5",
+    "name": "法律云",
+    "name_en": "LawCloud",
+    "category": "律师",
+    "description": "国内专业法律SaaS平台，为律师事务所提供案件管理、财务核算、文档协作一体化解决方案。",
+    "slug": "law-cloud"
+  },
+  {
+    "id": "1e85af8f-4efb-442b-837e-a61ffb894980",
+    "name": "OpenLaw",
+    "name_en": "OpenLaw",
+    "category": "律师",
+    "description": "区块链智能合约与法律文件自动化平台，支持合同模板创建、数字签名和链上存证。",
+    "slug": "openlaw"
+  },
+  {
+    "id": "5374ca0c-fec5-4b7d-a189-b51ad669bd83",
+    "name": "得到法律",
+    "name_en": "DedaoLaw",
+    "category": "律师",
+    "description": "面向普通用户和律师的AI法律咨询平台，提供智能问答、文书模板和在线律师对接服务。",
+    "slug": "dedao-law"
+  },
+  {
+    "id": "a3520175-eb4c-4500-83b2-7813c70e9d81",
+    "name": "法律快车AI",
+    "name_en": "LawTimeAI",
+    "category": "律师",
+    "description": "国内知名法律服务平台法律快车推出的AI工具，提供法律咨询、文书模板和律师匹配服务。",
+    "slug": "lawtime-ai"
+  },
+  {
+    "id": "381a6e1c-fb8d-48f5-a1a5-f03b3c743454",
+    "name": "合同管家",
+    "name_en": "ContractButler",
+    "category": "律师",
+    "description": "AI合同智能审查与管理工具，自动识别合同风险条款，提供修改建议和合规报告。",
+    "slug": "contract-butler"
+  },
+  {
+    "id": "cc9666d6-ab89-477d-b963-8f121cfc8a02",
+    "name": "律师助手Pro",
+    "name_en": "LawyerAssistantPro",
+    "category": "律师",
+    "description": "国内领先的律师办公AI助手，集成案件管理、文书起草、法规检索于一体的综合平台。",
+    "slug": "lawyer-assistant-pro"
+  },
+  {
+    "id": "ed04b10e-1952-4888-95f4-23b342705cf4",
+    "name": "中国裁判文书网",
+    "name_en": "ChinaJudgmentNet",
+    "category": "律师",
+    "description": "最高人民法院官方裁判文书公开平台，收录全国各级法院裁判文书，免费查阅。",
+    "slug": "china-judgment-net"
+  },
+  {
+    "id": "8ae640d3-05fc-4723-9289-1ed47e10cd7c",
+    "name": "Spellbook",
+    "name_en": "Spellbook",
+    "category": "律师",
+    "description": "基于GPT-4的合同起草AI助手，直接集成在Word中，实时提供合同条款建议和风险提示。",
+    "slug": "spellbook"
+  },
+  {
+    "id": "e5cb4d6e-7a92-4fb7-8121-ebe3f59bc608",
+    "name": "Midjourney",
+    "name_en": "Midjourney",
+    "category": "设计师",
+    "description": "全球最受欢迎的AI图像生成工具，通过文字描述生成高质量艺术图像，设计师必备创作利器。",
+    "slug": "midjourney"
+  },
+  {
+    "id": "0136b386-6de7-477e-9a02-9e2a104c3adb",
+    "name": "Adobe Firefly",
+    "name_en": "Adobe Firefly",
+    "category": "设计师",
+    "description": "Adobe推出的生成式AI设计工具，深度集成Photoshop和Illustrator，支持文字生成图像和创意填充。",
+    "slug": "adobe-firefly"
+  },
+  {
+    "id": "8abd2dcb-bd46-411c-8aad-f6a8a35109de",
+    "name": "Figma AI",
+    "name_en": "Figma AI",
+    "category": "设计师",
+    "description": "Figma内置AI功能，支持AI生成UI组件、自动布局、设计稿翻译和原型智能优化。",
+    "slug": "figma-ai"
+  },
+  {
+    "id": "800857fb-8393-43ab-a683-4637f67a9f1b",
+    "name": "Canva AI",
+    "name_en": "Canva AI",
+    "category": "设计师",
+    "description": "Canva内置Magic Studio AI套件，支持文字生成图像、AI背景移除、智能设计建议和一键品牌套用。",
+    "slug": "canva-ai"
+  },
+  {
+    "id": "38ac457c-1fff-4d90-903f-0295d591a23c",
+    "name": "Stable Diffusion",
+    "name_en": "Stable Diffusion",
+    "category": "设计师",
+    "description": "开源AI图像生成模型，可本地部署，支持高度自定义，拥有庞大的模型和插件生态。",
+    "slug": "stable-diffusion"
+  },
+  {
+    "id": "6f61bec5-8f64-4cb5-b5ba-1012e461bc1a",
+    "name": "DALL-E 3",
+    "name_en": "DALL-E 3",
+    "category": "设计师",
+    "description": "OpenAI最新图像生成模型，理解复杂提示词能力强，生成图像与描述高度一致，集成于ChatGPT。",
+    "slug": "dall-e-3"
+  },
+  {
+    "id": "5a97412e-0984-4e40-916f-f8786c6f69f5",
+    "name": "Runway ML",
+    "name_en": "Runway ML",
+    "category": "设计师",
+    "description": "专业AI视频生成和编辑平台，支持文字转视频、视频风格迁移、背景移除和AI特效制作。",
+    "slug": "runway-ml"
+  },
+  {
+    "id": "e59cbfe1-53fe-40f7-9949-2af3e766f9d3",
+    "name": "Framer AI",
+    "name_en": "Framer AI",
+    "category": "设计师",
+    "description": "AI驱动的网站设计和发布平台，通过文字描述自动生成完整网站，支持实时编辑和一键发布。",
+    "slug": "framer-ai"
+  },
+  {
+    "id": "4aebc94c-12b5-4086-8b6e-afca7d771bb9",
+    "name": "Khroma",
+    "name_en": "Khroma",
+    "category": "设计师",
+    "description": "AI配色工具，通过学习用户偏好生成个性化配色方案，帮助设计师快速找到完美色彩组合。",
+    "slug": "khroma"
+  },
+  {
+    "id": "dbc2c70e-fc84-45d3-ba0f-ab9534803157",
+    "name": "Looka",
+    "name_en": "Looka",
+    "category": "设计师",
+    "description": "AI品牌设计平台，通过简单问答自动生成专业Logo、品牌视觉系统和品牌资产包。",
+    "slug": "looka"
+  },
+  {
+    "id": "22dc9501-f9bf-4dc7-a3b7-a5a9bed83486",
+    "name": "Remove.bg",
+    "name_en": "Remove.bg",
+    "category": "设计师",
+    "description": "专业AI背景移除工具，一键精准抠图，支持批量处理，广泛用于电商产品图和人像处理。",
+    "slug": "remove-bg"
+  },
+  {
+    "id": "379ff210-dc17-400f-8362-50a5c801a315",
+    "name": "Upscayl",
+    "name_en": "Upscayl",
+    "category": "设计师",
+    "description": "免费开源的AI图像超分辨率工具，将低分辨率图片放大4-16倍同时保持清晰度，本地运行。",
+    "slug": "upscayl"
+  },
+  {
+    "id": "d565f907-c6f2-40ca-954b-1543717375c4",
+    "name": "Kling AI",
+    "name_en": "Kling AI",
+    "category": "设计师",
+    "description": "快手推出的AI视频生成工具，支持文字和图片转高质量视频，物理效果逼真，中文友好。",
+    "slug": "kling-ai"
+  },
+  {
+    "id": "26920f83-7ace-4074-8f50-dbd6ec46a4e8",
+    "name": "即梦AI",
+    "name_en": "Jimeng AI",
+    "category": "设计师",
+    "description": "字节跳动推出的AI图像和视频生成工具，支持中文提示词，生成效果优秀，免费额度充足。",
+    "slug": "jimeng-ai"
+  },
+  {
+    "id": "85bb63a8-4938-462b-bfdb-488525ec4712",
+    "name": "Galileo AI",
+    "name_en": "Galileo AI",
+    "category": "设计师",
+    "description": "AI UI设计工具，通过文字描述自动生成完整的UI界面设计稿，可直接导出到Figma。",
+    "slug": "galileo-ai"
+  },
+  {
+    "id": "7d54b80e-c12e-4e1c-8d01-5931f3efea1c",
+    "name": "Uizard",
+    "name_en": "Uizard",
+    "category": "设计师",
+    "description": "AI驱动的UI/UX设计工具，支持手绘草图转数字原型，文字描述生成界面，快速制作产品原型。",
+    "slug": "uizard"
+  },
+  {
+    "id": "2882a6c1-8345-4486-ba0f-7d707194e58b",
+    "name": "Pika Labs",
+    "name_en": "Pika Labs",
+    "category": "设计师",
+    "description": "AI视频生成工具，支持文字和图片转视频，擅长动画和创意视频效果，操作简单易上手。",
+    "slug": "pika-labs"
+  },
+  {
+    "id": "05a0907a-2a59-43fc-908c-191d5385fc5b",
+    "name": "Spline AI",
+    "name_en": "Spline AI",
+    "category": "设计师",
+    "description": "3D设计工具Spline内置AI功能，支持文字生成3D场景和物体，适合网页3D设计和交互动效。",
+    "slug": "spline-ai"
+  },
+  {
+    "id": "bf09fc19-29e8-428a-9547-af0181317559",
+    "name": "Vectorizer.AI",
+    "name_en": "Vectorizer.AI",
+    "category": "设计师",
+    "description": "AI位图转矢量图工具，将JPG/PNG图片自动转换为高质量SVG矢量文件，适合Logo和图标处理。",
+    "slug": "vectorizer-ai"
+  },
+  {
+    "id": "b808d682-d01f-4098-bd86-1c5858d61717",
+    "name": "Luma AI",
+    "name_en": "Luma AI",
+    "category": "设计师",
+    "description": "AI 3D场景生成和视频工具，支持文字转视频和图片转3D模型，Dream Machine视频质量出众。",
+    "slug": "luma-ai"
+  },
+  {
+    "id": "1cfcb576-e490-41d1-b2c4-cfd653107641",
+    "name": "Colorize.cc",
+    "name_en": "Colorize.cc",
+    "category": "设计师",
+    "description": "AI黑白照片上色工具，自动为老照片和黑白图像添加逼真色彩，支持批量处理和高分辨率输出。",
+    "slug": "colorize-cc"
+  },
+  {
+    "id": "c8806904-6c1f-40cf-bdc3-48710f080f35",
+    "name": "Cleanup.pictures",
+    "name_en": "Cleanup.pictures",
+    "category": "设计师",
+    "description": "AI图像修复工具，一键去除照片中的水印、人物、文字等不需要的元素，填充效果自然。",
+    "slug": "cleanup-pictures"
+  },
+  {
+    "id": "cb32a277-8c7d-437d-949f-2103d809b586",
+    "name": "Fontjoy",
+    "name_en": "Fontjoy",
+    "category": "设计师",
+    "description": "AI字体搭配工具，通过深度学习推荐和谐的字体组合，帮助设计师快速找到完美字体配对。",
+    "slug": "fontjoy"
+  },
+  {
+    "id": "4cc5f927-0d80-49e9-a358-8cd661cd3c1c",
+    "name": "Magician for Figma",
+    "name_en": "Magician for Figma",
+    "category": "设计师",
+    "description": "Figma插件形式的AI设计助手，支持文字生成图标、AI文案撰写和设计元素智能生成。",
+    "slug": "magician-figma"
+  },
+  {
+    "id": "8f3ce964-2f8c-4b98-a5a4-3d909074d4be",
+    "name": "Cube",
+    "name_en": "Cube",
+    "category": "会计",
+    "description": "Excel和Google Sheets原生FP&A平台，AI辅助财务规划，无需迁移现有电子表格工作流。",
+    "slug": "cube-software"
+  },
+  {
+    "id": "30c1a963-706e-439d-9a84-ad4c754324fd",
+    "name": "Mosaic Tech",
+    "name_en": "Mosaic Tech",
+    "category": "会计",
+    "description": "战略财务平台，实时整合ERP和CRM数据，AI驱动的财务分析和可视化，帮助CFO做出更快决策。",
+    "slug": "mosaic-tech"
+  },
+  {
+    "id": "d2ee3e3e-6672-433e-877d-3e1d5cb05aff",
+    "name": "Vena Solutions",
+    "name_en": "Vena Solutions",
+    "category": "会计",
+    "description": "Excel集成的企业绩效管理平台，AI辅助预算、预测和报告，保留Excel操作习惯同时增强协作。",
+    "slug": "vena-solutions"
+  },
+  {
+    "id": "75b4a1e0-b1c0-48e0-ae11-8551c14a62e4",
+    "name": "Udio",
+    "name_en": "Udio",
+    "category": "设计师",
+    "description": "AI音乐生成工具，通过文字描述生成高质量原创音乐，适合视频配乐和创意项目背景音。",
+    "slug": "udio"
+  },
+  {
+    "id": "d8797f81-6361-45bf-b4ca-081cf2d63d6e",
+    "name": "Suno AI",
+    "name_en": "Suno AI",
+    "category": "设计师",
+    "description": "AI歌曲创作工具，输入歌词和风格描述即可生成完整歌曲，包含人声和伴奏，效果惊艳。",
+    "slug": "suno-ai"
+  },
+  {
+    "id": "a25204b0-ace3-4a26-b9f1-8e2a7b5a37de",
+    "name": "Ideogram",
+    "name_en": "Ideogram",
+    "category": "设计师",
+    "description": "AI图像生成工具，擅长在图像中准确渲染文字，解决了其他AI工具文字生成错误的痛点。",
+    "slug": "ideogram"
+  },
+  {
+    "id": "8fe22bcb-7f0f-415d-96c2-61cf4ac0f4c1",
+    "name": "Leonardo AI",
+    "name_en": "Leonardo AI",
+    "category": "设计师",
+    "description": "AI图像生成平台，提供多种专业模型，支持游戏资产、概念艺术和产品设计图生成。",
+    "slug": "leonardo-ai"
+  },
+  {
+    "id": "cc9c2054-344d-4d4d-a79e-e0f0dd104e85",
+    "name": "Krea AI",
+    "name_en": "Krea AI",
+    "category": "设计师",
+    "description": "AI实时图像生成工具，支持边画边生成，实时预览AI效果，适合创意探索和快速迭代。",
+    "slug": "krea-ai"
+  },
+  {
+    "id": "c5f5f7a1-37d2-41dd-90dc-9b7c544afb65",
+    "name": "Photoroom",
+    "name_en": "Photoroom",
+    "category": "设计师",
+    "description": "AI电商图片编辑工具，一键背景移除、替换和产品图美化，专为电商卖家和设计师优化。",
+    "slug": "photoroom"
+  },
+  {
+    "id": "91959c7a-d446-4830-b35a-9fca6925a914",
+    "name": "Autodraw",
+    "name_en": "Autodraw",
+    "category": "设计师",
+    "description": "Google推出的AI绘图工具，识别手绘草图并推荐专业图标替换，帮助非设计师快速创作。",
+    "slug": "autodraw"
+  },
+  {
+    "id": "9398d6fd-5af6-464e-a71a-10d353ed7ce1",
+    "name": "Visily",
+    "name_en": "Visily",
+    "category": "设计师",
+    "description": "AI UI设计工具，支持截图转可编辑设计稿、手绘转原型，内置丰富UI组件库。",
+    "slug": "visily"
+  },
+  {
+    "id": "e04b6b70-3624-47e8-877f-af60bbfaac27",
+    "name": "Mokker AI",
+    "name_en": "Mokker AI",
+    "category": "设计师",
+    "description": "AI产品图背景生成工具，上传产品图后自动生成专业场景背景，适合电商和品牌营销。",
+    "slug": "mokker-ai"
+  },
+  {
+    "id": "7ad82f72-2f01-42bf-afa9-96b4b34a816f",
+    "name": "Designify",
+    "name_en": "Designify",
+    "category": "设计师",
+    "description": "AI自动化设计工具，一键将产品图转化为专业电商展示图，自动处理背景、阴影和构图。",
+    "slug": "designify"
+  },
+  {
+    "id": "570a8ad0-bc42-44d9-965b-26c552fd98c2",
+    "name": "Stylar AI",
+    "name_en": "Stylar AI",
+    "category": "设计师",
+    "description": "AI图像风格化工具，将照片转化为各种艺术风格，支持精细控制风格强度和细节保留。",
+    "slug": "stylar-ai"
+  },
+  {
+    "id": "a4f74952-3908-4b25-8183-02552de382c0",
+    "name": "Recraft AI",
+    "name_en": "Recraft AI",
+    "category": "设计师",
+    "description": "AI矢量图和图标生成工具，专为设计师优化，支持品牌风格一致性控制和SVG直接输出。",
+    "slug": "recraft-ai"
+  },
+  {
+    "id": "afb20208-27b6-4097-8c99-f3a5cae2d224",
+    "name": "Playground AI",
+    "name_en": "Playground AI",
+    "category": "设计师",
+    "description": "AI图像生成和编辑平台，免费额度慷慨，支持图像混合、局部编辑和多种生成模型切换。",
+    "slug": "playground-ai"
+  },
+  {
+    "id": "084579b5-4e88-4f1b-9704-73c6915ef6cd",
+    "name": "Canva文字转图",
+    "name_en": "Canva Text to Image",
+    "category": "设计师",
+    "description": "Canva内置的文字转图像功能，无需离开设计界面即可生成AI图像并直接用于设计项目。",
+    "slug": "canva-text-to-image"
+  },
+  {
+    "id": "97f43b99-f44c-4157-a646-b8c3e1ca099c",
+    "name": "Artbreeder",
+    "name_en": "Artbreeder",
+    "category": "设计师",
+    "description": "AI图像混合创作工具，通过混合多张图像的基因参数创造独特艺术作品，适合角色和风景创作。",
+    "slug": "artbreeder"
+  },
+  {
+    "id": "029e50ec-709f-4a0b-910e-f91ee233ba07",
+    "name": "Visme AI",
+    "name_en": "Visme AI",
+    "category": "设计师",
+    "description": "AI信息图表和演示文稿设计工具，通过文字描述自动生成专业图表、报告和演示稿。",
+    "slug": "visme-ai"
+  },
+  {
+    "id": "1efa314e-dcbc-4568-af7b-4dae83ab1847",
+    "name": "Patterned AI",
+    "name_en": "Patterned AI",
+    "category": "设计师",
+    "description": "AI无缝图案生成工具，通过文字描述生成可平铺的无缝图案，适合纺织品、包装和背景设计。",
+    "slug": "patterned-ai"
+  },
+  {
+    "id": "2a047151-01f3-4fef-b38e-142d61e6c308",
+    "name": "Booth AI",
+    "name_en": "Booth AI",
+    "category": "设计师",
+    "description": "AI产品摄影工具，上传产品图后自动生成专业级产品摄影效果，无需真实拍摄场地。",
+    "slug": "booth-ai"
+  },
+  {
+    "id": "f2a965c6-0f25-471f-8919-ebd012969844",
+    "name": "Clipdrop",
+    "name_en": "Clipdrop",
+    "category": "设计师",
+    "description": "Stability AI旗下图像编辑工具集，包含背景移除、图像超分、光线调整等多种AI图像处理功能。",
+    "slug": "clipdrop"
+  },
+  {
+    "id": "59cbac0b-060f-4df0-bd54-8434a81b65d0",
+    "name": "Hotpot AI",
+    "name_en": "Hotpot AI",
+    "category": "设计师",
+    "description": "AI图像处理工具集，提供背景移除、图像修复、艺术风格化、图标生成等多种实用功能。",
+    "slug": "hotpot-ai"
+  },
+  {
+    "id": "14194fe2-282b-4714-bbb0-08dd0af0362d",
+    "name": "Namelix",
+    "name_en": "Namelix",
+    "category": "设计师",
+    "description": "AI品牌命名工具，通过关键词生成创意品牌名称，并自动生成对应的Logo设计方案。",
+    "slug": "namelix"
+  },
+  {
+    "id": "1b0ef598-c7de-4d14-b6bf-94558ca03852",
+    "name": "Brandmark",
+    "name_en": "Brandmark",
+    "category": "设计师",
+    "description": "AI Logo设计工具，输入品牌名称和关键词自动生成专业Logo，提供完整品牌资产包下载。",
+    "slug": "brandmark"
+  },
+  {
+    "id": "2d47af8e-b9ed-487a-9a6f-38c83b022062",
+    "name": "Wepik AI",
+    "name_en": "Wepik AI",
+    "category": "设计师",
+    "description": "Freepik旗下AI设计平台，提供AI图像生成、模板设计和图像编辑，素材资源与Freepik打通。",
+    "slug": "wepik-ai"
+  },
+  {
+    "id": "027c4d14-f801-424a-b176-3aa8f512bc96",
+    "name": "Pixlr AI",
+    "name_en": "Pixlr AI",
+    "category": "设计师",
+    "description": "在线AI图像编辑器，集成AI背景移除、图像生成和智能修图功能，是Photoshop的轻量替代。",
+    "slug": "pixlr-ai"
+  },
+  {
+    "id": "7ec01ad5-62cd-4982-bef0-c94bd726144a",
+    "name": "HubSpot AI",
+    "name_en": "HubSpot AI",
+    "category": "营销",
+    "description": "HubSpot内置AI功能，覆盖内容生成、邮件优化、SEO建议和销售预测，营销全流程AI赋能。",
+    "slug": "hubspot-ai"
+  },
+  {
+    "id": "de6e8c01-88f8-4995-94db-c71e72ec08e4",
+    "name": "Jasper AI",
+    "name_en": "Jasper AI",
+    "category": "营销",
+    "description": "专为营销团队设计的AI内容创作平台，支持博客、广告文案、社媒内容批量生成，品牌声音一致。",
+    "slug": "jasper-ai"
+  },
+  {
+    "id": "0e3ee440-47fc-4fd5-a58f-68fcf20252d3",
+    "name": "Copy.ai",
+    "name_en": "Copy.ai",
+    "category": "营销",
+    "description": "AI营销文案生成工具，覆盖广告、邮件、落地页、社媒等100+营销场景，支持中文内容创作。",
+    "slug": "copy-ai"
+  },
+  {
+    "id": "a0f86c00-0554-40c6-b2d0-88c194e0248b",
+    "name": "Semrush AI",
+    "name_en": "Semrush AI",
+    "category": "营销",
+    "description": "全球领先的SEO和数字营销平台，AI辅助关键词研究、竞品分析、内容优化和排名追踪。",
+    "slug": "semrush-ai"
+  },
+  {
+    "id": "9cfa04ae-0c8f-4183-ae93-51057f9f3359",
+    "name": "Ahrefs AI",
+    "name_en": "Ahrefs AI",
+    "category": "营销",
+    "description": "SEO工具领域标杆，AI辅助外链分析、关键词挖掘、内容差距分析，数据准确性业界最高。",
+    "slug": "ahrefs-ai"
+  },
+  {
+    "id": "ce5a205e-55a0-4395-9b21-813a6867dfcf",
+    "name": "Mailchimp AI",
+    "name_en": "Mailchimp AI",
+    "category": "营销",
+    "description": "全球最受欢迎的邮件营销平台，AI优化发送时间、个性化内容和受众细分，提升邮件转化率。",
+    "slug": "mailchimp-ai"
+  },
+  {
+    "id": "9567b567-2d2a-4e45-b5ff-1a8ba5260525",
+    "name": "用友畅捷通",
+    "name_en": "YonYou CJT",
+    "category": "会计",
+    "description": "国内领先的中小企业财务云软件，AI辅助记账、报税和财务分析，覆盖全业务财务场景。",
+    "slug": "chanjet"
+  },
+  {
+    "id": "ca472776-c680-4a1f-a757-7e906cfae885",
+    "name": "金蝶云星辰",
+    "name_en": "Kingdee Star",
+    "category": "会计",
+    "description": "金蝶推出的中小企业财务云，AI自动识别票据、智能记账，支持与银行和税务系统直连。",
+    "slug": "kingdee-star"
+  },
+  {
+    "id": "0d32a4e7-4af3-4dcc-8f82-08bec54dec5f",
+    "name": "QuickBooks AI",
+    "name_en": "QuickBooks AI",
+    "category": "会计",
+    "description": "Intuit旗下全球最受欢迎的小企业财务软件，内置AI功能自动分类交易、预测现金流和生成报告。",
+    "slug": "quickbooks-ai"
+  },
+  {
+    "id": "20553e31-75dd-4ad9-87ef-95230de80eb1",
+    "name": "Xero AI",
+    "name_en": "Xero AI",
+    "category": "会计",
+    "description": "新西兰云财务软件，AI自动对账、发票处理和财务预测，深受全球中小企业和会计师喜爱。",
+    "slug": "xero-ai"
+  },
+  {
+    "id": "84e912fa-e8f3-4d34-bf52-66cf92792140",
+    "name": "税务师AI助手",
+    "name_en": "TaxAI Assistant",
+    "category": "会计",
+    "description": "国内AI税务辅助工具，覆盖增值税、企业所得税、个税申报，智能识别税务风险和优惠政策。",
+    "slug": "tax-ai-assistant"
+  },
+  {
+    "id": "2d00670f-3680-4c51-9ca8-53306dd2bb33",
+    "name": "Sage AI",
+    "name_en": "Sage AI",
+    "category": "会计",
+    "description": "英国老牌财务软件Sage推出的AI功能，自动处理发票、预测现金流，适合中型企业财务管理。",
+    "slug": "sage-ai"
+  },
+  {
+    "id": "8d4dce7c-95b2-48c5-8075-f91b7869162a",
+    "name": "发票宝",
+    "name_en": "FaPiaoBao",
+    "category": "会计",
+    "description": "国内AI发票管理工具，支持发票OCR识别、真伪验证、自动归档和报销流程管理。",
+    "slug": "fapiao-bao"
+  },
+  {
+    "id": "05e8ba8a-5fa1-4c80-9be0-f1708ed0bd7c",
+    "name": "Botkeeper",
+    "name_en": "Botkeeper",
+    "category": "会计",
+    "description": "AI驱动的自动化记账平台，结合机器学习和人工审核，为会计师事务所提供高效记账服务。",
+    "slug": "botkeeper"
+  },
+  {
+    "id": "0a170ecd-26db-4bd2-b0a0-07b1a1fe1a14",
+    "name": "Vic.ai",
+    "name_en": "Vic.ai",
+    "category": "会计",
+    "description": "AI应付账款自动化平台，自动处理供应商发票、匹配采购订单和审批工作流，减少人工操作。",
+    "slug": "vic-ai"
+  },
+  {
+    "id": "6dff82aa-fa5c-41f0-93ef-3b561cb9bfee",
+    "name": "Docyt",
+    "name_en": "Docyt",
+    "category": "会计",
+    "description": "AI财务文件管理和记账平台，自动提取财务文件数据，实时同步到会计系统，减少手工录入。",
+    "slug": "docyt"
+  },
+  {
+    "id": "53533fd7-90f1-49b6-915c-abee88acddc9",
+    "name": "Dext",
+    "name_en": "Dext",
+    "category": "会计",
+    "description": "票据和收据AI处理工具，拍照上传自动提取数据，与主流会计软件无缝集成，简化报销流程。",
+    "slug": "dext"
+  },
+  {
+    "id": "4de3f11b-37d2-4f57-9e09-1ebc51417228",
+    "name": "Gridlex",
+    "name_en": "Gridlex",
+    "category": "会计",
+    "description": "一体化企业管理平台，集成AI财务、CRM和项目管理，适合需要多系统整合的中小企业。",
+    "slug": "gridlex"
+  },
+  {
+    "id": "0ad802bf-96c0-4998-a173-7ebd8cc4a43b",
+    "name": "Trullion",
+    "name_en": "Trullion",
+    "category": "会计",
+    "description": "AI会计合规平台，自动处理租赁会计、收入确认和审计准备，帮助企业满足IFRS/GAAP要求。",
+    "slug": "trullion"
+  },
+  {
+    "id": "86460367-8e6d-43a4-9a01-135c9501bc33",
+    "name": "Zeni",
+    "name_en": "Zeni",
+    "category": "会计",
+    "description": "AI驱动的初创公司财务管理平台，提供实时财务仪表盘、自动记账和CFO级财务洞察。",
+    "slug": "zeni"
+  },
+  {
+    "id": "450ae3be-d23f-4feb-9f1d-1f9f080ba365",
+    "name": "Puzzle.io",
+    "name_en": "Puzzle.io",
+    "category": "会计",
+    "description": "专为初创公司设计的AI财务软件，自动同步银行和支付数据，实时生成财务报表和指标。",
+    "slug": "puzzle-io"
+  },
+  {
+    "id": "eba7d0d7-1d5e-4360-a343-bf8d08eeb17a",
+    "name": "Planful",
+    "name_en": "Planful",
+    "category": "会计",
+    "description": "企业财务规划和分析AI平台，支持预算编制、滚动预测和财务报告，加速财务关账流程。",
+    "slug": "planful"
+  },
+  {
+    "id": "31926ae4-478b-4851-bbac-ceedfb7e3afe",
+    "name": "Anaplan",
+    "name_en": "Anaplan",
+    "category": "会计",
+    "description": "企业级财务规划云平台，AI驱动的预测分析和情景模拟，广泛用于大型企业财务和运营规划。",
+    "slug": "anaplan"
+  },
+  {
+    "id": "aad073f1-da57-458c-9066-6ec7f28ee618",
+    "name": "Workiva",
+    "name_en": "Workiva",
+    "category": "会计",
+    "description": "上市公司财务报告和合规AI平台，支持ESG报告、SEC申报和内控管理，数据可追溯。",
+    "slug": "workiva"
+  },
+  {
+    "id": "0b6bfe99-a705-45da-98a4-483d8ee2fd5e",
+    "name": "Tipalti",
+    "name_en": "Tipalti",
+    "category": "会计",
+    "description": "AI全球应付账款自动化平台，支持全球供应商付款、税务合规和对账，适合跨境业务企业。",
+    "slug": "tipalti"
+  },
+  {
+    "id": "808bec81-7342-4956-8597-4e3be1ce75ce",
+    "name": "Expensify",
+    "name_en": "Expensify",
+    "category": "会计",
+    "description": "智能费用报销管理工具，拍照自动识别收据，一键提交报销，支持企业信用卡对账。",
+    "slug": "expensify"
+  },
+  {
+    "id": "e26c8325-ab33-4d20-9152-38497faeea34",
+    "name": "Ramp",
+    "name_en": "Ramp",
+    "category": "会计",
+    "description": "企业支出管理AI平台，智能企业信用卡配合AI费用分析，自动识别节省机会和异常支出。",
+    "slug": "ramp"
+  },
+  {
+    "id": "75a5403d-4bf1-4565-969a-5431527d4a35",
+    "name": "Brex",
+    "name_en": "Brex",
+    "category": "会计",
+    "description": "初创公司和科技企业专用AI财务平台，集成企业信用卡、费用管理和财务软件，自动化程度高。",
+    "slug": "brex"
+  },
+  {
+    "id": "4fb28f77-dc6b-48c0-a9af-a9544a67074e",
+    "name": "Mention AI",
+    "name_en": "Mention AI",
+    "category": "营销",
+    "description": "品牌和竞品监听工具，实时追踪社交媒体、新闻和博客中的品牌提及，AI生成洞察报告。",
+    "slug": "mention-ai"
+  },
+  {
+    "id": "7b5b5b30-0643-44c9-a39f-4ab83b25c88b",
+    "name": "Loomly AI",
+    "name_en": "Loomly AI",
+    "category": "营销",
+    "description": "社交媒体内容日历和发布工具，AI辅助内容创意生成，支持多平台统一管理和团队协作。",
+    "slug": "loomly-ai"
+  },
+  {
+    "id": "8175049f-36e6-4a2a-8f8a-0127fcf40cea",
+    "name": "Lately AI",
+    "name_en": "Lately AI",
+    "category": "营销",
+    "description": "AI内容再利用工具，将长篇内容（博客、播客、视频）自动拆解为多条社媒帖子，提升内容效率。",
+    "slug": "lately-ai"
+  },
+  {
+    "id": "d397b20b-1dab-4f63-b141-4fa37583f9a7",
+    "name": "Predis AI",
+    "name_en": "Predis AI",
+    "category": "营销",
+    "description": "AI社交媒体内容生成工具，输入关键词自动生成配图和文案，支持多平台格式一键发布。",
+    "slug": "predis-ai"
+  },
+  {
+    "id": "3ea028aa-4347-4f27-8a03-7d6f45628657",
+    "name": "Taplio",
+    "name_en": "Taplio",
+    "category": "营销",
+    "description": "LinkedIn内容增长AI工具，帮助个人品牌和B2B营销人员生成LinkedIn帖子、分析数据和拓展人脉。",
+    "slug": "taplio"
+  },
+  {
+    "id": "ce7d9358-729f-44b9-bb79-e29dde54afb5",
+    "name": "Tweet Hunter",
+    "name_en": "Tweet Hunter",
+    "category": "营销",
+    "description": "Twitter/X内容增长AI工具，AI生成推文、安排发布时间、分析账号数据，帮助快速增长粉丝。",
+    "slug": "tweet-hunter"
+  },
+  {
+    "id": "5d4d74eb-5ded-4115-9def-8231dfae40ea",
+    "name": "Flick AI",
+    "name_en": "Flick AI",
+    "category": "营销",
+    "description": "Instagram和TikTok内容AI工具，生成标签策略、内容创意和帖子文案，提升社媒自然增长。",
+    "slug": "flick-ai"
+  },
+  {
+    "id": "3ef62a2d-0d8b-4776-a393-104dbd3c6564",
+    "name": "Vidyard AI",
+    "name_en": "Vidyard AI",
+    "category": "营销",
+    "description": "B2B视频营销AI平台，AI生成个性化销售视频脚本，支持视频录制、分发和观看数据分析。",
+    "slug": "vidyard-ai"
+  },
+  {
+    "id": "b4eda760-2d96-42b8-bb1a-9738f9026dfc",
+    "name": "Chargebee",
+    "name_en": "Chargebee",
+    "category": "会计",
+    "description": "订阅业务收入管理AI平台，自动处理订阅计费、收入确认和财务报告，适合SaaS企业。",
+    "slug": "chargebee"
+  },
+  {
+    "id": "45ac3d7c-d92a-42fe-8627-c716681fbf49",
+    "name": "Stripe Revenue Recognition",
+    "name_en": "Stripe Revenue Recognition",
+    "category": "会计",
+    "description": "Stripe推出的收入确认自动化工具，自动按ASC 606/IFRS 15准则处理收入，生成合规报告。",
+    "slug": "stripe-revenue-recognition"
+  },
+  {
+    "id": "67811329-5241-4a15-95b6-84f2c91039d1",
+    "name": "Avalara",
+    "name_en": "Avalara",
+    "category": "会计",
+    "description": "全球税务合规自动化平台，AI自动计算销售税、增值税，支持200+国家税务规则，适合跨境电商。",
+    "slug": "avalara"
+  },
+  {
+    "id": "e550a660-4b50-4326-a40b-1315e106a211",
+    "name": "TaxJar",
+    "name_en": "TaxJar",
+    "category": "会计",
+    "description": "电商销售税自动化工具，实时计算美国各州销售税，自动申报，与主流电商平台无缝集成。",
+    "slug": "taxjar"
+  },
+  {
+    "id": "118bbe5d-f848-451e-85ca-c0dc54dc2d68",
+    "name": "Pilot",
+    "name_en": "Pilot",
+    "category": "会计",
+    "description": "专为初创公司提供的AI记账和税务服务，结合自动化软件和专业会计师，提供CFO咨询服务。",
+    "slug": "pilot"
+  },
+  {
+    "id": "6bf22b61-26be-42cb-98e9-bb768fc5d601",
+    "name": "Bench",
+    "name_en": "Bench",
+    "category": "会计",
+    "description": "小企业AI记账服务，专属会计师团队配合自动化软件，每月提供财务报表和税务准备。",
+    "slug": "bench"
+  },
+  {
+    "id": "a98bafee-8147-49d7-ad7b-01446e65b3bf",
+    "name": "Digits",
+    "name_en": "Digits",
+    "category": "会计",
+    "description": "AI财务分析工具，自动连接银行和会计软件，用自然语言回答财务问题，生成财务洞察报告。",
+    "slug": "digits"
+  },
+  {
+    "id": "4a8276fc-2df1-4d90-af10-947ab293633a",
+    "name": "Klarity",
+    "name_en": "Klarity",
+    "category": "会计",
+    "description": "AI合同数据提取工具，专注财务和会计场景，自动从合同中提取收入确认和付款条款数据。",
+    "slug": "klarity"
+  },
+  {
+    "id": "a45920ae-6e8b-46f9-acf6-2c1217e7368b",
+    "name": "Leapfin",
+    "name_en": "Leapfin",
+    "category": "会计",
+    "description": "收入数据自动化平台，统一来自多个系统的收入数据，自动生成符合会计准则的收入报告。",
+    "slug": "leapfin"
+  },
+  {
+    "id": "f4d8c970-b835-4707-b66a-880c669f563e",
+    "name": "Numeric",
+    "name_en": "Numeric",
+    "category": "会计",
+    "description": "AI财务关账加速平台，自动化月末关账流程，追踪关账任务进度，减少关账时间50%以上。",
+    "slug": "numeric"
+  },
+  {
+    "id": "73ed4370-fa0e-4337-a40f-5cc89a586727",
+    "name": "Spendesk",
+    "name_en": "Spendesk",
+    "category": "会计",
+    "description": "欧洲企业支出管理平台，智能企业卡配合AI费用管理，实时可见所有企业支出，自动对账。",
+    "slug": "spendesk"
+  },
+  {
+    "id": "9c6d8547-f2d4-40de-b2eb-8ca2d89f83c1",
+    "name": "Pleo",
+    "name_en": "Pleo",
+    "category": "会计",
+    "description": "北欧企业支出管理工具，员工智能卡配合自动收据匹配，实时费用追踪，简化报销流程。",
+    "slug": "pleo"
+  },
+  {
+    "id": "b58a02f1-43d3-4d3d-a41e-8b2b29fc4e6c",
+    "name": "Airbase",
+    "name_en": "Airbase",
+    "category": "会计",
+    "description": "一体化企业支出管理平台，整合企业卡、报销、应付账款和采购审批，全面控制企业支出。",
+    "slug": "airbase"
+  },
+  {
+    "id": "a71b67ea-4e7d-48a2-80d1-e507c879e42e",
+    "name": "Coupa",
+    "name_en": "Coupa",
+    "category": "会计",
+    "description": "企业级采购和支出管理AI平台，覆盖采购、发票、费用和供应链，广泛用于大型企业。",
+    "slug": "coupa"
+  },
+  {
+    "id": "195e99d4-71b7-40b6-b4b2-fafff2befdb9",
+    "name": "Navan",
+    "name_en": "Navan",
+    "category": "会计",
+    "description": "企业差旅和费用管理一体化平台，AI优化差旅预订，自动费用报告，实时政策合规检查。",
+    "slug": "navan"
+  },
+  {
+    "id": "f33197e0-4f6e-4d70-a9e8-e6bcccb2f061",
+    "name": "Concur",
+    "name_en": "Concur",
+    "category": "会计",
+    "description": "SAP旗下企业差旅和费用管理平台，全球最广泛使用的差旅报销系统，AI辅助合规检查。",
+    "slug": "concur"
+  },
+  {
+    "id": "786741ad-2576-4f23-8725-b76a523ade94",
+    "name": "Zoho Books AI",
+    "name_en": "Zoho Books AI",
+    "category": "会计",
+    "description": "Zoho旗下AI财务软件，自动化记账、发票和报税，与Zoho生态深度集成，性价比极高。",
+    "slug": "zoho-books-ai"
+  },
+  {
+    "id": "a901d13d-25ed-40dc-be57-455128ea8345",
+    "name": "FreshBooks AI",
+    "name_en": "FreshBooks AI",
+    "category": "会计",
+    "description": "专为自由职业者和小企业设计的AI财务软件，发票、时间追踪和费用管理一体化，操作简单。",
+    "slug": "freshbooks-ai"
+  },
+  {
+    "id": "aca7851f-17a3-4a2e-bdc1-bb3c38f64e96",
+    "name": "Wave Accounting",
+    "name_en": "Wave Accounting",
+    "category": "会计",
+    "description": "完全免费的小企业财务软件，提供记账、发票和收据扫描功能，AI辅助财务报告生成。",
+    "slug": "wave-accounting"
+  },
+  {
+    "id": "ee14385d-8afc-4f26-bb35-8204527ca227",
+    "name": "Kashoo",
+    "name_en": "Kashoo",
+    "category": "会计",
+    "description": "简单易用的AI云财务软件，自动分类交易，一键生成财务报表，专为非财务背景小企业主设计。",
+    "slug": "kashoo"
+  },
+  {
+    "id": "4309c006-b34a-4ae4-af0c-ca133f609a35",
+    "name": "Fathom",
+    "name_en": "Fathom",
+    "category": "会计",
+    "description": "AI财务报告和分析工具，连接QuickBooks/Xero，自动生成美观的财务分析报告和KPI仪表盘。",
+    "slug": "fathom"
+  },
+  {
+    "id": "2a5c9f6a-ad6d-453c-b9a0-bc9bf15f009a",
+    "name": "LiveFlow",
+    "name_en": "LiveFlow",
+    "category": "会计",
+    "description": "Google Sheets财务自动化工具，将QuickBooks/Xero数据实时同步到Google Sheets，自动更新报告。",
+    "slug": "liveflow"
+  },
+  {
+    "id": "2185774a-9718-41a1-8d6b-d0c0970e8842",
+    "name": "GitHub Copilot",
+    "name_en": "GitHub Copilot",
+    "category": "程序员",
+    "description": "GitHub和OpenAI联合推出的AI代码补全工具，实时根据上下文生成代码建议，支持主流IDE和编程语言。",
+    "slug": "github-copilot"
+  },
+  {
+    "id": "d3d29051-fa11-457f-859a-8001faf01104",
+    "name": "Cursor",
+    "name_en": "Cursor",
+    "category": "程序员",
+    "description": "AI原生代码编辑器，基于VSCode构建，深度集成GPT-4，支持自然语言编写代码、重构和调试。",
+    "slug": "cursor"
+  },
+  {
+    "id": "15382b5e-3e38-476f-b02e-02d95995ce2d",
+    "name": "Tabnine",
+    "name_en": "Tabnine",
+    "category": "程序员",
+    "description": "AI代码补全工具，支持本地模型部署保护代码隐私，适合企业级代码安全要求的团队使用。",
+    "slug": "tabnine"
+  },
+  {
+    "id": "6d61b800-e491-457c-8261-251f99c4ed5d",
+    "name": "Codeium",
+    "name_en": "Codeium",
+    "category": "程序员",
+    "description": "完全免费的AI代码补全工具，支持70+编程语言和40+IDE，个人使用永久免费，质量媲美付费工具。",
+    "slug": "codeium"
+  },
+  {
+    "id": "0299e696-efda-4477-8310-0067c2d625a5",
+    "name": "Windsurf",
+    "name_en": "Windsurf",
+    "category": "程序员",
+    "description": "Codeium推出的AI代码编辑器，主打Cascade AI代理功能，能自主完成多步骤编程任务。",
+    "slug": "windsurf"
+  },
+  {
+    "id": "cb04b0d2-70e4-4f2a-9cee-c557758b322e",
+    "name": "Amazon CodeWhisperer",
+    "name_en": "Amazon CodeWhisperer",
+    "category": "程序员",
+    "description": "AWS推出的AI代码生成工具，深度集成AWS服务，个人使用免费，自动扫描安全漏洞。",
+    "slug": "amazon-codewhisperer"
+  },
+  {
+    "id": "fdbe604f-c5b0-45ca-a5d6-66b6e40cbdae",
+    "name": "Replit AI",
+    "name_en": "Replit AI",
+    "category": "程序员",
+    "description": "在线编程平台Replit内置AI助手，支持代码生成、调试和部署，无需本地环境配置。",
+    "slug": "replit-ai"
+  },
+  {
+    "id": "eff1731a-ee2f-4800-a01b-5411011cdf6e",
+    "name": "Sourcegraph Cody",
+    "name_en": "Sourcegraph Cody",
+    "category": "程序员",
+    "description": "AI代码助手，能理解整个代码库上下文，回答代码问题、生成代码和解释复杂逻辑。",
+    "slug": "sourcegraph-cody"
+  },
+  {
+    "id": "94738981-04c4-46ba-a90f-0ddec1825360",
+    "name": "Surfer SEO",
+    "name_en": "Surfer SEO",
+    "category": "营销",
+    "description": "AI内容SEO优化工具，实时分析竞争对手内容，给出关键词密度、结构和字数的精准优化建议。",
+    "slug": "surfer-seo"
+  },
+  {
+    "id": "d8920d46-d5da-40cd-b002-6c2b267ed582",
+    "name": "Buffer AI",
+    "name_en": "Buffer AI",
+    "category": "营销",
+    "description": "社交媒体管理工具Buffer内置AI助手，自动生成社媒内容、优化发布时间和分析内容表现。",
+    "slug": "buffer-ai"
+  },
+  {
+    "id": "90e738fb-6fb2-49ed-8abc-afd010597936",
+    "name": "Hootsuite AI",
+    "name_en": "Hootsuite AI",
+    "category": "营销",
+    "description": "企业级社交媒体管理平台，AI辅助内容创作、最佳发布时间预测和社媒效果分析报告。",
+    "slug": "hootsuite-ai"
+  },
+  {
+    "id": "0351a063-0eea-4b8b-8b83-afe40f9af153",
+    "name": "Notion AI",
+    "name_en": "Notion AI",
+    "category": "营销",
+    "description": "Notion内置AI写作助手，辅助营销策划文档、内容日历、会议纪要和创意头脑风暴。",
+    "slug": "notion-ai"
+  },
+  {
+    "id": "3c5f29b9-2cc1-4bf2-ab60-139ae067d340",
+    "name": "Klaviyo AI",
+    "name_en": "Klaviyo AI",
+    "category": "营销",
+    "description": "电商邮件和短信营销平台，AI驱动的个性化推荐、受众细分和发送时间优化，提升电商转化。",
+    "slug": "klaviyo-ai"
+  },
+  {
+    "id": "f0d53058-4870-4bcd-9118-2addd388421d",
+    "name": "Writesonic",
+    "name_en": "Writesonic",
+    "category": "营销",
+    "description": "AI内容创作平台，支持SEO文章、广告文案、产品描述批量生成，内置Chatsonic AI助手。",
+    "slug": "writesonic"
+  },
+  {
+    "id": "aee9079d-d43d-4a00-8167-7b3e80a96f7c",
+    "name": "Sprout Social AI",
+    "name_en": "Sprout Social AI",
+    "category": "营销",
+    "description": "企业社媒管理平台，AI辅助内容创作、情感分析、竞品监控和社媒ROI报告，适合大型品牌。",
+    "slug": "sprout-social-ai"
+  },
+  {
+    "id": "8150b2f4-b890-4dc6-bb9a-fb744533deee",
+    "name": "Persado",
+    "name_en": "Persado",
+    "category": "营销",
+    "description": "AI营销语言优化平台，通过分析情感和语言模式，生成最能引发目标受众共鸣的营销文案。",
+    "slug": "persado"
+  },
+  {
+    "id": "265d7635-bd2f-4edb-b737-73ccac894b2a",
+    "name": "Phrasee",
+    "name_en": "Phrasee",
+    "category": "营销",
+    "description": "AI邮件主题行和推送通知优化工具，通过机器学习生成高打开率的营销文案，持续学习优化。",
+    "slug": "phrasee"
+  },
+  {
+    "id": "80073833-2a1d-4ce9-8abe-6414ac4b7fb6",
+    "name": "Optimizely AI",
+    "name_en": "Optimizely AI",
+    "category": "营销",
+    "description": "数字体验优化平台，AI驱动的A/B测试、个性化内容推送和网站转化率优化，适合大型网站。",
+    "slug": "optimizely-ai"
+  },
+  {
+    "id": "787aea10-06fd-4c12-88ee-5142df1ad071",
+    "name": "Albert AI",
+    "name_en": "Albert AI",
+    "category": "营销",
+    "description": "AI自主数字广告平台，自动优化跨渠道广告投放、预算分配和受众定向，24小时持续优化。",
+    "slug": "albert-ai"
+  },
+  {
+    "id": "41161b94-6049-416b-97ee-58db26d12b10",
+    "name": "Mutiny",
+    "name_en": "Mutiny",
+    "category": "营销",
+    "description": "B2B网站个性化AI平台，根据访客公司和行为自动展示个性化内容，提升B2B网站转化率。",
+    "slug": "mutiny"
+  },
+  {
+    "id": "0e990937-bc1f-45c1-8072-47b2e87e1c33",
+    "name": "Drift AI",
+    "name_en": "Drift AI",
+    "category": "营销",
+    "description": "AI对话营销平台，智能聊天机器人自动与网站访客对话、资质筛选和预约演示，提升销售效率。",
+    "slug": "drift-ai"
+  },
+  {
+    "id": "f90504eb-128d-4339-a7b6-0fe7180c0c58",
+    "name": "Intercom AI",
+    "name_en": "Intercom AI",
+    "category": "营销",
+    "description": "AI客户沟通平台，Fin AI机器人自动回答客户问题，支持营销自动化、用户引导和客户成功。",
+    "slug": "intercom-ai"
+  },
+  {
+    "id": "8fdf6dc2-ed54-40cd-aee4-91f3e629cd26",
+    "name": "Marketo AI",
+    "name_en": "Marketo AI",
+    "category": "营销",
+    "description": "Adobe旗下企业级营销自动化平台，AI辅助潜客培育、评分和个性化内容推送，适合大型企业。",
+    "slug": "marketo-ai"
+  },
+  {
+    "id": "e0b9aeef-980d-4c21-9d1e-c9eb6fee10b8",
+    "name": "Salesforce Marketing Cloud AI",
+    "name_en": "Salesforce Marketing Cloud AI",
+    "category": "营销",
+    "description": "Salesforce旗下AI营销云，Einstein AI驱动的个性化推送、旅程自动化和预测分析。",
+    "slug": "salesforce-marketing-cloud"
+  },
+  {
+    "id": "08e6aed2-c926-466a-a0b6-b6e435c4487e",
+    "name": "Brandwatch AI",
+    "name_en": "Brandwatch AI",
+    "category": "营销",
+    "description": "社交媒体监听和消费者洞察AI平台，实时追踪品牌声誉、竞品动态和行业趋势。",
+    "slug": "brandwatch-ai"
+  },
+  {
+    "id": "b3094aca-9f2b-41f5-af33-123aea932674",
+    "name": "Aider",
+    "name_en": "Aider",
+    "category": "程序员",
+    "description": "AI结对编程命令行工具，在终端中与GPT-4/Claude对话修改代码，自动提交Git变更。",
+    "slug": "aider"
+  },
+  {
+    "id": "308cb301-3db0-4e55-98fc-67080f626845",
+    "name": "Modal",
+    "name_en": "Modal",
+    "category": "程序员",
+    "description": "云端Python函数运行平台，一行代码将本地函数部署到云端GPU，适合AI模型训练和推理。",
+    "slug": "modal"
+  },
+  {
+    "id": "ae6edfad-822e-452d-a582-7aece53f8838",
+    "name": "Supabase AI",
+    "name_en": "Supabase AI",
+    "category": "程序员",
+    "description": "Supabase内置AI功能，SQL编辑器AI辅助、向量数据库支持和Edge Functions AI集成。",
+    "slug": "supabase-ai"
+  },
+  {
+    "id": "72f77c6c-8ded-4bc8-9e7c-a67e1f931990",
+    "name": "Synthesia",
+    "name_en": "Synthesia",
+    "category": "营销",
+    "description": "AI视频生成平台，输入文字脚本自动生成AI数字人讲解视频，支持120+语言，无需拍摄。",
+    "slug": "synthesia"
+  },
+  {
+    "id": "e40d8994-cafe-49f4-8a18-4bd677e2f43a",
+    "name": "Heygen",
+    "name_en": "Heygen",
+    "category": "营销",
+    "description": "AI视频生成工具，支持数字人视频、视频翻译配音和个性化营销视频批量生成，中文友好。",
+    "slug": "heygen"
+  },
+  {
+    "id": "843cae85-17a5-4677-9523-0cba4116295f",
+    "name": "Descript AI",
+    "name_en": "Descript AI",
+    "category": "营销",
+    "description": "AI音视频编辑工具，像编辑文档一样编辑视频，支持AI配音克隆、自动字幕和内容再利用。",
+    "slug": "descript-ai"
+  },
+  {
+    "id": "92b25863-fb53-4bef-b7b0-256c0512ff91",
+    "name": "Opus Clip",
+    "name_en": "Opus Clip",
+    "category": "营销",
+    "description": "AI长视频自动剪辑工具，将长视频自动识别精彩片段并剪辑为短视频，适合多平台内容分发。",
+    "slug": "opus-clip"
+  },
+  {
+    "id": "010ca198-8d12-4513-8f9a-1f324563055e",
+    "name": "Captions AI",
+    "name_en": "Captions AI",
+    "category": "营销",
+    "description": "AI视频字幕和内容创作工具，自动生成字幕、翻译、AI眼神修正和视频内容优化。",
+    "slug": "captions-ai"
+  },
+  {
+    "id": "026792fe-c9c1-497b-9a74-0c36617849cc",
+    "name": "Podcastle AI",
+    "name_en": "Podcastle AI",
+    "category": "营销",
+    "description": "AI播客录制和编辑平台，支持远程录制、AI降噪、自动剪辑和文字转音频功能。",
+    "slug": "podcastle-ai"
+  },
+  {
+    "id": "84c13d25-68a2-4f65-9252-c3155200d608",
+    "name": "ElevenLabs",
+    "name_en": "ElevenLabs",
+    "category": "营销",
+    "description": "AI语音合成平台，生成极度逼真的AI配音，支持声音克隆和多语言配音，广泛用于营销视频。",
+    "slug": "elevenlabs"
+  },
+  {
+    "id": "3639b780-f331-4098-b3fb-8fc7e9e2e815",
+    "name": "Murf AI",
+    "name_en": "Murf AI",
+    "category": "营销",
+    "description": "AI文字转语音工具，提供120+逼真AI声音，支持多语言配音，适合营销视频和演示文稿配音。",
+    "slug": "murf-ai"
+  },
+  {
+    "id": "7574c639-da54-49b3-8624-c2b42dfbe8b5",
+    "name": "Typeface AI",
+    "name_en": "Typeface AI",
+    "category": "营销",
+    "description": "企业AI内容创作平台，学习品牌风格和受众偏好，生成符合品牌调性的营销内容，保障品牌一致性。",
+    "slug": "typeface-ai"
+  },
+  {
+    "id": "081e6d2b-b320-450b-a43a-719464b470f9",
+    "name": "Anyword",
+    "name_en": "Anyword",
+    "category": "营销",
+    "description": "AI文案优化平台，预测文案转化率评分，帮助营销人员在发布前选择最高转化的文案版本。",
+    "slug": "anyword"
+  },
+  {
+    "id": "fe6a9ace-dd81-4329-865f-0b3c07b8532f",
+    "name": "Smartly.io",
+    "name_en": "Smartly.io",
+    "category": "营销",
+    "description": "社交广告自动化平台，AI优化Facebook、Instagram、TikTok广告创意和投放，提升广告ROI。",
+    "slug": "smartly-io"
+  },
+  {
+    "id": "5fa6b407-5e48-46bc-b183-9dd4a2f4a504",
+    "name": "Madgicx AI",
+    "name_en": "Madgicx AI",
+    "category": "营销",
+    "description": "Facebook和Instagram广告AI优化工具，自动分析广告数据、优化受众定向和预算分配。",
+    "slug": "madgicx-ai"
+  },
+  {
+    "id": "244ada70-7257-41d3-96e3-925f2425dd54",
+    "name": "Clearscope",
+    "name_en": "Clearscope",
+    "category": "营销",
+    "description": "AI内容SEO优化工具，分析排名靠前内容的关键词使用，提供内容优化建议，提升搜索排名。",
+    "slug": "clearscope"
+  },
+  {
+    "id": "6777dac6-8b5c-4c80-a871-62b0fa88eaf5",
+    "name": "MarketMuse",
+    "name_en": "MarketMuse",
+    "category": "营销",
+    "description": "AI内容策略和优化平台，分析内容差距、规划内容主题集群，帮助建立主题权威性提升SEO。",
+    "slug": "marketmuse"
+  },
+  {
+    "id": "a17606c7-b46d-4efa-b533-bfd36d645a29",
+    "name": "Frase.io",
+    "name_en": "Frase.io",
+    "category": "营销",
+    "description": "AI内容研究和写作工具，自动分析搜索意图、生成内容大纲，帮助快速创作SEO优化文章。",
+    "slug": "frase-io"
+  },
+  {
+    "id": "59401a46-7fd2-4ee5-8007-85d7b6235add",
+    "name": "GrowthBar",
+    "name_en": "GrowthBar",
+    "category": "营销",
+    "description": "AI SEO工具，专为内容营销人员设计，提供关键词研究、竞品分析和AI文章生成一体化功能。",
+    "slug": "growthbar"
+  },
+  {
+    "id": "2319013f-be1c-42a2-ae6a-7d0ce060df0e",
+    "name": "ChatGPT",
+    "name_en": "ChatGPT",
+    "category": "学生",
+    "description": "OpenAI推出的AI对话助手，帮助学生解答学科问题、辅助写作、解释复杂概念，是最受学生欢迎的AI工具。",
+    "slug": "chatgpt-student"
+  },
+  {
+    "id": "2134661b-37d7-430a-9c6e-d525b3e2a5a6",
+    "name": "Khanmigo",
+    "name_en": "Khanmigo",
+    "category": "学生",
+    "description": "Khan Academy推出的AI学习导师，以苏格拉底式提问引导学生思考，不直接给答案而是帮助理解。",
+    "slug": "khanmigo"
+  },
+  {
+    "id": "ca86b390-e2ff-41b9-8f01-49df477e9f15",
+    "name": "Grammarly",
+    "name_en": "Grammarly",
+    "category": "学生",
+    "description": "AI写作辅助工具，实时检查语法错误、提升写作表达，帮助学生提交更高质量的英文作业。",
+    "slug": "grammarly-student"
+  },
+  {
+    "id": "6788d3df-31b9-45a1-83f6-37f7a8adaa3f",
+    "name": "Notion AI",
+    "name_en": "Notion AI",
+    "category": "学生",
+    "description": "Notion内置AI助手，帮助学生整理笔记、生成学习计划、总结课堂内容和辅助论文写作。",
+    "slug": "notion-ai-student"
+  },
+  {
+    "id": "3989340f-72e8-4b6f-ba8c-cb3b4d788cc4",
+    "name": "JetBrains AI",
+    "name_en": "JetBrains AI",
+    "category": "程序员",
+    "description": "JetBrains IDE系列内置AI助手，深度集成IntelliJ、PyCharm等IDE，提供代码补全和重构建议。",
+    "slug": "jetbrains-ai"
+  },
+  {
+    "id": "1dcffa82-d661-475b-ad1a-3a21143cabb2",
+    "name": "Phind",
+    "name_en": "Phind",
+    "category": "程序员",
+    "description": "专为开发者设计的AI搜索引擎，回答技术问题时自动搜索最新文档和代码示例，比Google更懂程序员。",
+    "slug": "phind"
+  },
+  {
+    "id": "15e3cb9e-eed9-4de5-b0e6-d8a9f2ca64ea",
+    "name": "Warp",
+    "name_en": "Warp",
+    "category": "程序员",
+    "description": "AI增强的现代终端工具，内置AI命令建议、错误解释和自然语言转命令功能，重新定义终端体验。",
+    "slug": "warp"
+  },
+  {
+    "id": "54061901-c4dc-4926-b44e-f6323ddf2f0a",
+    "name": "Continue.dev",
+    "name_en": "Continue.dev",
+    "category": "程序员",
+    "description": "开源AI代码助手，可连接任意LLM模型，支持VSCode和JetBrains，完全可定制化。",
+    "slug": "continue-dev"
+  },
+  {
+    "id": "a1576cd3-88a8-40a9-9cfc-8f3aa28d9a02",
+    "name": "Mintlify",
+    "name_en": "Mintlify",
+    "category": "程序员",
+    "description": "AI代码文档生成工具，自动为代码生成高质量文档，支持多种编程语言，一键生成API文档。",
+    "slug": "mintlify"
+  },
+  {
+    "id": "93d56633-6d2c-44ec-ab67-d1b71fd39f98",
+    "name": "Pieces for Developers",
+    "name_en": "Pieces for Developers",
+    "category": "程序员",
+    "description": "AI开发者工作流工具，智能保存代码片段、截图和上下文，跨工具搜索和复用开发资产。",
+    "slug": "pieces-for-developers"
+  },
+  {
+    "id": "3c999c39-84b8-431d-9469-6f5dc2a1cb0a",
+    "name": "Snyk",
+    "name_en": "Snyk",
+    "category": "程序员",
+    "description": "AI安全漏洞检测平台，自动扫描代码、依赖包和容器中的安全漏洞，提供修复建议。",
+    "slug": "snyk"
+  },
+  {
+    "id": "6ff8ef76-2144-4501-8426-f5a8d216320e",
+    "name": "Postman AI",
+    "name_en": "Postman AI",
+    "category": "程序员",
+    "description": "API开发平台Postman内置AI功能，自动生成API测试、文档和代码，提升API开发效率。",
+    "slug": "postman-ai"
+  },
+  {
+    "id": "416554dd-8b39-445a-bb7a-2474741720b1",
+    "name": "Sentry AI",
+    "name_en": "Sentry AI",
+    "category": "程序员",
+    "description": "应用监控平台Sentry内置AI功能，自动分析错误根因、生成修复建议，加速Bug修复流程。",
+    "slug": "sentry-ai"
+  },
+  {
+    "id": "012dbf78-9551-4280-bcf1-5d016c0fcfaa",
+    "name": "Datadog AI",
+    "name_en": "Datadog AI",
+    "category": "程序员",
+    "description": "云监控平台Datadog内置AI功能，自动检测异常、预测故障和生成运维建议，保障系统稳定性。",
+    "slug": "datadog-ai"
+  },
+  {
+    "id": "80a58717-f292-46c9-91b9-9421681c2a1b",
+    "name": "GitLab Duo",
+    "name_en": "GitLab Duo",
+    "category": "程序员",
+    "description": "GitLab内置AI功能套件，覆盖代码补全、代码审查、安全扫描和DevOps全流程AI辅助。",
+    "slug": "gitlab-duo"
+  },
+  {
+    "id": "a45e3e4c-5660-4356-b89a-9c940d5e934f",
+    "name": "LangChain",
+    "name_en": "LangChain",
+    "category": "程序员",
+    "description": "LLM应用开发框架，提供链式调用、记忆管理、工具集成等模块，是构建AI应用的主流框架。",
+    "slug": "langchain"
+  },
+  {
+    "id": "cc17cf6d-0cca-4552-9c90-1c5792feee75",
+    "name": "Hugging Face",
+    "name_en": "Hugging Face",
+    "category": "程序员",
+    "description": "AI模型托管和共享平台，提供数万个开源模型、数据集和Spaces应用，是AI开发者的GitHub。",
+    "slug": "hugging-face"
+  },
+  {
+    "id": "6780c5e6-db39-4bed-bfc7-45eb18a98575",
+    "name": "Vercel AI SDK",
+    "name_en": "Vercel AI SDK",
+    "category": "程序员",
+    "description": "Vercel推出的AI应用开发SDK，简化在Next.js等框架中集成LLM的流程，支持流式输出。",
+    "slug": "vercel-ai-sdk"
+  },
+  {
+    "id": "cf1ab6d3-aa3c-48ef-b95f-18b8ba666185",
+    "name": "Replicate",
+    "name_en": "Replicate",
+    "category": "程序员",
+    "description": "AI模型云端运行平台，通过API调用数千个开源AI模型，无需自己部署GPU基础设施。",
+    "slug": "replicate"
+  },
+  {
+    "id": "90ac5aa0-c74c-4362-9e1b-70d8c5dc4efe",
+    "name": "Linear AI",
+    "name_en": "Linear AI",
+    "category": "程序员",
+    "description": "现代项目管理工具Linear内置AI功能，自动生成Issue描述、总结进度和预测完成时间。",
+    "slug": "linear-ai"
+  },
+  {
+    "id": "7f68986b-9fed-47ca-9944-25ff420a334e",
+    "name": "SonarQube AI",
+    "name_en": "SonarQube AI",
+    "category": "程序员",
+    "description": "代码质量和安全分析平台，AI辅助检测代码异味、漏洞和技术债务，支持30+编程语言。",
+    "slug": "sonarqube-ai"
+  },
+  {
+    "id": "bb701063-ed89-431c-bbd3-8d48a4291522",
+    "name": "Obsidian",
+    "name_en": "Obsidian",
+    "category": "学生",
+    "description": "双向链接笔记工具，帮助学生构建个人知识图谱，AI插件辅助笔记整理和知识连接。",
+    "slug": "obsidian-student"
+  },
+  {
+    "id": "f9c30259-d76b-4d2f-88de-cc4522a6ff15",
+    "name": "RemNote",
+    "name_en": "RemNote",
+    "category": "学生",
+    "description": "结合笔记和间隔重复的学习工具，在记笔记的同时自动生成闪卡，学习和复习一体化。",
+    "slug": "remnote"
+  },
+  {
+    "id": "f55d700a-679b-4811-8159-b314b0600843",
+    "name": "Readwise Reader",
+    "name_en": "Readwise Reader",
+    "category": "学生",
+    "description": "AI阅读管理工具，统一管理文章、论文、电子书和播客，AI生成摘要和高亮复习。",
+    "slug": "readwise-reader"
+  },
+  {
+    "id": "ec8a4933-6f0a-4eec-a6cb-52cc01d8bcc2",
+    "name": "LlamaIndex",
+    "name_en": "LlamaIndex",
+    "category": "程序员",
+    "description": "RAG应用开发框架，专注于将私有数据与LLM连接，构建知识库问答和文档检索应用。",
+    "slug": "llamaindex"
+  },
+  {
+    "id": "523b8d13-d1a2-4716-b7a2-8d6e31334a8d",
+    "name": "v0 by Vercel",
+    "name_en": "v0 by Vercel",
+    "category": "程序员",
+    "description": "Vercel推出的AI UI生成工具，通过文字描述生成React组件代码，支持shadcn/ui和Tailwind。",
+    "slug": "v0-vercel"
+  },
+  {
+    "id": "1323bd1d-f875-4bcf-b1ea-11197ba68e94",
+    "name": "Bolt.new",
+    "name_en": "Bolt.new",
+    "category": "程序员",
+    "description": "StackBlitz推出的AI全栈应用生成工具，在浏览器中通过对话生成并运行完整Web应用。",
+    "slug": "bolt-new"
+  },
+  {
+    "id": "0f23b93f-fcc9-4704-9ff9-e876cbf958cb",
+    "name": "Lovable",
+    "name_en": "Lovable",
+    "category": "程序员",
+    "description": "AI全栈应用构建平台，通过自然语言对话生成完整Web应用，集成Supabase后端和Stripe支付。",
+    "slug": "lovable"
+  },
+  {
+    "id": "63b60e22-f1b2-4bbc-afbf-ef973ab2ec2d",
+    "name": "Devin AI",
+    "name_en": "Devin AI",
+    "category": "程序员",
+    "description": "首个AI软件工程师，能自主完成完整编程任务，包括规划、编码、测试和部署全流程。",
+    "slug": "devin-ai"
+  },
+  {
+    "id": "7fad2b36-fc42-4aec-9f7f-ae7da2d8a7c9",
+    "name": "Sweep AI",
+    "name_en": "Sweep AI",
+    "category": "程序员",
+    "description": "AI GitHub助手，将Issue自动转化为Pull Request，自动修复Bug和实现小功能。",
+    "slug": "sweep-ai"
+  },
+  {
+    "id": "67495c07-b1da-404b-9901-e9d3a8b99549",
+    "name": "Cline",
+    "name_en": "Cline",
+    "category": "程序员",
+    "description": "开源AI编程代理VSCode插件，能自主执行复杂编程任务，支持文件操作、终端命令和浏览器控制。",
+    "slug": "cline"
+  },
+  {
+    "id": "4c6b1f33-cf89-488c-8b05-53cdaa5430c8",
+    "name": "Perplexity AI",
+    "name_en": "Perplexity AI",
+    "category": "程序员",
+    "description": "AI搜索引擎，实时搜索最新技术文档和Stack Overflow答案，给出带引用来源的技术解答。",
+    "slug": "perplexity-ai"
+  },
+  {
+    "id": "e9e62e95-d27d-464f-a019-997d9094c532",
+    "name": "Railway",
+    "name_en": "Railway",
+    "category": "程序员",
+    "description": "现代应用部署平台，AI辅助配置检测，一键部署各类应用，自动处理基础设施配置。",
+    "slug": "railway"
+  },
+  {
+    "id": "e531afd6-65f4-4326-a09e-26305a1daeec",
+    "name": "Render",
+    "name_en": "Render",
+    "category": "程序员",
+    "description": "云应用托管平台，自动部署GitHub代码，支持Web服务、数据库和定时任务，操作简单。",
+    "slug": "render"
+  },
+  {
+    "id": "0b5134f2-35fb-4b5d-9bc9-acbc78b3441d",
+    "name": "Grafana AI",
+    "name_en": "Grafana AI",
+    "category": "程序员",
+    "description": "可观测性平台Grafana内置AI功能，自然语言查询指标、自动生成告警规则和异常检测。",
+    "slug": "grafana-ai"
+  },
+  {
+    "id": "6b9cada0-bf42-4fc0-8e9b-628108fd9eaf",
+    "name": "Swimm",
+    "name_en": "Swimm",
+    "category": "程序员",
+    "description": "AI代码文档工具，将文档与代码绑定，代码变更时自动更新文档，解决文档过时问题。",
+    "slug": "swimm"
+  },
+  {
+    "id": "898be3c8-f435-405b-bb21-4f9d6b5d9ad8",
+    "name": "Blackbox AI",
+    "name_en": "Blackbox AI",
+    "category": "程序员",
+    "description": "AI代码搜索和补全工具，支持从视频、图片中提取代码，以及实时代码补全和问答。",
+    "slug": "blackbox-ai"
+  },
+  {
+    "id": "9ee42e1a-3153-4181-b967-b900a5f2fa99",
+    "name": "Codacy AI",
+    "name_en": "Codacy AI",
+    "category": "程序员",
+    "description": "AI代码质量平台，自动化代码审查、安全分析和技术债务管理，集成GitHub/GitLab工作流。",
+    "slug": "codacy-ai"
+  },
+  {
+    "id": "19b2cb75-97cb-4fe4-97dc-ddd16b8e083c",
+    "name": "CodeRabbit",
+    "name_en": "CodeRabbit",
+    "category": "程序员",
+    "description": "AI代码审查工具，自动分析Pull Request，提供详细的代码改进建议和安全问题提示。",
+    "slug": "coderabbit"
+  },
+  {
+    "id": "26490248-0430-420b-94a8-550b85b6990b",
+    "name": "Stenography",
+    "name_en": "Stenography",
+    "category": "程序员",
+    "description": "AI代码自动注释工具，分析代码逻辑后自动生成清晰的代码注释和文档字符串。",
+    "slug": "stenography"
+  },
+  {
+    "id": "21881848-ddf4-4800-8b34-3f00b5913c1f",
+    "name": "Mutable AI",
+    "name_en": "Mutable AI",
+    "category": "程序员",
+    "description": "AI加速软件开发平台，提供代码补全、重构建议和代码库问答，支持私有代码库训练。",
+    "slug": "mutable-ai"
+  },
+  {
+    "id": "49e57e38-10cf-40ec-bd58-49501627b2bd",
+    "name": "Cursor Rules",
+    "name_en": "Cursor Rules",
+    "category": "程序员",
+    "description": "Cursor编辑器的规则配置系统，通过.cursorrules文件定制AI行为，社区共享最佳实践规则。",
+    "slug": "cursor-rules"
+  },
+  {
+    "id": "992fa2f0-c572-456a-939a-916e4ba4866f",
+    "name": "Zed Editor",
+    "name_en": "Zed Editor",
+    "category": "程序员",
+    "description": "高性能AI代码编辑器，用Rust构建速度极快，内置AI助手和实时协作功能，开源免费。",
+    "slug": "zed-editor"
+  },
+  {
+    "id": "690ded38-ed71-43fb-815e-6dcce5825b4e",
+    "name": "Fitten Code",
+    "name_en": "Fitten Code",
+    "category": "程序员",
+    "description": "国产AI代码补全工具，对中文注释和国内技术栈支持好，免费使用，响应速度快。",
+    "slug": "fitten-code"
+  },
+  {
+    "id": "549ad6a0-cc76-4edb-bec3-e71e7aebd36e",
+    "name": "Quizlet AI",
+    "name_en": "Quizlet AI",
+    "category": "学生",
+    "description": "全球最受欢迎的学习卡片工具，AI自动生成闪卡和测验，帮助学生高效记忆和备考。",
+    "slug": "quizlet-ai"
+  },
+  {
+    "id": "ec3f26d9-da40-43a6-aeb4-2fe970a2695c",
+    "name": "Photomath",
+    "name_en": "Photomath",
+    "category": "学生",
+    "description": "拍照解数学题AI工具，用手机拍摄数学题后自动识别并给出逐步解题过程，支持各类数学题型。",
+    "slug": "photomath"
+  },
+  {
+    "id": "0a660fb7-b1b3-4283-b681-23c77ad8c93a",
+    "name": "Wolfram Alpha",
+    "name_en": "Wolfram Alpha",
+    "category": "学生",
+    "description": "计算知识引擎，能解答数学、物理、化学等理科问题，给出精确计算结果和详细解题步骤。",
+    "slug": "wolfram-alpha"
+  },
+  {
+    "id": "d636f865-5243-485b-bb52-09705607c857",
+    "name": "Duolingo AI",
+    "name_en": "Duolingo AI",
+    "category": "学生",
+    "description": "全球最受欢迎的语言学习应用，AI个性化学习路径，游戏化设计让语言学习更有趣持久。",
+    "slug": "duolingo-ai"
+  },
+  {
+    "id": "d02a40a8-1178-4c08-bf1f-b6281a0830b1",
+    "name": "Otter.ai",
+    "name_en": "Otter.ai",
+    "category": "学生",
+    "description": "AI课堂录音转文字工具，实时转录课堂讲座，自动生成摘要和关键词，方便课后复习。",
+    "slug": "otter-ai-student"
+  },
+  {
+    "id": "a15007bb-63bf-404a-b2bc-8b9bb71aec18",
+    "name": "Perplexity AI",
+    "name_en": "Perplexity AI",
+    "category": "学生",
+    "description": "AI搜索引擎，回答学术问题时提供带引用来源的答案，比Google更适合学术研究和论文写作。",
+    "slug": "perplexity-student"
+  },
+  {
+    "id": "52f24934-2817-499f-b333-7ccdabdccc25",
+    "name": "Consensus",
+    "name_en": "Consensus",
+    "category": "学生",
+    "description": "AI学术论文搜索引擎，专门搜索同行评审论文，用AI总结研究结论，帮助学生快速了解学术共识。",
+    "slug": "consensus"
+  },
+  {
+    "id": "2fa02c7f-9916-48e4-ac22-736d20689ca9",
+    "name": "Elicit",
+    "name_en": "Elicit",
+    "category": "学生",
+    "description": "AI研究助手，自动搜索和总结学术论文，提取关键数据和方法论，加速文献综述写作。",
+    "slug": "elicit"
+  },
+  {
+    "id": "254724bc-3d4c-47f3-8ce0-70852dcc07f4",
+    "name": "Anki AI",
+    "name_en": "Anki AI",
+    "category": "学生",
+    "description": "间隔重复记忆软件，AI优化复习时间间隔，帮助学生高效记忆大量知识点，医学生和语言学习者最爱。",
+    "slug": "anki-ai"
+  },
+  {
+    "id": "0cb4afb1-b21c-4cf5-b76c-7a308f604aad",
+    "name": "Gamma.app",
+    "name_en": "Gamma.app",
+    "category": "学生",
+    "description": "AI演示文稿生成工具，输入主题自动生成精美PPT，适合学生快速制作课堂展示和项目汇报。",
+    "slug": "gamma-app"
+  },
+  {
+    "id": "b9e3b9ba-3da4-4b5d-9bca-133f380353f2",
+    "name": "Speechify",
+    "name_en": "Speechify",
+    "category": "学生",
+    "description": "AI文字转语音工具，将教材、论文和网页内容转为音频，支持4.5倍速收听，提升阅读效率。",
+    "slug": "speechify"
+  },
+  {
+    "id": "860ea198-1ac2-4326-b0ea-8e43549292d0",
+    "name": "Explainpaper",
+    "name_en": "Explainpaper",
+    "category": "学生",
+    "description": "AI学术论文解读工具，上传论文后可以对任意段落提问，AI用简单语言解释复杂学术内容。",
+    "slug": "explainpaper"
+  },
+  {
+    "id": "7067fc1b-2cdc-4a8a-92c7-c8690fea9fec",
+    "name": "Zotero",
+    "name_en": "Zotero",
+    "category": "学生",
+    "description": "免费开源的文献管理工具，AI辅助整理参考文献，自动生成引用格式，是学术写作必备工具。",
+    "slug": "zotero"
+  },
+  {
+    "id": "b44c57ff-b3b2-48e4-b341-093e5bf4731f",
+    "name": "Scite.ai",
+    "name_en": "Scite.ai",
+    "category": "学生",
+    "description": "AI学术引用分析工具，显示论文被引用时是被支持还是被反驳，帮助评估研究可信度。",
+    "slug": "scite-ai"
+  },
+  {
+    "id": "e7261532-5f0f-4752-a5d3-2282f062311f",
+    "name": "Connected Papers",
+    "name_en": "Connected Papers",
+    "category": "学生",
+    "description": "AI学术论文关系可视化工具，以图谱形式展示论文之间的引用关系，帮助发现相关研究。",
+    "slug": "connected-papers"
+  },
+  {
+    "id": "4a3007e7-9248-45fd-aa33-e123b8de7eba",
+    "name": "Socratic by Google",
+    "name_en": "Socratic by Google",
+    "category": "学生",
+    "description": "Google推出的学习辅助App，拍照上传作业题目，AI解释解题思路，覆盖数学、科学、历史等学科。",
+    "slug": "socratic-google"
+  },
+  {
+    "id": "b4e5a48a-375c-4d4a-a35d-048aeaa3f5a4",
+    "name": "Mathway",
+    "name_en": "Mathway",
+    "category": "学生",
+    "description": "AI数学解题工具，覆盖基础数学到微积分、线性代数，输入题目即给出答案和解题步骤。",
+    "slug": "mathway"
+  },
+  {
+    "id": "0709cd42-f0df-42be-8a46-05c8d5aee039",
+    "name": "Tome AI",
+    "name_en": "Tome AI",
+    "category": "学生",
+    "description": "AI演示文稿和故事叙述工具，通过对话生成精美幻灯片，适合学生制作创意项目展示。",
+    "slug": "tome-ai"
+  },
+  {
+    "id": "772fef04-55eb-4f74-88e3-fabcab59c369",
+    "name": "Canva AI",
+    "name_en": "Canva AI",
+    "category": "学生",
+    "description": "Canva内置AI设计功能，帮助学生快速制作海报、信息图表和演示文稿，无需设计基础。",
+    "slug": "canva-ai-student"
+  },
+  {
+    "id": "db0a5388-a1d1-4544-8f53-73acec097988",
+    "name": "QuillBot",
+    "name_en": "QuillBot",
+    "category": "学生",
+    "description": "AI改写和润色工具，帮助学生改写句子、提升写作表达，内置语法检查和摘要生成功能。",
+    "slug": "quillbot"
+  },
+  {
+    "id": "e4f4e187-c694-4bb0-b091-b8051d4a6046",
+    "name": "Symbolab",
+    "name_en": "Symbolab",
+    "category": "学生",
+    "description": "AI数学解题工具，专注代数、微积分、三角函数，提供详细解题步骤和图形可视化。",
+    "slug": "symbolab"
+  },
+  {
+    "id": "04041360-d901-4b09-870a-86d67a976e75",
+    "name": "GeoGebra",
+    "name_en": "GeoGebra",
+    "category": "学生",
+    "description": "免费数学可视化工具，支持几何、代数、统计和微积分的交互式图形，全球数学教育标准工具。",
+    "slug": "geogebra"
+  },
+  {
+    "id": "9a206ee3-e54a-48fe-9fb5-53fbc7c966f4",
+    "name": "Desmos",
+    "name_en": "Desmos",
+    "category": "学生",
+    "description": "在线图形计算器，实时绘制函数图像，支持动态参数调节，是数学学习和考试备考利器。",
+    "slug": "desmos"
+  },
+  {
+    "id": "87cccedb-1303-4e67-b411-eafcd47e58f5",
+    "name": "StudySmarter",
+    "name_en": "StudySmarter",
+    "category": "学生",
+    "description": "AI学习平台，自动将笔记转化为闪卡和测验，提供个性化学习计划和进度追踪。",
+    "slug": "studysmarter"
+  },
+  {
+    "id": "6fb5aadc-ae4a-4310-b7bd-477fdc3dafeb",
+    "name": "Brainly",
+    "name_en": "Brainly",
+    "category": "学生",
+    "description": "AI学习社区，学生互相解答作业问题，AI辅助验证答案准确性，覆盖全球3.5亿学生。",
+    "slug": "brainly"
+  },
+  {
+    "id": "782c50af-db47-465d-bce4-48496c24ca26",
+    "name": "MindMeister",
+    "name_en": "MindMeister",
+    "category": "学生",
+    "description": "AI思维导图工具，帮助学生可视化知识结构、头脑风暴和整理学习内容，支持团队协作。",
+    "slug": "mindmeister"
+  },
+  {
+    "id": "bb9c39f0-674d-4b38-ac97-5d16fa73f64c",
+    "name": "Research Rabbit",
+    "name_en": "Research Rabbit",
+    "category": "学生",
+    "description": "免费学术论文发现工具，通过已知论文推荐相关研究，可视化论文关系网络，加速文献调研。",
+    "slug": "research-rabbit"
+  },
+  {
+    "id": "0c2f75e5-45d0-4085-912b-6c96c31ee9d4",
+    "name": "Coursera AI",
+    "name_en": "Coursera AI",
+    "category": "学生",
+    "description": "全球最大在线学习平台，AI个性化课程推荐，提供顶尖大学课程和职业证书，支持中文。",
+    "slug": "coursera-ai"
+  },
+  {
+    "id": "7be343c0-e661-4ec9-8d72-b4aaac5d2d15",
+    "name": "Chegg AI",
+    "name_en": "Chegg AI",
+    "category": "学生",
+    "description": "AI学习辅助平台，提供作业解答、教材解析和AI导师服务，覆盖大学各学科。",
+    "slug": "chegg-ai"
+  },
+  {
+    "id": "bc6a3844-b075-45f8-b97d-36294f151d9d",
+    "name": "Turnitin AI",
+    "name_en": "Turnitin AI",
+    "category": "学生",
+    "description": "学术诚信检测平台，检测论文抄袭和AI生成内容，帮助学生了解学术规范，被全球高校广泛使用。",
+    "slug": "turnitin-ai"
+  },
+  {
+    "id": "f5029f0c-5b57-4b54-82f6-d65e685ff148",
+    "name": "Miro AI",
+    "name_en": "Miro AI",
+    "category": "学生",
+    "description": "在线协作白板工具，AI辅助头脑风暴、思维导图和项目规划，适合小组作业和项目协作。",
+    "slug": "miro-ai-student"
+  },
+  {
+    "id": "cf6b15cc-9956-4419-b38c-bf6e2fc44c02",
+    "name": "Semantic Scholar",
+    "name_en": "Semantic Scholar",
+    "category": "学生",
+    "description": "AI学术搜索引擎，免费搜索2亿+学术论文，AI提取关键信息和研究影响力分析。",
+    "slug": "semantic-scholar"
+  },
+  {
+    "id": "19fe75fd-2919-441d-8cb1-44944c9a4ee6",
+    "name": "Natural Reader",
+    "name_en": "Natural Reader",
+    "category": "学生",
+    "description": "AI文字转语音工具，将PDF、Word和网页内容朗读出来，帮助有阅读障碍或想边听边学的学生。",
+    "slug": "natural-reader"
+  },
+  {
+    "id": "bfc8e220-3e30-4148-8d7c-3b85a53e88cf",
+    "name": "Mendeley",
+    "name_en": "Mendeley",
+    "category": "学生",
+    "description": "Elsevier旗下免费文献管理工具，管理参考文献、PDF注释和学术社交网络，与Word深度集成。",
+    "slug": "mendeley"
+  },
+  {
+    "id": "c98a320b-4dff-4334-ad8c-b9685fdd6026",
+    "name": "Mem.ai",
+    "name_en": "Mem.ai",
+    "category": "学生",
+    "description": "AI笔记工具，自动组织和连接笔记内容，通过AI搜索快速找到相关知识，无需手动分类。",
+    "slug": "mem-ai"
+  },
+  {
+    "id": "ad038b9f-9537-4b8b-a8cb-d1e0d2ae5ae5",
+    "name": "Beautiful.ai",
+    "name_en": "Beautiful.ai",
+    "category": "学生",
+    "description": "AI演示文稿设计工具，智能布局自动调整，让学生无需设计技能也能制作专业PPT。",
+    "slug": "beautiful-ai"
+  },
+  {
+    "id": "d54ccf41-a12f-4a79-ae79-09f6b1937c24",
+    "name": "Logseq",
+    "name_en": "Logseq",
+    "category": "学生",
+    "description": "开源双向链接笔记工具，本地存储保护隐私，支持PDF注释和任务管理，完全免费。",
+    "slug": "logseq"
+  },
+  {
+    "id": "64ed96d9-ef14-4cd0-9a16-820d6223a6d8",
+    "name": "edX AI",
+    "name_en": "edX AI",
+    "category": "学生",
+    "description": "MIT和哈佛联合创办的在线学习平台，提供顶尖大学课程和微学位，AI个性化学习路径。",
+    "slug": "edx-ai"
+  },
+  {
+    "id": "d13b11e8-1a3d-40c6-afa3-8a902f94c0e6",
+    "name": "Focusmate",
+    "name_en": "Focusmate",
+    "category": "学生",
+    "description": "虚拟自习室工具，与全球学生视频配对共同专注学习，AI匹配学习伙伴，提升学习效率。",
+    "slug": "focusmate"
+  },
+  {
+    "id": "977de4e9-0070-450f-b53d-0329fd629b8b",
+    "name": "Notion Calendar",
+    "name_en": "Notion Calendar",
+    "category": "学生",
+    "description": "Notion推出的AI日历工具，整合课程表、作业截止日期和学习计划，帮助学生管理时间。",
+    "slug": "notion-calendar"
+  },
+  {
+    "id": "885aabc7-a65f-413e-9000-c8f6ad2fd2a9",
+    "name": "Claude AI",
+    "name_en": "Claude AI",
+    "category": "学生",
+    "description": "Anthropic推出的AI助手，擅长长文本分析、论文写作辅助和复杂问题推理，学术诚信意识强。",
+    "slug": "claude-ai-student"
+  },
+  {
+    "id": "d120f4cf-7b3a-4157-be18-5576e293f51b",
+    "name": "合规云",
+    "name_en": "ComplianceCloud",
+    "category": "律师",
+    "description": "企业合规管理AI平台，覆盖法规变更追踪、合规风险评估、内控体系建设和合规培训。",
+    "slug": "compliance-cloud"
+  },
+  {
+    "id": "ad710e1e-0e15-429f-8521-8545f109d61d",
+    "name": "iLaw爱法律",
+    "name_en": "iLaw",
+    "category": "律师",
+    "description": "面向律师的AI智能法律助手，提供法律文书自动生成、案例检索和法规问答服务。",
+    "slug": "ilaw"
+  },
+  {
+    "id": "6568bad7-2f59-4d33-84b0-318c040122d3",
+    "name": "法律AI助手",
+    "name_en": "LawAIAssistant",
+    "category": "律师",
+    "description": "基于DeepSeek大模型的中国法律AI，专注中国法律场景的智能问答和文书辅助。",
+    "slug": "law-ai-assistant"
+  },
+  {
+    "id": "a7ce136d-b683-4ffd-9786-f2d7343d653d",
+    "name": "Briefpoint",
+    "name_en": "Briefpoint",
+    "category": "律师",
+    "description": "专为诉讼律师设计的AI工具，自动将对方诉状转化为反驳文书草稿，大幅节省起草时间。",
+    "slug": "briefpoint"
+  },
+  {
+    "id": "ae2c75ac-1b43-4474-bb77-c574bb8644c4",
+    "name": "EvenUp AI",
+    "name_en": "EvenUp AI",
+    "category": "律师",
+    "description": "专注人身伤害案件的AI法律工具，自动生成索赔需求函，帮助原告律师提高和解金额。",
+    "slug": "evenup-ai"
+  },
+  {
+    "id": "e5f13ff1-6fc4-4624-9300-ccdfe863ba15",
+    "name": "Lexion",
+    "name_en": "Lexion",
+    "category": "律师",
+    "description": "AI合同管理平台，自动提取合同关键数据，建立合同数据库，支持到期提醒和义务追踪。",
+    "slug": "lexion"
+  },
+  {
+    "id": "4a3b8fc8-4710-4dd6-aa5b-24dfdb002562",
+    "name": "Juro",
+    "name_en": "Juro",
+    "category": "律师",
+    "description": "一体化合同自动化平台，从模板创建到签署存档全流程在线完成，内置AI合同分析功能。",
+    "slug": "juro"
+  },
+  {
+    "id": "03a5ae7a-ae81-444e-89d6-da40dd872600",
+    "name": "法律机器人",
+    "name_en": "LawRobot",
+    "category": "律师",
+    "description": "国内AI法律文书生成工具，支持起诉状、答辩状、合同等100+法律文书模板一键生成。",
+    "slug": "law-robot"
+  },
+  {
+    "id": "cb194dc5-6ae9-4e66-8ede-47c8e4403750",
+    "name": "Paxton AI",
+    "name_en": "Paxton AI",
+    "category": "律师",
+    "description": "专为律师设计的AI法律研究助手，支持自然语言提问，快速检索相关法规和判例并生成摘要。",
+    "slug": "paxton-ai"
+  },
+  {
+    "id": "e5afda5a-6728-4b3d-89ad-dca5b2b2613e",
+    "name": "Clio",
+    "name_en": "Clio",
+    "category": "律师",
+    "description": "全球最受欢迎的律所管理软件，集成AI功能，覆盖案件管理、账单、客户沟通全流程。",
+    "slug": "clio"
+  },
+  {
+    "id": "4ae1c21b-4ef2-4e6b-ac0b-34d46775a230",
+    "name": "Definely",
+    "name_en": "Definely",
+    "category": "律师",
+    "description": "法律文件阅读辅助AI工具，在Word中高亮显示定义条款，帮助律师快速理解复杂合同结构。",
+    "slug": "definely"
+  },
+  {
+    "id": "78e477c0-2ef1-48de-9f8f-70d7682696e5",
+    "name": "Legalese Decoder",
+    "name_en": "Legalese Decoder",
+    "category": "律师",
+    "description": "AI法律语言简化工具，将复杂法律条文转化为普通人易懂的语言，辅助律师向客户解释合同。",
+    "slug": "legalese-decoder"
+  },
+  {
+    "id": "8542565d-8560-4363-84c7-8279baea2ae0",
+    "name": "Legartis",
+    "name_en": "Legartis",
+    "category": "律师",
+    "description": "瑞士AI合同审查平台，专注企业合同风险识别，支持德语、英语、法语等多语言合同分析。",
+    "slug": "legartis"
+  },
+  {
+    "id": "36fe1625-1614-4699-aed4-912a844c3300",
+    "name": "Clause",
+    "name_en": "Clause",
+    "category": "律师",
+    "description": "智能合同执行平台，将合同条款与业务系统连接，实现合同义务的自动化执行和监控。",
+    "slug": "clause-io"
+  },
+  {
+    "id": "4d197bff-33ee-4b52-8df2-478e2fc04357",
+    "name": "Genie AI",
+    "name_en": "Genie AI",
+    "category": "律师",
+    "description": "英国AI法律文件平台，提供律师事务所级别的合同模板库，支持AI辅助起草和审查。",
+    "slug": "genie-ai"
+  },
+  {
+    "id": "6d9677cd-7453-447d-99a8-21ef52a09ca1",
+    "name": "Smokeball",
+    "name_en": "Smokeball",
+    "category": "律师",
+    "description": "专为中小律所设计的法律实践管理软件，内置AI功能，自动记录工时、管理案件和文件。",
+    "slug": "smokeball"
+  },
+  {
+    "id": "78bc8004-beba-48b6-8a33-3f0b41e026a9",
+    "name": "Themis AI",
+    "name_en": "Themis AI",
+    "category": "律师",
+    "description": "专注劳动法领域的AI合规工具，帮助企业HR和法务快速检查劳动合同合规性和用工风险。",
+    "slug": "themis-ai"
+  },
+  {
+    "id": "e85b9b9c-ac5c-423e-a75c-e258ff9cc7ff",
+    "name": "Amto AI",
+    "name_en": "Amto AI",
+    "category": "律师",
+    "description": "专为律师设计的AI会议记录和案件笔记工具，自动转录庭审录音，生成结构化案件摘要。",
+    "slug": "amto-ai"
+  },
+  {
+    "id": "0e2cd4cd-76f1-4571-8341-2fd2080d56a7",
+    "name": "Loio",
+    "name_en": "Loio",
+    "category": "律师",
+    "description": "Word插件形式的AI合同分析工具，实时检测合同问题、不一致之处和潜在风险条款。",
+    "slug": "loio"
+  },
+  {
+    "id": "65d46445-a733-47db-a63c-babb78a4a63b",
+    "name": "Evisort",
+    "name_en": "Evisort",
+    "category": "律师",
+    "description": "AI合同智能管理平台，自动提取合同数据、追踪关键日期，并提供合同组合风险分析。",
+    "slug": "evisort"
+  },
+  {
+    "id": "2c02b9ad-24dc-445a-9179-fd37a6684b22",
+    "name": "Lawyaw",
+    "name_en": "Lawyaw",
+    "category": "律师",
+    "description": "律师事务所文件自动化平台，通过智能模板批量生成法律文件，减少重复性文书工作。",
+    "slug": "lawyaw"
+  },
+  {
+    "id": "df08653d-accb-4930-ae6f-24d478b39e4c",
+    "name": "Legalfly",
+    "name_en": "Legalfly",
+    "category": "律师",
+    "description": "欧洲AI法律研究平台，支持多国法律体系检索，提供法规摘要、案例分析和合规建议。",
+    "slug": "legalfly"
+  },
+  {
+    "id": "c4f2f8e3-8e19-4e4a-b710-84a04f05bb8e",
+    "name": "Robin AI",
+    "name_en": "Robin AI",
+    "category": "律师",
+    "description": "英国AI合同审查平台，结合AI技术和律师专业知识，提供快速准确的合同风险分析服务。",
+    "slug": "robin-ai"
+  },
+  {
+    "id": "637faeaa-8c3c-49bc-b131-e4b3a732184d",
+    "name": "Latch",
+    "name_en": "Latch",
+    "category": "律师",
+    "description": "专为法律团队设计的AI合同谈判工具，实时标注合同风险，提供谈判策略和替代条款建议。",
+    "slug": "latch"
+  },
+  {
+    "id": "7a808799-84a5-48ca-89ab-3650d7d34f4c",
+    "name": "Thomson Reuters CoCounsel",
+    "name_en": "CoCounsel",
+    "category": "律师",
+    "description": "汤森路透推出的AI法律助手，深度整合Westlaw数据库，支持法律研究、合同分析和案例摘要生成。",
+    "slug": "cocounsel"
+  },
+  {
+    "id": "f0dc3e75-d7a0-4bcb-b0a8-7a2945f8e452",
+    "name": "通义法睿",
+    "name_en": "通义法睿",
+    "category": "律师",
+    "description": "阿里巴巴推出的中文法律AI大模型，专为中国法律场景优化，支持合同审查、法律研究和文书生成。",
+    "slug": "tongyi-fasui"
+  },
+  {
+    "id": "cab2a935-de2d-44e5-8411-f107554e2654",
+    "name": "无讼AI Pro",
+    "name_en": "无讼AI Pro",
+    "category": "律师",
+    "description": "无讼平台推出的AI增强版，接入DeepSeek大模型，中文案例检索准确率提升40%，支持智能文书生成。",
+    "slug": "wusong-ai-pro"
+  },
+  {
+    "id": "a7145f27-1834-4f4d-af64-2529cf4b8e36",
+    "name": "Westlaw AI",
+    "name_en": "Westlaw AI",
+    "category": "律师",
+    "description": "汤森路透Westlaw平台的AI增强版，全球最权威法律数据库，支持智能案例检索和法规查询。",
+    "slug": "westlaw-ai"
+  },
+  {
+    "id": "4abaa027-1d4b-4162-8192-b77088b341ea",
+    "name": "Sora商业版",
+    "name_en": "Sora",
+    "category": "设计师",
+    "description": "OpenAI推出的Sora视频生成商业版，2026年Q1正式上线，支持最长1分钟高质量视频生成，视频生成进入新纪元。",
+    "slug": "sora"
+  },
+  {
+    "id": "c1597cb4-c8f6-4de7-9d53-001f6ed95971",
+    "name": "Recraft V3",
+    "name_en": "Recraft V3",
+    "category": "设计师",
+    "description": "Recraft最新版本，矢量图和品牌视觉生成能力大幅提升，支持SVG导出，适合品牌设计师和UI设计师。",
+    "slug": "recraft-v3"
+  },
+  {
+    "id": "dfdce2ea-6cf6-496b-9c1b-02b464fe834e",
+    "name": "金蝶云苍穹AI",
+    "name_en": "Kingdee AI",
+    "category": "会计",
+    "description": "金蝶推出的AI财务机器人，覆盖凭证录入、记账、报表、报税全流程自动化，符合中国财税合规要求。",
+    "slug": "kingdee-ai"
+  },
+  {
+    "id": "0020a6a2-cba0-4e29-9e4e-9fa1ae135d39",
+    "name": "Intuit TurboTax AI",
+    "name_en": "TurboTax AI",
+    "category": "会计",
+    "description": "Intuit旗下TurboTax推出的AI报税助手，2026年实现全流程自动化，适合美国个人和小企业报税。",
+    "slug": "turbotax-ai"
+  },
+  {
+    "id": "c965fca1-9af6-43f7-8b02-720e01d088c8",
+    "name": "Midjourney V7",
+    "name_en": "Midjourney V7",
+    "category": "设计师",
+    "description": "2026年Q1发布的Midjourney最新版本，图像质量再次跃升，提示词理解能力接近人类设计师水平，新增视频生成功能。",
+    "slug": "midjourney-v7"
+  },
+  {
+    "id": "dd60d314-ae29-4a0f-b4fe-f28623c65911",
+    "name": "即梦AI",
+    "name_en": "即梦AI",
+    "category": "设计师",
+    "description": "字节跳动推出的AI创作平台，支持图像和视频生成，中文原生支持，免费版功能丰富，适合国内设计师。",
+    "slug": "jimeng-ai-2"
+  },
+  {
+    "id": "9159251e-06c1-49b1-9f37-0996474f9324",
+    "name": "Runway Gen-3",
+    "name_en": "Runway Gen-3",
+    "category": "设计师",
+    "description": "Runway第三代AI视频生成模型，支持文生视频和图生视频，最长30秒，专业级视频效果，广受影视设计师青睐。",
+    "slug": "runway-gen3"
+  },
+  {
+    "id": "0f87e9cc-4a1f-4aa1-a02d-cbcceac3e6c3",
+    "name": "用友YonSuite AI",
+    "name_en": "YonSuite AI",
+    "category": "会计",
+    "description": "用友网络推出的AI财务管理平台，支持智能财务分析、预算管理和资金预测，适合中大型企业。",
+    "slug": "yonyou-ai"
+  },
+  {
+    "id": "634c1023-3632-40ee-b806-ed117729a002",
+    "name": "SAP Joule",
+    "name_en": "SAP Joule",
+    "category": "会计",
+    "description": "SAP推出的AI助手Joule，深度集成SAP财务系统，支持自然语言查询财务数据、自动生成报告和异常检测。",
+    "slug": "sap-joule"
+  },
+  {
+    "id": "a1e5ace1-f86d-44fe-a4e8-46a76823d90c",
+    "name": "字节火山写作",
+    "name_en": "火山写作",
+    "category": "营销",
+    "description": "字节跳动推出的AI写作助手，深度优化中文营销内容，支持小红书、抖音、微信等国内主流平台内容生成。",
+    "slug": "huoshan-writing"
+  },
+  {
+    "id": "4d9d4b2d-13b4-4385-8c0a-f178534713f7",
+    "name": "字节巨量引擎AI",
+    "name_en": "巨量引擎AI",
+    "category": "营销",
+    "description": "字节跳动广告投放平台巨量引擎的AI优化系统，自动优化抖音、今日头条广告投放，ROI提升40%。",
+    "slug": "juliang-ai"
+  },
+  {
+    "id": "31443d50-2bec-4bbb-a4c3-9a77f6fec915",
+    "name": "Devin 2.0",
+    "name_en": "Devin 2.0",
+    "category": "程序员",
+    "description": "Cognition推出的AI软件工程师2.0版，自主完成率提升至45%，能独立完成GitHub Issue修复、代码重构等复杂任务。",
+    "slug": "devin-2"
+  },
+  {
+    "id": "903521b3-d60e-4b60-83db-fcdd0fe90b72",
+    "name": "可灵AI 2.0",
+    "name_en": "可灵AI 2.0",
+    "category": "设计师",
+    "description": "快手推出的AI视频生成工具2.0版，2026年Q1视频质量达到商业级别，支持最长3分钟视频生成，中文原生支持。",
+    "slug": "kling-ai-2"
+  },
+  {
+    "id": "6e00b6b3-28f8-4485-9e50-ba1cda71c603",
+    "name": "Ideogram 2.0",
+    "name_en": "Ideogram 2.0",
+    "category": "设计师",
+    "description": "Ideogram最新版本，文字渲染能力大幅提升，矢量图生成能力出色，适合需要精准文字排版的设计场景。",
+    "slug": "ideogram-2"
+  },
+  {
+    "id": "9bd9aa9c-00ad-48d3-aaf4-09fdb776313a",
+    "name": "Pika 2.0",
+    "name_en": "Pika 2.0",
+    "category": "设计师",
+    "description": "Pika Labs推出的2.0版AI视频生成工具，操作简单，支持视频风格转换和动效生成，适合社媒内容创作者。",
+    "slug": "pika-2"
+  },
+  {
+    "id": "86fb1c87-d9e9-4df3-8dff-fc235024ee84",
+    "name": "百望云AI",
+    "name_en": "百望云AI",
+    "category": "会计",
+    "description": "百望云推出的AI税务管理平台，覆盖中国全税种申报，支持发票智能识别和税务风险预警。",
+    "slug": "baiwang-ai"
+  },
+  {
+    "id": "745b1284-1fc9-4e40-adba-3c6ae2808f8b",
+    "name": "通义灵码2.0",
+    "name_en": "通义灵码2.0",
+    "category": "程序员",
+    "description": "阿里巴巴推出的AI编程助手2.0版，接入DeepSeek R2，中文代码注释和文档质量大幅提升，支持VS Code和JetBrains。",
+    "slug": "tongyi-lingma"
+  },
+  {
+    "id": "fabe8b1c-2666-4c24-940e-41735f4066d0",
+    "name": "Perplexity Pro",
+    "name_en": "Perplexity Pro",
+    "category": "学生",
+    "description": "AI搜索引擎专业版，实时联网搜索并生成带引用来源的答案，学术研究效率提升15倍，2026年月活突破2000万。",
+    "slug": "perplexity-pro"
+  },
+  {
+    "id": "94d568e1-a03b-47a0-a10d-30ca8ccf0198",
+    "name": "秘塔AI搜索",
+    "name_en": "秘塔AI搜索",
+    "category": "学生",
+    "description": "国内领先的AI搜索引擎，无广告干扰，中文学术内容理解能力强，支持深度搜索模式，完全免费使用。",
+    "slug": "metaso"
+  }
+]

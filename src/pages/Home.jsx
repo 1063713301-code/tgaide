@@ -63,26 +63,30 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    // 主要内容加载
     Promise.all([
       fetchLatestArticles('report', 6),
       fetchLatestArticles('brief', 6),
       fetchToolCount(),
-      fetchCategoryCount(),
       fetchTools({ sort: 'recommended', limit: 8 }),
       fetchTools({ sort: 'is_hot', limit: 8 }),
       fetchTools({ sort: 'newest', limit: 8 }),
     ])
-      .then(([r, b, count, catCount, { data: recommended }, { data: hot }, { data: newest }]) => {
+      .then(([r, b, count, { data: recommended }, { data: hot }, { data: newest }]) => {
         setReports(r)
         setBriefs(b)
         setToolCount(count)
-        setCategoryCount(catCount)
         setRecommended(recommended)
         setHotTools(hot)
         setNewTools(newest)
       })
       .catch(console.error)
       .finally(() => setLoading(false))
+
+    // 分类数量异步加载，不阻塞页面渲染
+    fetchCategoryCount()
+      .then(catCount => setCategoryCount(catCount))
+      .catch(console.error)
   }, [])
 
   const handleSearch = (e) => {

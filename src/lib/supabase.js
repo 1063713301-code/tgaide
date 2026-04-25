@@ -200,18 +200,24 @@ export async function fetchToolCount() {
 /** 获取各分类工具数量 */
 export async function fetchCategoryCount() {
   const categories = ['律师', '设计师', '会计', '营销', '程序员', '学生']
-  const counts = {}
 
-  await Promise.all(
-    categories.map(async (cat) => {
-      const { count, error } = await supabase
-        .from('tools')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active')
-        .eq('category', cat)
-      if (!error) counts[cat] = count || 0
-    })
-  )
+  // 一次查询获取所有活跃工具的分类
+  const { data, error } = await supabase
+    .from('tools')
+    .select('category')
+    .eq('status', 'active')
+
+  if (error) throw error
+
+  // 在客户端统计各分类数量
+  const counts = {}
+  categories.forEach(cat => counts[cat] = 0)
+
+  data.forEach(tool => {
+    if (categories.includes(tool.category)) {
+      counts[tool.category]++
+    }
+  })
 
   return counts
 }

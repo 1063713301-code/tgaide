@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3">
-              <img src="/logo.png" alt="TG" className="w-10 h-10 object-contain" />
+              <img src="/logo.png" alt="TG" className="w-[49px] h-[49px] object-contain" />
               <span className="font-bold text-gray-900">TG AI工具库</span>
             </Link>
             <p className="text-xs text-gray-500 leading-relaxed">{t('footer_desc')}</p>
