@@ -531,7 +531,7 @@ export default function AllTools() {
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => { setSortBy(e.target.value); setPage(1) }}}
+                onChange={(e) => { setSortBy(e.target.value); setPage(1) }}
                 className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-2.5 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
                 {SORT_OPTIONS.map((o) => (
