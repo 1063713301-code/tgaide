@@ -144,10 +144,12 @@ export default function Home() {
                 className={`article-card flex flex-col items-center text-center p-4 rounded-xl bg-gradient-to-b ${cat.color} border ${cat.border} no-underline`}
               >
                 <span className="text-3xl mb-2">{cat.icon}</span>
-                <span className={`text-base font-semibold px-2 py-0.5 rounded-full mb-2 ${cat.tag}`}>
+                <span className={`text-base font-semibold px-2 py-0.5 rounded-full mb-1 ${cat.tag}`}>
                   {t(cat.nameKey)}
-                  {categoryCount[cat.category] ? ` (${categoryCount[cat.category]} 款)` : ''}
                 </span>
+                {categoryCount[cat.category] && (
+                  <span className="text-xs text-gray-500 mb-2">{categoryCount[cat.category]} 款工具</span>
+                )}
                 <p className="text-xs text-gray-600 leading-relaxed hidden sm:block">{t(cat.descKey)}</p>
               </Link>
             ))}
@@ -164,8 +166,10 @@ export default function Home() {
                 <div>
                   <span className="font-semibold text-gray-800 text-sm block mb-0.5">
                     {t(cat.nameKey)}
-                    {categoryCount[cat.category] ? ` (${categoryCount[cat.category]} 款)` : ''}
                   </span>
+                  {categoryCount[cat.category] && (
+                    <span className="text-xs text-gray-500 block mb-1">{categoryCount[cat.category]} 款工具</span>
+                  )}
                   <span className="text-xs text-gray-500">{t(cat.descKey)}</span>
                 </div>
               </Link>
