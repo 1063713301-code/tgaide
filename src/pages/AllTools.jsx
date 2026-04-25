@@ -326,30 +326,37 @@ function saveSearchHistory(q) {
 
 // ─── 主页面 ────────────────────────────────────────
 export default function AllTools() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { t } = useLang()
+
+  // Parse URL params first to get initial state
+  const params = new URLSearchParams(location.search)
+  const initialCategory = params.get('category') || ''
+  const initialSearch = params.get('q') || ''
+
   const [allTools, setAllTools] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 48
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+  const [searchQuery, setSearchQuery] = useState(initialSearch)
   const [sortBy, setSortBy] = useState('hot')
   const [compareList, setCompareList] = useState(getCompare)
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const [searchHistory, setSearchHistory] = useState(getSearchHistory)
   const [showHistory, setShowHistory] = useState(false)
   const searchTimerRef = useRef(null)
-  const [debouncedSearch, setDebouncedSearch] = useState('')
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { t } = useLang()
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
 
   useEffect(() => {
     document.title = '全部工具 - TG AI工具库'
     const params = new URLSearchParams(location.search)
     const q = params.get('q')
     const cat = params.get('category') || ''
+    console.log('URL changed, category from URL:', cat)
     setSearchQuery(q || '')
     setSelectedCategory(cat)
     setPage(1)
@@ -357,12 +364,26 @@ export default function AllTools() {
   }, [location.search])
 
   useEffect(() => {
+    let cancelled = false
     setLoading(true)
     setError(null)
+    console.log('Fetching tools with category:', selectedCategory, 'sort:', sortBy, 'search:', debouncedSearch, 'page:', page)
     fetchTools({ category: selectedCategory || null, sort: sortBy, search: debouncedSearch, page, pageSize: PAGE_SIZE })
-      .then(({ data, count }) => { setAllTools(data); setTotalCount(count) })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false))
+      .then(({ data, count }) => {
+        if (cancelled) {
+          console.log('Request cancelled, ignoring result')
+          return
+        }
+        console.log('Fetched tools:', data.length, 'total count:', count)
+        setAllTools(data); setTotalCount(count)
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
   }, [selectedCategory, sortBy, debouncedSearch, page])
 
   // 搜索防抖 300ms
