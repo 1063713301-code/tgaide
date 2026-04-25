@@ -53,6 +53,7 @@ export default function Home() {
   const [newTools, setNewTools] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [toolCount, setToolCount] = useState(0)
   const { t, lang } = useLang()
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export default function Home() {
       .then(([r, b, tools]) => {
         setReports(r)
         setBriefs(b)
+        setToolCount(tools.length)
         setRecommended(tools.filter((t) => t.is_recommended).slice(0, 8))
         setHotTools(tools.filter((t) => t.is_hot).slice(0, 8))
         setNewTools(tools.filter((t) => t.is_new).slice(0, 8))
@@ -106,7 +108,11 @@ export default function Home() {
             </button>
           </form>
           <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-sm text-blue-50">
-            {['home_tag1','home_tag2','home_tag3','home_tag4'].map(k => (
+            <span className="flex items-center gap-1.5">
+              <svg className="w-4 h-4 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
+              已收录{toolCount > 0 ? toolCount : ''}款职业专用AI工具
+            </span>
+            {['home_tag2','home_tag3','home_tag4'].map(k => (
               <span key={k} className="flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
                 {t(k)}
