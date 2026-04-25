@@ -3,17 +3,17 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ArticleCard from '../components/ArticleCard'
-import { fetchLatestArticles, fetchTools, fetchToolCount } from '../lib/supabase'
+import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 
 // ─── 职业分类数据 ────────────────
 const CAREER_CATEGORIES = [
-  { icon: '⚖️', nameKey: 'career_lawyer', descKey: 'career_lawyer_desc', link: '/tools?category=律师', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-700' },
-  { icon: '🎨', nameKey: 'career_designer', descKey: 'career_designer_desc', link: '/tools?category=设计师', color: 'from-purple-50 to-purple-100', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-700' },
-  { icon: '💼', nameKey: 'career_accountant', descKey: 'career_accountant_desc', link: '/tools?category=会计', color: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', tag: 'bg-yellow-100 text-yellow-700' },
-  { icon: '📣', nameKey: 'career_marketing', descKey: 'career_marketing_desc', link: '/tools?category=营销', color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
-  { icon: '💻', nameKey: 'career_developer', descKey: 'career_developer_desc', link: '/tools?category=程序员', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-800' },
-  { icon: '🎓', nameKey: 'career_student', descKey: 'career_student_desc', link: '/tools?category=学生', color: 'from-pink-50 to-pink-100', border: 'border-pink-200', tag: 'bg-pink-100 text-pink-700' },
+  { icon: '⚖️', nameKey: 'career_lawyer', descKey: 'career_lawyer_desc', link: '/tools?category=律师', category: '律师', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-700' },
+  { icon: '🎨', nameKey: 'career_designer', descKey: 'career_designer_desc', link: '/tools?category=设计师', category: '设计师', color: 'from-purple-50 to-purple-100', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-700' },
+  { icon: '💼', nameKey: 'career_accountant', descKey: 'career_accountant_desc', link: '/tools?category=会计', category: '会计', color: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', tag: 'bg-yellow-100 text-yellow-700' },
+  { icon: '📣', nameKey: 'career_marketing', descKey: 'career_marketing_desc', link: '/tools?category=营销', category: '营销', color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
+  { icon: '💻', nameKey: 'career_developer', descKey: 'career_developer_desc', link: '/tools?category=程序员', category: '程序员', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-800' },
+  { icon: '🎓', nameKey: 'career_student', descKey: 'career_student_desc', link: '/tools?category=学生', category: '学生', color: 'from-pink-50 to-pink-100', border: 'border-pink-200', tag: 'bg-pink-100 text-pink-700' },
 ]
 
 function SectionHeader({ title, link }) {
@@ -54,6 +54,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [toolCount, setToolCount] = useState(0)
+  const [categoryCount, setCategoryCount] = useState({})
   const { t, lang } = useLang()
 
   useEffect(() => {
@@ -66,14 +67,16 @@ export default function Home() {
       fetchLatestArticles('report', 6),
       fetchLatestArticles('brief', 6),
       fetchToolCount(),
+      fetchCategoryCount(),
       fetchTools({ sort: 'recommended', limit: 8 }),
       fetchTools({ sort: 'is_hot', limit: 8 }),
       fetchTools({ sort: 'newest', limit: 8 }),
     ])
-      .then(([r, b, count, { data: recommended }, { data: hot }, { data: newest }]) => {
+      .then(([r, b, count, catCount, { data: recommended }, { data: hot }, { data: newest }]) => {
         setReports(r)
         setBriefs(b)
         setToolCount(count)
+        setCategoryCount(catCount)
         setRecommended(recommended)
         setHotTools(hot)
         setNewTools(newest)
@@ -143,6 +146,7 @@ export default function Home() {
                 <span className="text-3xl mb-2">{cat.icon}</span>
                 <span className={`text-base font-semibold px-2 py-0.5 rounded-full mb-2 ${cat.tag}`}>
                   {t(cat.nameKey)}
+                  {categoryCount[cat.category] ? ` (${categoryCount[cat.category]} 款)` : ''}
                 </span>
                 <p className="text-xs text-gray-600 leading-relaxed hidden sm:block">{t(cat.descKey)}</p>
               </Link>
@@ -158,7 +162,10 @@ export default function Home() {
               >
                 <span className="text-2xl flex-shrink-0">{cat.icon}</span>
                 <div>
-                  <span className="font-semibold text-gray-800 text-sm block mb-0.5">{t(cat.nameKey)}</span>
+                  <span className="font-semibold text-gray-800 text-sm block mb-0.5">
+                    {t(cat.nameKey)}
+                    {categoryCount[cat.category] ? ` (${categoryCount[cat.category]} 款)` : ''}
+                  </span>
                   <span className="text-xs text-gray-500">{t(cat.descKey)}</span>
                 </div>
               </Link>

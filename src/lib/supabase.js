@@ -197,6 +197,25 @@ export async function fetchToolCount() {
   return count || 0
 }
 
+/** 获取各分类工具数量 */
+export async function fetchCategoryCount() {
+  const categories = ['律师', '设计师', '会计', '营销', '程序员', '学生']
+  const counts = {}
+
+  await Promise.all(
+    categories.map(async (cat) => {
+      const { count, error } = await supabase
+        .from('tools')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'active')
+        .eq('category', cat)
+      if (!error) counts[cat] = count || 0
+    })
+  )
+
+  return counts
+}
+
 /** 后台：获取所有工具（包含草稿） */
 export async function adminFetchTools() {
   const { data, error } = await supabase
