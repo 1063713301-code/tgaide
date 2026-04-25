@@ -148,7 +148,7 @@ export default function Home() {
                   {t(cat.nameKey)}
                 </span>
                 {categoryCount[cat.category] && (
-                  <span className="text-sm font-bold text-gray-700">{categoryCount[cat.category]} 款工具</span>
+                  <span className="text-sm font-bold text-gray-700">【{categoryCount[cat.category]} 款工具】</span>
                 )}
                 <p className="text-xs text-gray-600 leading-relaxed hidden sm:block mt-1">{t(cat.descKey)}</p>
               </Link>
@@ -168,7 +168,7 @@ export default function Home() {
                     {t(cat.nameKey)}
                   </span>
                   {categoryCount[cat.category] && (
-                    <span className="text-sm font-bold text-gray-700 block mb-1">{categoryCount[cat.category]} 款工具</span>
+                    <span className="text-sm font-bold text-gray-700 block mb-1">【{categoryCount[cat.category]} 款工具】</span>
                   )}
                   <span className="text-xs text-gray-500">{t(cat.descKey)}</span>
                 </div>
