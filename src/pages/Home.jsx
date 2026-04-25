@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ArticleCard from '../components/ArticleCard'
-import { fetchLatestArticles, fetchTools } from '../lib/supabase'
+import { fetchLatestArticles, fetchTools, fetchToolCount } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 
 // ─── 职业分类数据 ────────────────
@@ -65,15 +65,18 @@ export default function Home() {
     Promise.all([
       fetchLatestArticles('report', 6),
       fetchLatestArticles('brief', 6),
-      fetchTools({ sort: 'hot' }),
+      fetchToolCount(),
+      fetchTools({ sort: 'recommended', limit: 8 }),
+      fetchTools({ sort: 'is_hot', limit: 8 }),
+      fetchTools({ sort: 'newest', limit: 8 }),
     ])
-      .then(([r, b, tools]) => {
+      .then(([r, b, count, recommended, hot, newest]) => {
         setReports(r)
         setBriefs(b)
-        setToolCount(tools.length)
-        setRecommended(tools.filter((t) => t.is_recommended).slice(0, 8))
-        setHotTools(tools.filter((t) => t.is_hot).slice(0, 8))
-        setNewTools(tools.filter((t) => t.is_new).slice(0, 8))
+        setToolCount(count)
+        setRecommended(recommended)
+        setHotTools(hot)
+        setNewTools(newest)
       })
       .catch(console.error)
       .finally(() => setLoading(false))

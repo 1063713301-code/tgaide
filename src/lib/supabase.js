@@ -141,7 +141,7 @@ export async function uploadImageToStorage(file) {
 // ─── 工具表 CRUD ─────────────────────────────────
 
 /** 获取工具列表（支持分类筛选、搜索、排序） */
-export async function fetchTools({ category = null, search = null, sort = 'hot' } = {}) {
+export async function fetchTools({ category = null, search = null, sort = 'hot', limit = null } = {}) {
   let query = supabase
     .from('tools')
     .select('*')
@@ -155,17 +155,23 @@ export async function fetchTools({ category = null, search = null, sort = 'hot' 
   if (sort === 'rating') {
     query = query.order('rating', { ascending: false })
   } else if (sort === 'newest') {
-    query = query.order('created_at', { ascending: false })
+    query = query.eq('is_new', true).order('created_at', { ascending: false })
   } else if (sort === 'free') {
     query = query.eq('price', '免费').order('sort_order', { ascending: false })
   } else if (sort === 'recommended') {
     query = query.eq('is_recommended', true).order('sort_order', { ascending: false })
   } else if (sort === 'tg_selected') {
     query = query.contains('tags', ['TG精选']).order('sort_order', { ascending: false })
+  } else if (sort === 'hot') {
+    query = query.order('sort_order', { ascending: false }).order('created_at', { ascending: false })
+  } else if (sort === 'is_hot') {
+    query = query.eq('is_hot', true).order('sort_order', { ascending: false })
   } else {
     // 默认按热度 = sort_order 降序
     query = query.order('sort_order', { ascending: false }).order('created_at', { ascending: false })
   }
+
+  if (limit) query = query.limit(limit)
 
   const { data, error } = await query
   if (error) throw error
@@ -182,6 +188,16 @@ export async function fetchTools({ category = null, search = null, sort = 'hot' 
   }
 
   return data || []
+}
+
+/** 获取工具总数 */
+export async function fetchToolCount() {
+  const { count, error } = await supabase
+    .from('tools')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'active')
+  if (error) throw error
+  return count || 0
 }
 
 /** 后台：获取所有工具（包含草稿） */
