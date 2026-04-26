@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import RichTextEditor from '../components/RichTextEditor'
 import { fetchReviews, submitReview, supabase } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 
@@ -132,9 +133,10 @@ function SubmitModal({ onClose, onSuccess }) {
     else if (form.user_nickname.length > 20) e.user_nickname = t('reviews_err_nickname_len')
     if (!form.tool_name.trim()) e.tool_name = t('reviews_err_tool')
     else if (form.tool_name.length > 50) e.tool_name = t('reviews_err_tool_len')
-    if (!form.content.trim()) e.content = t('reviews_err_content')
-    else if (form.content.length < 10) e.content = `${t('reviews_err_content_min')}（当前${form.content.length}字）`
-    else if (form.content.length > 500) e.content = `${t('reviews_err_content_max')}（当前${form.content.length}字）`
+    const plainText = form.content.replace(/<[^>]*>/g, '').trim()
+    if (!plainText) e.content = t('reviews_err_content')
+    else if (plainText.length < 10) e.content = `${t('reviews_err_content_min')}（当前${plainText.length}字）`
+    else if (plainText.length > 500) e.content = `${t('reviews_err_content_max')}（当前${plainText.length}字）`
     return e
   }
 
@@ -212,10 +214,12 @@ function SubmitModal({ onClose, onSuccess }) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('reviews_content')} <span className="text-red-500">*</span> <span className="text-xs text-gray-400 font-normal">{t('reviews_content_hint')}</span></label>
-            <textarea value={form.content} onChange={(e) => set('content', e.target.value)} rows={4} maxLength={500} placeholder={t('reviews_content_placeholder')} className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${errors.content ? 'border-red-400' : 'border-gray-300'}`} />
+            <div className={`border rounded-lg overflow-hidden ${errors.content ? 'border-red-400' : 'border-gray-300'}`}>
+              <RichTextEditor value={form.content} onChange={(v) => set('content', v)} placeholder={t('reviews_content_placeholder')} />
+            </div>
             <div className="flex justify-between mt-1">
               {errors.content ? <p className="text-xs text-red-500">{errors.content}</p> : <span />}
-              <span className="text-xs text-gray-400">{form.content.length}/500</span>
+              <span className="text-xs text-gray-400">{form.content.replace(/<[^>]*>/g, '').length}/500</span>
             </div>
           </div>
           <div>
