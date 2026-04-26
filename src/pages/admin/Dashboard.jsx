@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { adminLogout } from '../../hooks/useAuth'
-import { adminFetchAll, adminFetchTools, adminFetchReviews } from '../../lib/supabase'
+import { adminFetchAll, adminFetchTools, adminFetchReviews, adminFetchSelectionCount } from '../../lib/supabase'
 
 function StatCard({ label, value, color, link, icon }) {
   return (
@@ -18,27 +18,29 @@ function StatCard({ label, value, color, link, icon }) {
 }
 
 const QUICK_ACTIONS = [
-  { to: '/admin/reports/new',  icon: '📊', label: '新建行业报告' },
-  { to: '/admin/briefs/new',   icon: '📰', label: '新建每日简报' },
-  { to: '/admin/tools/new',    icon: '🔧', label: '新建AI工具'   },
-  { to: '/admin/reviews/new',  icon: '⭐', label: '新建评测'     },
-  { to: '/admin/reports',      icon: '📋', label: '管理报告列表' },
-  { to: '/admin/briefs',       icon: '📃', label: '管理简报列表' },
-  { to: '/admin/tools',        icon: '🗂️', label: '管理工具列表' },
-  { to: '/admin/reviews',      icon: '💬', label: '管理评测列表' },
+  { to: '/admin/reports/new',     icon: '📊', label: '新建行业报告' },
+  { to: '/admin/briefs/new',      icon: '📰', label: '新建每日简报' },
+  { to: '/admin/tools/new',       icon: '🔧', label: '新建AI工具'   },
+  { to: '/admin/reviews/new',     icon: '⭐', label: '新建评测'     },
+  { to: '/admin/reports',         icon: '📋', label: '管理报告列表' },
+  { to: '/admin/briefs',          icon: '📃', label: '管理简报列表' },
+  { to: '/admin/tools',           icon: '🗂️', label: '管理工具列表' },
+  { to: '/admin/reviews',         icon: '💬', label: '管理评测列表' },
+  { to: '/admin/selections/new',  icon: '🎯', label: '新建选型方案' },
+  { to: '/admin/selections',      icon: '📌', label: '管理选型速查' },
 ]
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const [stats, setStats] = useState({ reports: 0, briefs: 0, tools: 0, reviews: 0 })
+  const [stats, setStats] = useState({ reports: 0, briefs: 0, tools: 0, reviews: 0, selections: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { document.title = '后台管理 - TG AI工具库' }, [])
 
   useEffect(() => {
-    Promise.all([adminFetchAll('report'), adminFetchAll('brief'), adminFetchTools(), adminFetchReviews()])
-      .then(([reports, briefs, tools, reviews]) => {
-        setStats({ reports: reports.length, briefs: briefs.length, tools: tools.length, reviews: reviews.length })
+    Promise.all([adminFetchAll('report'), adminFetchAll('brief'), adminFetchTools(), adminFetchReviews(), adminFetchSelectionCount()])
+      .then(([reports, briefs, tools, reviews, selections]) => {
+        setStats({ reports: reports.length, briefs: briefs.length, tools: tools.length, reviews: reviews.length, selections })
       })
       .catch(console.error)
       .finally(() => setLoading(false))
@@ -70,6 +72,7 @@ export default function AdminDashboard() {
               <StatCard icon="📰" label="每日简报" value={stats.briefs}  color="text-purple-600" link="/admin/briefs"  />
               <StatCard icon="🔧" label="AI工具"   value={stats.tools}   color="text-orange-500" link="/admin/tools"  />
               <StatCard icon="💬" label="用户评测" value={stats.reviews} color="text-emerald-600" link="/admin/reviews" />
+              <StatCard icon="🎯" label="选型速查" value={stats.selections} color="text-indigo-600" link="/admin/selections" />
             </>
           )}
         </div>

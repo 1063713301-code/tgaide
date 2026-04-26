@@ -16,6 +16,7 @@ export const supabase = createClient(
 export const TABLE = {
   report: 'industry_reports',
   brief: 'daily_briefs',
+  selection: 'selection_guides',
 }
 
 // ─── 行业报告 & 每日简报 公共 CRUD ───────────────
@@ -369,6 +370,63 @@ export async function adminUpdateReview(id, payload) {
 
 export async function adminDeleteReview(id) {
   const { error } = await supabase.from('reviews').delete().eq('id', id)
+  if (error) throw error
+}
+
+// ─── 选型速查 ────────────────────────────────────
+
+const SELECTION_SCENES = ['design', 'video', 'marketing', 'legal', 'content', 'finance']
+
+/** 首页用：每个场景各取最新1条 */
+export async function fetchLatestSelections() {
+  const results = await Promise.all(
+    SELECTION_SCENES.map(scene =>
+      supabase
+        .from('selection_guides')
+        .select('id, title, scene, period, publish_date, summary')
+        .eq('scene', scene)
+        .eq('status', 'published')
+        .eq('is_hidden', false)
+        .order('publish_date', { ascending: false })
+        .limit(1)
+        .single()
+        .then(({ data }) => data)
+        .catch(() => null)
+    )
+  )
+  const map = {}
+  results.forEach(item => { if (item) map[item.scene] = item })
+  return map
+}
+
+/** 场景归档页：获取某场景全部历史 */
+export async function fetchSelectionsByScene(scene, { limit = 20, offset = 0 } = {}) {
+  const { data, error } = await supabase
+    .from('selection_guides')
+    .select('id, title, scene, period, publish_date, summary, source_report_id')
+    .eq('scene', scene)
+    .eq('status', 'published')
+    .eq('is_hidden', false)
+    .order('publish_date', { ascending: false })
+    .range(offset, offset + limit - 1)
+  if (error) throw error
+  return data || []
+}
+
+/** 后台：获取选型速查总数 */
+export async function adminFetchSelectionCount() {
+  const { count, error } = await supabase
+    .from('selection_guides')
+    .select('id', { count: 'exact', head: true })
+  if (error) throw error
+  return count || 0
+}
+
+/** 后台：批量写入AI提取的选型方案（每次发布报告后调用） */
+export async function adminBatchCreateSelections(records) {
+  const { error } = await supabase
+    .from('selection_guides')
+    .insert(records.map(r => ({ ...r, updated_at: new Date().toISOString() })))
   if (error) throw error
 }
 

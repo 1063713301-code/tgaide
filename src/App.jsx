@@ -5,6 +5,8 @@ import IndustryReports from './pages/IndustryReports'
 import DailyBriefs from './pages/DailyBriefs'
 import ArticleDetail from './pages/ArticleDetail'
 import Reviews from './pages/Reviews'
+import AIToolSelection from './pages/AIToolSelection'
+import AIToolSelectionScene from './pages/AIToolSelectionScene'
 import AdminLogin from './pages/admin/Login'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminArticleList from './pages/admin/ArticleList'
@@ -34,6 +36,9 @@ export default function App() {
         <Route path="/daily-briefs/:id" element={<ArticleDetail type="brief" />} />
 
         <Route path="/compare" element={<CompareTools />} />
+        <Route path="/ai-tool-selection" element={<AIToolSelection />} />
+        <Route path="/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
+        <Route path="/ai-tool-selection/:scene/:id" element={<ArticleDetail type="selection" />} />
 
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
@@ -43,6 +48,9 @@ export default function App() {
         <Route path="/admin/briefs" element={<ProtectedRoute><AdminArticleList type="brief" /></ProtectedRoute>} />
         <Route path="/admin/briefs/new" element={<ProtectedRoute><AdminArticleEditor type="brief" mode="new" /></ProtectedRoute>} />
         <Route path="/admin/briefs/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="brief" mode="edit" /></ProtectedRoute>} />
+        <Route path="/admin/selections" element={<ProtectedRoute><AdminArticleList type="selection" /></ProtectedRoute>} />
+        <Route path="/admin/selections/new" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="new" /></ProtectedRoute>} />
+        <Route path="/admin/selections/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="edit" /></ProtectedRoute>} />
         <Route path="/admin/tools" element={<ProtectedRoute><AdminToolList /></ProtectedRoute>} />
         <Route path="/admin/tools/new" element={<ProtectedRoute><AdminToolEditor mode="new" /></ProtectedRoute>} />
         <Route path="/admin/tools/:id/edit" element={<ProtectedRoute><AdminToolEditor mode="edit" /></ProtectedRoute>} />

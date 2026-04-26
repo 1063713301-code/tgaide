@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ArticleCard from '../components/ArticleCard'
-import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount } from '../lib/supabase'
+import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount, fetchLatestSelections } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
+import { SELECTION_SCENES } from './AIToolSelection'
 
 // ─── 职业分类数据 ────────────────
 const CAREER_CATEGORIES = [
@@ -55,6 +56,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [toolCount, setToolCount] = useState(0)
   const [categoryCount, setCategoryCount] = useState({})
+  const [latestSelections, setLatestSelections] = useState({})
   const { t, lang } = useLang()
 
   useEffect(() => {
@@ -86,6 +88,9 @@ export default function Home() {
     // 分类数量异步加载，不阻塞页面渲染
     fetchCategoryCount()
       .then(catCount => setCategoryCount(catCount))
+
+    // 选型速查异步加载
+    fetchLatestSelections().then(setLatestSelections).catch(() => {})
       .catch(console.error)
   }, [])
 
@@ -178,6 +183,43 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+          </div>
+        </section>
+
+        {/* ── 选型速查 ── */}
+        <section className="mb-14">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">AI工具选型速查</h2>
+            <p className="text-gray-500 text-sm">成熟场景化工具组合，直接落地使用</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {SELECTION_SCENES.map((scene) => {
+              const item = latestSelections[scene.slug]
+              return (
+                <Link
+                  key={scene.slug}
+                  to={`/ai-tool-selection/${scene.slug}`}
+                  className={`article-card flex flex-col p-5 rounded-xl bg-gradient-to-b ${scene.color} border ${scene.border} no-underline`}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">{scene.icon}</span>
+                    <span className={`text-sm font-semibold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-2">{scene.desc}</p>
+                  {item?.summary && (
+                    <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{item.summary}</p>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              to="/ai-tool-selection"
+              className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md"
+            >
+              查看完整选型建议
+            </Link>
           </div>
         </section>
 
