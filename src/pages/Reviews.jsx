@@ -60,7 +60,7 @@ function StarDisplay({ rating }) {
 }
 
 const emptyForm = {
-  user_nickname: '', user_occupation: '律师', tool_name: '', rating: 5,
+  user_nickname: '', user_occupation: '律师', tool_name: '', tool_url: '', rating: 5,
   content: '', email: '',
 }
 
@@ -133,6 +133,8 @@ function SubmitModal({ onClose, onSuccess }) {
     else if (form.user_nickname.length > 20) e.user_nickname = t('reviews_err_nickname_len')
     if (!form.tool_name.trim()) e.tool_name = t('reviews_err_tool')
     else if (form.tool_name.length > 50) e.tool_name = t('reviews_err_tool_len')
+    if (!form.tool_url.trim()) e.tool_url = '请填写工具官网地址'
+    else if (!/^https?:\/\/.+/.test(form.tool_url.trim())) e.tool_url = '请输入有效的网址（以 http 或 https 开头）'
     const plainText = form.content.replace(/<[^>]*>/g, '').trim()
     if (!plainText) e.content = t('reviews_err_content')
     else if (plainText.length < 10) e.content = `${t('reviews_err_content_min')}（当前${plainText.length}字）`
@@ -152,6 +154,7 @@ function SubmitModal({ onClose, onSuccess }) {
         user_nickname: form.user_nickname.trim(),
         user_occupation: form.user_occupation,
         tool_name: form.tool_name.trim(),
+        tool_url: form.tool_url.trim(),
         rating: form.rating,
         content: form.content.trim(),
         email: form.email.trim(),
@@ -205,6 +208,11 @@ function SubmitModal({ onClose, onSuccess }) {
             <label className="block text-sm font-medium text-gray-700 mb-1">{t('reviews_tool')} <span className="text-red-500">*</span></label>
             <input value={form.tool_name} onChange={(e) => set('tool_name', e.target.value)} maxLength={50} placeholder={t('reviews_tool_placeholder')} className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.tool_name ? 'border-red-400' : 'border-gray-300'}`} />
             {errors.tool_name && <p className="text-xs text-red-500 mt-1">{errors.tool_name}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">工具官网 <span className="text-red-500">*</span></label>
+            <input value={form.tool_url} onChange={(e) => set('tool_url', e.target.value)} placeholder="https://..." className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.tool_url ? 'border-red-400' : 'border-gray-300'}`} />
+            {errors.tool_url && <p className="text-xs text-red-500 mt-1">{errors.tool_url}</p>}
           </div>
 
           <div>

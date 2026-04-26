@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { adminCreateReview, adminUpdateReview, adminFetchReviews } from '../../lib/supabase'
 import RichTextEditor from '../../components/RichTextEditor'
 
-const empty = { user_nickname: '', user_occupation: '', rating: '5', content: '', tool_name: '', status: 'approved' }
+const empty = { user_nickname: '', user_occupation: '', rating: '5', content: '', tool_name: '', tool_url: '', status: 'approved' }
 
 export default function AdminReviewEditor({ mode }) {
   const { id } = useParams()
@@ -21,6 +21,7 @@ export default function AdminReviewEditor({ mode }) {
           rating: String(r.rating || 5),
           content: r.content || '',
           tool_name: r.tool_name || '',
+          tool_url: r.tool_url || '',
           status: r.status || 'approved',
         })
       })
@@ -71,8 +72,12 @@ export default function AdminReviewEditor({ mode }) {
             <input value={form.user_occupation} onChange={(e) => set('user_occupation', e.target.value)} placeholder="如：律师" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">推荐工具</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">推荐工具 <span className="text-red-500">*</span></label>
             <input value={form.tool_name} onChange={(e) => set('tool_name', e.target.value)} placeholder="如：法查查AI" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">工具官网 <span className="text-red-500">*</span></label>
+            <input value={form.tool_url} onChange={(e) => set('tool_url', e.target.value)} placeholder="https://..." className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">评分（1-5）</label>
