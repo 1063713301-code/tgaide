@@ -124,6 +124,19 @@ export async function adminDelete(type, id) {
   if (error) throw error
 }
 
+export async function adminBatchDelete(type, ids) {
+  const { error } = await supabase.from(TABLE[type]).delete().in('id', ids)
+  if (error) throw error
+}
+
+export async function adminBatchUpdateStatus(type, ids, status) {
+  const { error } = await supabase
+    .from(TABLE[type])
+    .update({ status, updated_at: new Date().toISOString() })
+    .in('id', ids)
+  if (error) throw error
+}
+
 // ─── 图片上传到 Supabase Storage ─────────────────
 export async function uploadImageToStorage(file) {
   const ext = file.type.split('/')[1] || 'png'

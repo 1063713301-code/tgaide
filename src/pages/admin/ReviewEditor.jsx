@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { adminCreateReview, adminUpdateReview, adminFetchReviews } from '../../lib/supabase'
 
-const empty = { nickname: '', occupation: '', rating: '5', content: '', tool_name: '', status: 'published' }
+const empty = { user_nickname: '', user_occupation: '', rating: '5', content: '', tool_name: '', status: 'approved' }
 
 export default function AdminReviewEditor({ mode }) {
   const { id } = useParams()
@@ -14,7 +14,14 @@ export default function AdminReviewEditor({ mode }) {
     if (mode === 'edit' && id) {
       adminFetchReviews().then((list) => {
         const r = list.find((x) => x.id === id)
-        if (r) setForm({ nickname: r.nickname || '', occupation: r.occupation || '', rating: String(r.rating || 5), content: r.content || '', tool_name: r.tool_name || '', status: r.status || 'published' })
+        if (r) setForm({
+          user_nickname: r.user_nickname || r.nickname || '',
+          user_occupation: r.user_occupation || r.occupation || '',
+          rating: String(r.rating || 5),
+          content: r.content || '',
+          tool_name: r.tool_name || '',
+          status: r.status || 'approved',
+        })
       })
     }
   }, [mode, id])
@@ -22,7 +29,7 @@ export default function AdminReviewEditor({ mode }) {
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }))
 
   async function handleSave() {
-    if (!form.nickname.trim() || !form.content.trim()) return alert('请填写用户昵称和评测内容')
+    if (!form.user_nickname.trim() || !form.content.trim()) return alert('请填写用户昵称和评测内容')
     setSaving(true)
     const payload = { ...form, rating: parseInt(form.rating, 10) || 5 }
     try {
@@ -56,11 +63,11 @@ export default function AdminReviewEditor({ mode }) {
         <div className="bg-white border border-gray-200 rounded-xl p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">用户昵称 <span className="text-red-500">*</span></label>
-            <input value={form.nickname} onChange={(e) => set('nickname', e.target.value)} placeholder="如：张律师" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input value={form.user_nickname} onChange={(e) => set('user_nickname', e.target.value)} placeholder="如：张律师" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">职业</label>
-            <input value={form.occupation} onChange={(e) => set('occupation', e.target.value)} placeholder="如：律师" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input value={form.user_occupation} onChange={(e) => set('user_occupation', e.target.value)} placeholder="如：律师" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">推荐工具</label>
@@ -82,8 +89,9 @@ export default function AdminReviewEditor({ mode }) {
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <label className="block text-sm font-medium text-gray-700 mb-1">发布状态</label>
           <select value={form.status} onChange={(e) => set('status', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="published">已发布</option>
-            <option value="draft">草稿</option>
+            <option value="approved">已发布</option>
+            <option value="pending">待审核</option>
+            <option value="rejected">已拒绝</option>
           </select>
         </div>
 
