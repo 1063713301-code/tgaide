@@ -74,9 +74,12 @@ export async function fetchArticleCount(type, category = null) {
 // ─── 后台 CRUD（使用 anon key，需禁用或宽松配置 RLS） ─
 
 export async function adminFetchAll(type) {
+  const fields = type === 'selection'
+    ? 'id, title, publish_date, scene, period, status, created_at'
+    : 'id, title, publish_date, category, status, created_at'
   const { data, error } = await supabase
     .from(TABLE[type])
-    .select('id, title, publish_date, category, status, created_at')
+    .select(fields)
     .order('created_at', { ascending: false })
   if (error) throw error
   return data || []

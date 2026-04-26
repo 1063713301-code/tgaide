@@ -60,6 +60,8 @@ export default function AdminArticleEditor({ type, mode }) {
             title: data.title || '',
             publish_date: data.publish_date || today(),
             category: data.category || '',
+            scene: data.scene || '',
+            period: data.period || '',
             summary: data.summary || '',
             content: data.content || '',
             pdf_url: data.pdf_url || '',

@@ -15,9 +15,10 @@ export default function AdminArticleList({ type }) {
   const navigate = useNavigate()
 
   const isReport = type === 'report'
-  const title = isReport ? '行业报告管理' : '每日简报管理'
-  const newPath = isReport ? '/admin/reports/new' : '/admin/briefs/new'
-  const editBase = isReport ? '/admin/reports/edit' : '/admin/briefs/edit'
+  const isSelection = type === 'selection'
+  const title = isReport ? '行业报告管理' : isSelection ? '选型速查管理' : '每日简报管理'
+  const newPath = isReport ? '/admin/reports/new' : isSelection ? '/admin/selections/new' : '/admin/briefs/new'
+  const editBase = isReport ? '/admin/reports/edit' : isSelection ? '/admin/selections/edit' : '/admin/briefs/edit'
 
   useEffect(() => {
     document.title = `${title} - TG AI工具库`
@@ -120,7 +121,7 @@ export default function AdminArticleList({ type }) {
                       <span className="font-medium text-gray-800 line-clamp-1">{article.title}</span>
                     </td>
                     <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">
-                      {article.category || '-'}
+                      {isSelection ? (article.scene || '-') : (article.category || '-')}
                     </td>
                     <td className="px-4 py-3 text-gray-400 hidden sm:table-cell">
                       {formatDate(article.publish_date)}
