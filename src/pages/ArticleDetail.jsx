@@ -5,9 +5,22 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import PdfButton from '../components/PdfButton'
 import RichTextContent from '../components/RichTextContent'
-import { fetchArticleById } from '../lib/supabase'
+import { fetchArticleById, fetchToolOfficialUrls } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 import QRCode from 'qrcode'
+
+function injectToolLinks(html, toolUrlMap) {
+  let result = html
+  const sorted = Object.entries(toolUrlMap).sort((a, b) => b[0].length - a[0].length)
+  for (const [name, href] of sorted) {
+    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    result = result.replace(
+      new RegExp(`(<strong>)(${escaped})(</strong>)`, 'g'),
+      `$1<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$2</a>$3`
+    )
+  }
+  return result
+}
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
@@ -132,10 +145,11 @@ export default function ArticleDetail({ type }) {
   const [article, setArticle] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [toolUrlMap, setToolUrlMap] = useState({})
   const { t } = useLang()
 
-  const listPath = type === 'report' ? '/industry-reports' : '/daily-briefs'
-  const listLabel = type === 'report' ? t('reports_title') : t('briefs_title')
+  const listPath = type === 'report' ? '/industry-reports' : type === 'selection' ? '/ai-tool-selection' : '/daily-briefs'
+  const listLabel = type === 'report' ? t('reports_title') : type === 'selection' ? '选型速查' : t('briefs_title')
 
   useEffect(() => {
     setLoading(true)
@@ -146,6 +160,13 @@ export default function ArticleDetail({ type }) {
         document.title = `${data.title} - TG AI工具库`
         setMetaDesc(data.summary || data.title)
         injectJsonLD(data, type)
+        if (type === 'selection' && data.content) {
+          const matches = [...data.content.matchAll(/<strong>([^<]+)<\/strong>/g)].map(m => m[1])
+          const unique = [...new Set(matches)]
+          if (unique.length > 0) {
+            fetchToolOfficialUrls(unique).then(setToolUrlMap).catch(() => {})
+          }
+        }
       })
       .catch(() => setError(t('article_not_found')))
       .finally(() => setLoading(false))
@@ -202,7 +223,22 @@ export default function ArticleDetail({ type }) {
               </div>
             )}
 
-            <div className="mb-10"><RichTextContent html={article.content} /></div>
+            <div className="mb-10"><RichTextContent html={type === 'selection' ? injectToolLinks(article.content, toolUrlMap) : article.content} /></div>
+
+            {type === 'selection' && article.source_report_id && (
+              <div className="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-blue-800">本选型方案来源于行业报告</p>
+                  <p className="text-xs text-blue-600 mt-0.5">点击查看完整报告内容</p>
+                </div>
+                <Link
+                  to={`/industry-reports/${article.source_report_id}`}
+                  className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+                >
+                  查看原始报告 →
+                </Link>
+              </div>
+            )}
 
             <ArticleShareBar article={article} type={type} />
 

@@ -373,6 +373,19 @@ export async function adminDeleteReview(id) {
   if (error) throw error
 }
 
+/** 按工具名批量获取官网地址（选型详情页工具链接用） */
+export async function fetchToolOfficialUrls(names) {
+  const { data, error } = await supabase
+    .from('tools')
+    .select('name, official_url')
+    .in('name', names)
+    .eq('status', 'active')
+  if (error) throw error
+  const map = {}
+  ;(data || []).forEach(t => { if (t.official_url && !map[t.name]) map[t.name] = t.official_url })
+  return map
+}
+
 // ─── 选型速查 ────────────────────────────────────
 
 const SELECTION_SCENES = ['design', 'video', 'marketing', 'legal', 'content', 'finance']
