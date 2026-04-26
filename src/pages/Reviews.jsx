@@ -133,7 +133,7 @@ function SubmitModal({ onClose, onSuccess }) {
     if (!form.tool_name.trim()) e.tool_name = t('reviews_err_tool')
     else if (form.tool_name.length > 50) e.tool_name = t('reviews_err_tool_len')
     if (!form.content.trim()) e.content = t('reviews_err_content')
-    else if (form.content.length < 50) e.content = `${t('reviews_err_content_min')}（当前${form.content.length}字）`
+    else if (form.content.length < 10) e.content = `${t('reviews_err_content_min')}（当前${form.content.length}字）`
     else if (form.content.length > 500) e.content = `${t('reviews_err_content_max')}（当前${form.content.length}字）`
     return e
   }
