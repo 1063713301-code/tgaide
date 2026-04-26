@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { adminCreateReview, adminUpdateReview, adminFetchReviews } from '../../lib/supabase'
+import RichTextEditor from '../../components/RichTextEditor'
 
 const empty = { user_nickname: '', user_occupation: '', rating: '5', content: '', tool_name: '', status: 'approved' }
 
@@ -83,7 +84,7 @@ export default function AdminReviewEditor({ mode }) {
 
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <label className="block text-sm font-medium text-gray-700 mb-1">评测内容 <span className="text-red-500">*</span></label>
-          <textarea value={form.content} onChange={(e) => set('content', e.target.value)} rows={5} placeholder="请输入用户的真实评测内容" className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+          <RichTextEditor value={form.content} onChange={(v) => set('content', v)} placeholder="请输入用户的真实评测内容" />
         </div>
 
         <div className="bg-white border border-gray-200 rounded-xl p-5">
