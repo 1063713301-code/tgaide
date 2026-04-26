@@ -17,7 +17,7 @@ export const translations = {
     footer_disclaimer: '免责声明：本站仅提供工具导航，所有工具均来自官方网站，所有工具的收费政策、服务内容及版权问题均由其官方负责，如有侵权请联系我们删除。',
     footer_copyright: '© 2026 TG AI工具库 | www.tgaide.com 版权所有',
     // Home
-    home_hero_title: '你的职业AI工具指南',
+    home_hero_title: '职场人专属 AI 工具指南，效率翻倍神器库',
     home_hero_sub: '只推荐实测好用的职业AI工具',
     home_search_placeholder: '搜索你的职业AI工具（如：律师AI、设计师AI）',
     home_search_btn: '立即查找',

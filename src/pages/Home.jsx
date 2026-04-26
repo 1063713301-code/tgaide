@@ -58,7 +58,7 @@ export default function Home() {
   const { t, lang } = useLang()
 
   useEffect(() => {
-    document.title = 'TG AI工具库 | 你的职业AI工具指南'
+    document.title = 'TG AI工具库 | 职场人专属 AI 工具指南，效率翻倍神器库'
     setMetaDescription('TG AI工具库 - 只推荐实测好用的职业AI工具，覆盖律师、设计师、会计财税、营销运营、程序员、学生科研，全站内容免费浏览，无需登录。')
   }, [])
 
