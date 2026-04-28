@@ -22,22 +22,33 @@ export const TABLE = {
 // ─── 行业报告 & 每日简报 公共 CRUD ───────────────
 
 /** 获取列表（仅已发布，按日期降序） */
-export async function fetchArticles(type, { category = null, limit = 20, offset = 0 } = {}) {
+export async function fetchArticles(type, { category = null, reportType = null, limit = 20, offset = 0 } = {}) {
   let query = supabase
     .from(TABLE[type])
-    .select('id, title, publish_date, category, summary, pdf_url, status, created_at')
+    .select('id, title, publish_date, category, report_type, summary, pdf_url, status, created_at')
     .eq('status', 'published')
     .order('publish_date', { ascending: false })
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
 
-  if (category) {
-    query = query.eq('category', category)
-  }
+  if (category) query = query.eq('category', category)
+  if (reportType) query = query.eq('report_type', reportType)
 
   const { data, error } = await query
   if (error) throw error
   return data || []
+}
+
+/** 按 report_type 获取报告数量 */
+export async function fetchReportCountByType(reportType) {
+  let query = supabase
+    .from('industry_reports')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'published')
+  if (reportType) query = query.eq('report_type', reportType)
+  const { count, error } = await query
+  if (error) throw error
+  return count || 0
 }
 
 /** 获取首页最新 N 篇（同时读两张表） */
@@ -73,14 +84,15 @@ export async function fetchArticleCount(type, category = null) {
 
 // ─── 后台 CRUD（使用 anon key，需禁用或宽松配置 RLS） ─
 
-export async function adminFetchAll(type) {
+export async function adminFetchAll(type, { reportType = null } = {}) {
   const fields = type === 'selection'
     ? 'id, title, publish_date, scene, period, status, created_at'
+    : type === 'report'
+    ? 'id, title, publish_date, category, report_type, status, created_at'
     : 'id, title, publish_date, category, status, created_at'
-  const { data, error } = await supabase
-    .from(TABLE[type])
-    .select(fields)
-    .order('created_at', { ascending: false })
+  let query = supabase.from(TABLE[type]).select(fields).order('created_at', { ascending: false })
+  if (reportType && type === 'report') query = query.eq('report_type', reportType)
+  const { data, error } = await query
   if (error) throw error
   return data || []
 }

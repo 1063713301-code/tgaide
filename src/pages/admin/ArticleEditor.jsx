@@ -32,7 +32,7 @@ const emptyForm = {
   status: 'published',
 }
 
-export default function AdminArticleEditor({ type, mode }) {
+export default function AdminArticleEditor({ type, mode, reportType = null }) {
   const { id } = useParams()
   const navigate = useNavigate()
   const [form, setForm] = useState(emptyForm)
@@ -44,9 +44,13 @@ export default function AdminArticleEditor({ type, mode }) {
 
   const isReport = type === 'report'
   const isSelection = type === 'selection'
-  const typeLabel = isReport ? '行业报告' : isSelection ? '选型方案' : '每日简报'
+  const typeLabel = isReport && reportType === 'weekly' ? '周报'
+    : isReport && reportType === 'monthly' ? '月报'
+    : isReport && reportType === 'quarterly' ? '季报'
+    : isReport ? '行业报告' : isSelection ? '选型方案' : '每日简报'
   const title = `${mode === 'new' ? '新建' : '编辑'}${typeLabel}`
-  const listPath = isReport ? '/admin/reports' : isSelection ? '/admin/selections' : '/admin/briefs'
+  const listPath = isReport && reportType ? `/admin/reports/${reportType}`
+    : isReport ? '/admin/reports' : isSelection ? '/admin/selections' : '/admin/briefs'
 
   useEffect(() => {
     document.title = `${title} - TG AI工具库`
@@ -97,6 +101,7 @@ export default function AdminArticleEditor({ type, mode }) {
 
     setSaving(true)
     const payload = { ...form, status: statusOverride || form.status }
+    if (isReport && reportType) payload.report_type = reportType
 
     try {
       let saved

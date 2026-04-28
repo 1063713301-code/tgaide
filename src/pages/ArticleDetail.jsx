@@ -148,7 +148,9 @@ export default function ArticleDetail({ type }) {
   const [toolUrlMap, setToolUrlMap] = useState({})
   const { t } = useLang()
 
-  const listPath = type === 'report' ? '/industry-reports' : type === 'selection' ? '/ai-tool-selection' : '/daily-briefs'
+  const listPath = type === 'report'
+    ? (article?.report_type ? `/industry-reports/${article.report_type}` : '/industry-reports')
+    : type === 'selection' ? '/ai-tool-selection' : '/daily-briefs'
   const listLabel = type === 'report' ? t('reports_title') : type === 'selection' ? '选型速查' : t('briefs_title')
 
   useEffect(() => {
@@ -224,6 +226,27 @@ export default function ArticleDetail({ type }) {
             )}
 
             <div className="mb-10"><RichTextContent html={type === 'selection' ? injectToolLinks(article.content, toolUrlMap) : article.content} /></div>
+
+            {type === 'report' && (
+              <div className="mb-8 p-5 bg-gray-50 border border-gray-200 rounded-xl">
+                <p className="text-sm font-semibold text-gray-700 mb-3">相关AI工具推荐</p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { name: '全部工具', href: '/tools' },
+                    { name: '律师AI工具', href: '/tools?category=律师' },
+                    { name: '设计师AI工具', href: '/tools?category=设计师' },
+                    { name: '会计AI工具', href: '/tools?category=会计' },
+                    { name: '营销AI工具', href: '/tools?category=营销' },
+                    { name: '程序员AI工具', href: '/tools?category=程序员' },
+                  ].map(({ name, href }) => (
+                    <Link key={href} to={href}
+                      className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors">
+                      {name} →
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {type === 'selection' && article.source_report_id && (
               <div className="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between">

@@ -48,7 +48,6 @@ function CardSkeleton() {
 
 export default function Home() {
   const [reports, setReports] = useState([])
-  const [briefs, setBriefs] = useState([])
   const [recommended, setRecommended] = useState([])
   const [hotTools, setHotTools] = useState([])
   const [newTools, setNewTools] = useState([])
@@ -68,15 +67,13 @@ export default function Home() {
     // 主要内容加载
     Promise.all([
       fetchLatestArticles('report', 6),
-      fetchLatestArticles('brief', 6),
       fetchToolCount(),
       fetchTools({ sort: 'recommended', limit: 8 }),
       fetchTools({ sort: 'is_hot', limit: 8 }),
       fetchTools({ sort: 'newest', limit: 8 }),
     ])
-      .then(([r, b, count, { data: recommended }, { data: hot }, { data: newest }]) => {
+      .then(([r, count, { data: recommended }, { data: hot }, { data: newest }]) => {
         setReports(r)
-        setBriefs(b)
         setToolCount(count)
         setRecommended(recommended)
         setHotTools(hot)
@@ -223,33 +220,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 今日AI工具简报 ── */}
-        <section className="mb-14">
-          <SectionHeader title={t('home_briefs_title')} link="/daily-briefs" />
-          <div className="mb-4 text-sm text-gray-500">{t('home_briefs_sub')}</div>
-          {loading ? (
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
-            </div>
-          ) : briefs.length === 0 ? (
-            <div className="text-center py-12 text-gray-400"><p>{t('home_no_briefs')}</p></div>
-          ) : (
-            <div className="marquee-wrap">
-              <div className="marquee-track" style={{ animationDuration: `${briefs.length * 4}s` }}>
-                {[...briefs, ...briefs].map((item, idx) => (
-                  <div key={idx} className="flex-shrink-0 w-72" style={{ marginRight: '1rem' }}>
-                    <ArticleCard article={item} type="brief" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* ── 工具行业报告 ── */}
+        {/* ── 最新行业报告 ── */}
         <section className="mb-10">
-          <SectionHeader title={t('home_reports_title')} link="/industry-reports" />
-          <div className="mb-4 text-sm text-gray-500">{t('home_reports_sub')}</div>
+          <SectionHeader title="📊 最新行业报告" link="/industry-reports" />
+          <div className="mb-4 text-sm text-gray-500">收录最新职业AI工具实测及行业发展报告，含周报、月报、季报</div>
           {loading ? (
             <div className="flex gap-4 overflow-x-auto pb-2">
               {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}

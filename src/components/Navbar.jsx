@@ -9,7 +9,6 @@ export default function Navbar() {
 
   const NAV_LINKS = [
     { label: t('nav_tools'), href: '/tools' },
-    { label: t('nav_briefs'), href: '/daily-briefs' },
     { label: t('nav_reports'), href: '/industry-reports' },
     { label: t('nav_reviews'), href: '/reviews' },
   ]

@@ -5,7 +5,7 @@ import { isAdminAuthenticated } from './hooks/useAuth'
 const Home = lazy(() => import('./pages/Home'))
 const AllTools = lazy(() => import('./pages/AllTools'))
 const IndustryReports = lazy(() => import('./pages/IndustryReports'))
-const DailyBriefs = lazy(() => import('./pages/DailyBriefs'))
+const ReportList = lazy(() => import('./pages/ReportList'))
 const ArticleDetail = lazy(() => import('./pages/ArticleDetail'))
 const Reviews = lazy(() => import('./pages/Reviews'))
 const AIToolSelection = lazy(() => import('./pages/AIToolSelection'))
@@ -38,9 +38,10 @@ export default function App() {
           <Route path="/tools" element={<AllTools />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/industry-reports" element={<IndustryReports />} />
+          <Route path="/industry-reports/weekly" element={<ReportList reportType="weekly" />} />
+          <Route path="/industry-reports/monthly" element={<ReportList reportType="monthly" />} />
+          <Route path="/industry-reports/quarterly" element={<ReportList reportType="quarterly" />} />
           <Route path="/industry-reports/:id" element={<ArticleDetail type="report" />} />
-          <Route path="/daily-briefs" element={<DailyBriefs />} />
-          <Route path="/daily-briefs/:id" element={<ArticleDetail type="brief" />} />
           <Route path="/compare" element={<CompareTools />} />
           <Route path="/ai-tool-selection" element={<AIToolSelection />} />
           <Route path="/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
@@ -51,9 +52,15 @@ export default function App() {
           <Route path="/admin/reports" element={<ProtectedRoute><AdminArticleList type="report" /></ProtectedRoute>} />
           <Route path="/admin/reports/new" element={<ProtectedRoute><AdminArticleEditor type="report" mode="new" /></ProtectedRoute>} />
           <Route path="/admin/reports/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="report" mode="edit" /></ProtectedRoute>} />
-          <Route path="/admin/briefs" element={<ProtectedRoute><AdminArticleList type="brief" /></ProtectedRoute>} />
-          <Route path="/admin/briefs/new" element={<ProtectedRoute><AdminArticleEditor type="brief" mode="new" /></ProtectedRoute>} />
-          <Route path="/admin/briefs/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="brief" mode="edit" /></ProtectedRoute>} />
+          <Route path="/admin/reports/weekly" element={<ProtectedRoute><AdminArticleList type="report" reportType="weekly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/weekly/new" element={<ProtectedRoute><AdminArticleEditor type="report" mode="new" reportType="weekly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/weekly/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="report" mode="edit" reportType="weekly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/monthly" element={<ProtectedRoute><AdminArticleList type="report" reportType="monthly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/monthly/new" element={<ProtectedRoute><AdminArticleEditor type="report" mode="new" reportType="monthly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/monthly/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="report" mode="edit" reportType="monthly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/quarterly" element={<ProtectedRoute><AdminArticleList type="report" reportType="quarterly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/quarterly/new" element={<ProtectedRoute><AdminArticleEditor type="report" mode="new" reportType="quarterly" /></ProtectedRoute>} />
+          <Route path="/admin/reports/quarterly/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="report" mode="edit" reportType="quarterly" /></ProtectedRoute>} />
           <Route path="/admin/selections" element={<ProtectedRoute><AdminArticleList type="selection" /></ProtectedRoute>} />
           <Route path="/admin/selections/new" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="new" /></ProtectedRoute>} />
           <Route path="/admin/selections/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="edit" /></ProtectedRoute>} />

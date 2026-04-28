@@ -8,7 +8,7 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('zh-CN')
 }
 
-export default function AdminArticleList({ type }) {
+export default function AdminArticleList({ type, reportType = null }) {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(null)
@@ -18,20 +18,25 @@ export default function AdminArticleList({ type }) {
 
   const isReport = type === 'report'
   const isSelection = type === 'selection'
-  const title = isReport ? '行业报告管理' : isSelection ? '选型速查管理' : '每日简报管理'
-  const newPath = isReport ? '/admin/reports/new' : isSelection ? '/admin/selections/new' : '/admin/briefs/new'
-  const editBase = isReport ? '/admin/reports/edit' : isSelection ? '/admin/selections/edit' : '/admin/briefs/edit'
+  const title = isReport && reportType === 'weekly' ? '周报管理'
+    : isReport && reportType === 'monthly' ? '月报管理'
+    : isReport && reportType === 'quarterly' ? '季报管理'
+    : isReport ? '行业报告管理' : isSelection ? '选型速查管理' : '每日简报管理'
+  const newPath = isReport && reportType ? `/admin/reports/${reportType}/new`
+    : isReport ? '/admin/reports/new' : isSelection ? '/admin/selections/new' : '/admin/briefs/new'
+  const editBase = isReport && reportType ? `/admin/reports/${reportType}/edit`
+    : isReport ? '/admin/reports/edit' : isSelection ? '/admin/selections/edit' : '/admin/briefs/edit'
 
   useEffect(() => {
     document.title = `${title} - TG AI工具库`
     loadData()
-  }, [type])
+  }, [type, reportType])
 
   async function loadData() {
     setLoading(true)
     setSelected(new Set())
     try {
-      const data = await adminFetchAll(type)
+      const data = await adminFetchAll(type, { reportType })
       setArticles(data)
     } catch (e) {
       alert('加载数据失败：' + e.message)
