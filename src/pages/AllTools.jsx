@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo, useCallback, useRef, useLayoutEffect } from 'react'
 import { createPortal } from 'react-dom'
 import QRCode from 'qrcode'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { fetchTools } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
+import { setSEO, breadcrumb } from '../lib/seo'
 
 const COMPARE_KEY = 'tgaide_compare'
 function getCompare() {
@@ -250,10 +251,12 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) 
       </div>
 
       {/* Logo */}
-      <div className="mb-3"><ToolIcon tool={tool} /></div>
+      <Link to={`/tools/${tool.slug || tool.id}`} className="mb-3 no-underline"><ToolIcon tool={tool} /></Link>
 
       {/* 名称 */}
-      <h3 className="font-bold text-gray-900 text-center text-base mb-1 leading-snug">{name}</h3>
+      <Link to={`/tools/${tool.slug || tool.id}`} className="no-underline">
+        <h3 className="font-bold text-gray-900 text-center text-base mb-1 leading-snug hover:text-blue-600 transition-colors">{name}</h3>
+      </Link>
 
       {/* 超短功能标签 */}
       {tool.short_tag && (
@@ -352,7 +355,15 @@ export default function AllTools() {
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch)
 
   useEffect(() => {
-    document.title = '全部工具 - TG AI工具库'
+    setSEO({
+      title: '全部AI工具 - TG AI工具库',
+      description: '收录律师、设计师、会计、营销、程序员、学生科研六大职业精选AI工具，支持评分、价格、分类筛选。',
+      path: '/tools',
+      jsonLD: [
+        breadcrumb([{ name: '首页', path: '/' }, { name: 'AI工具库', path: '/tools' }]),
+        { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'TG AI工具库', url: 'https://tgaide.com/tools' },
+      ],
+    })
     const params = new URLSearchParams(location.search)
     const q = params.get('q')
     const cat = params.get('category') || ''

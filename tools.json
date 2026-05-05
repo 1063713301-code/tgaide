@@ -1,0 +1,112 @@
+[
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "slug": "chatgpt",
+    "url": "https://chat.openai.com",
+    "category": "通用",
+    "description": "OpenAI 出品的对话式 AI，支持文本生成、代码、分析等多种任务，是目前使用最广泛的 AI 助手。",
+    "pricing": "免费/Plus $20/月",
+    "jtbd": "当我需要快速起草文案、解释复杂概念或生成代码时，我希望有一个能理解上下文并给出专业回答的 AI 助手。",
+    "roles": ["律师", "设计师", "营销运营", "程序员", "学生科研", "会计财税"]
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "slug": "claude",
+    "url": "https://claude.ai",
+    "category": "通用",
+    "description": "Anthropic 出品，擅长长文档分析、合同审查、代码审计，上下文窗口超大，适合处理复杂专业文档。",
+    "pricing": "免费/Pro $20/月",
+    "jtbd": "当我需要分析长篇合同、审查代码库或处理大量文档时，我需要一个能保持上下文连贯性的 AI。",
+    "roles": ["律师", "程序员", "会计财税", "学生科研"]
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "slug": "midjourney",
+    "url": "https://midjourney.com",
+    "category": "设计",
+    "description": "顶级 AI 图像生成工具，生成质量业界领先，广泛用于品牌视觉、插画、概念设计。",
+    "pricing": "Basic $10/月起",
+    "jtbd": "当我需要快速生成高质量概念图、品牌视觉或插画时，我希望用文字描述就能得到专业级图像。",
+    "roles": ["设计师", "营销运营"]
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "slug": "cursor",
+    "url": "https://cursor.sh",
+    "category": "编程",
+    "description": "AI 原生代码编辑器，内置 Claude 和 GPT-4，支持代码补全、重构、解释，大幅提升开发效率。",
+    "pricing": "免费/Pro $20/月",
+    "jtbd": "当我在编写或重构代码时，我需要一个能理解整个代码库上下文并给出精准建议的 AI 编辑器。",
+    "roles": ["程序员"]
+  },
+  {
+    "id": "notion-ai",
+    "name": "Notion AI",
+    "slug": "notion-ai",
+    "url": "https://notion.so",
+    "category": "效率",
+    "description": "集成在 Notion 中的 AI 写作助手，支持文档总结、内容生成、翻译，适合知识管理和团队协作。",
+    "pricing": "$10/成员/月",
+    "jtbd": "当我需要整理会议记录、生成报告或总结文档时，我希望 AI 能直接在我的工作空间内完成。",
+    "roles": ["营销运营", "学生科研", "会计财税"]
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity AI",
+    "slug": "perplexity",
+    "url": "https://perplexity.ai",
+    "category": "搜索",
+    "description": "AI 驱动的搜索引擎，实时联网检索并给出带引用来源的答案，适合研究调研和事实核查。",
+    "pricing": "免费/Pro $20/月",
+    "jtbd": "当我需要快速调研某个话题并获取可信来源时，我需要一个能实时搜索并整合信息的 AI 工具。",
+    "roles": ["律师", "学生科研", "营销运营"]
+  },
+  {
+    "id": "runway",
+    "name": "Runway",
+    "slug": "runway",
+    "url": "https://runwayml.com",
+    "category": "视频",
+    "description": "专业 AI 视频生成与编辑平台，支持文生视频、视频编辑、背景替换，是视频创作者的利器。",
+    "pricing": "Standard $15/月起",
+    "jtbd": "当我需要制作营销视频或创意内容时，我希望用 AI 大幅缩短视频制作周期。",
+    "roles": ["设计师", "营销运营"]
+  },
+  {
+    "id": "gamma",
+    "name": "Gamma",
+    "slug": "gamma",
+    "url": "https://gamma.app",
+    "category": "演示",
+    "description": "AI 驱动的演示文稿生成工具，输入主题即可自动生成精美 PPT，支持一键导出。",
+    "pricing": "免费/Plus $10/月",
+    "jtbd": "当我需要快速制作汇报 PPT 或提案演示时，我希望 AI 能自动完成排版和内容组织。",
+    "roles": ["营销运营", "学生科研", "会计财税"]
+  },
+  {
+    "id": "kimi",
+    "name": "Kimi",
+    "slug": "kimi",
+    "url": "https://kimi.moonshot.cn",
+    "category": "通用",
+    "description": "月之暗面出品的中文 AI 助手，支持超长文档解析（最高200万字），适合处理合同、财报、论文。",
+    "pricing": "免费/专业版 ¥99/月",
+    "jtbd": "当我需要解析超长中文文档、合同或财报时，我需要一个能完整理解全文并精准回答的 AI。",
+    "roles": ["律师", "会计财税", "学生科研"]
+  },
+  {
+    "id": "canva-ai",
+    "name": "Canva AI",
+    "slug": "canva-ai",
+    "url": "https://canva.com",
+    "category": "设计",
+    "description": "Canva 内置的 AI 设计套件，包含 Magic Design、文生图、背景移除等功能，零门槛快速出图。",
+    "pricing": "免费/Pro ¥99/月",
+    "jtbd": "当我需要快速制作社交媒体图片、海报或营销物料时，我希望不需要专业设计技能也能出好作品。",
+    "roles": ["设计师", "营销运营", "学生科研"]
+  }
+]

@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/generate-sitemap.js && vite build && node scripts/prerender.js",
+    "build:vite": "vite build",
+    "sitemap": "node scripts/generate-sitemap.js",
+    "prerender": "node scripts/prerender.js",
     "preview": "vite preview"
   },
   "dependencies": {

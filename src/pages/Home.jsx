@@ -6,6 +6,7 @@ import ArticleCard from '../components/ArticleCard'
 import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount, fetchLatestSelections } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 import { SELECTION_SCENES } from './AIToolSelection'
+import { setSEO, orgJsonLD } from '../lib/seo'
 
 // ─── 职业分类数据 ────────────────
 const CAREER_CATEGORIES = [
@@ -59,8 +60,23 @@ export default function Home() {
   const { t, lang } = useLang()
 
   useEffect(() => {
-    document.title = 'TG AI工具库 | 职场人专属 AI 工具指南，效率翻倍神器库'
-    setMetaDescription('TG AI工具库 - 只推荐实测好用的职业AI工具，覆盖律师、设计师、会计财税、营销运营、程序员、学生科研，全站内容免费浏览，无需登录。')
+    setSEO({
+      title: 'TG AI工具库 | 职场人专属 AI 工具指南，效率翻倍神器库',
+      description: 'TG AI工具库 - 只推荐实测好用的职业AI工具，覆盖律师、设计师、会计财税、营销运营、程序员、学生科研，全站内容免费浏览，无需登录。',
+      path: '/',
+      jsonLD: [
+        orgJsonLD,
+        {
+          '@context': 'https://schema.org', '@type': 'WebSite',
+          name: 'TG AI工具库', url: 'https://tgaide.com',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://tgaide.com/tools?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
+        },
+      ],
+    })
   }, [])
 
   useEffect(() => {
@@ -278,7 +294,7 @@ export default function Home() {
                     const toolName = (lang === 'en' && tool.name_en) ? tool.name_en : tool.name
                     const toolDesc = (lang === 'en' && tool.description_en) ? tool.description_en : tool.description
                     return (
-                    <Link key={idx} to={`/tools?q=${encodeURIComponent(tool.name)}`}
+                    <Link key={idx} to={`/tools/${tool.slug || tool.id}`}
                       className="flex-shrink-0 w-56 bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow no-underline" style={{ marginRight: '1rem' }}>
                       <div className="flex items-center gap-3 mb-3">
                         {tool.icon_url ? (

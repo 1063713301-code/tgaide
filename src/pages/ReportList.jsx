@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import ArticleCard from '../components/ArticleCard'
 import { fetchArticles, fetchReportCountByType } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
+import { setSEO, breadcrumb } from '../lib/seo'
 
 const PAGE_SIZE = 12
 
@@ -32,7 +33,18 @@ export default function ReportList({ reportType }) {
   const titleKey = `reports_${reportType}`
   const subKey = `reports_${reportType}_sub`
 
-  useEffect(() => { document.title = `${t(titleKey)} - TG AI工具库` }, [reportType])
+  useEffect(() => {
+    setSEO({
+      title: `${t(titleKey)} - TG AI工具库`,
+      description: t(subKey),
+      path: `/industry-reports/${reportType}`,
+      jsonLD: breadcrumb([
+        { name: '首页', path: '/' },
+        { name: t('reports_title'), path: '/industry-reports' },
+        { name: t(titleKey), path: `/industry-reports/${reportType}` },
+      ]),
+    })
+  }, [reportType, t, titleKey, subKey])
 
   const load = useCallback(async (pg) => {
     setLoading(true)

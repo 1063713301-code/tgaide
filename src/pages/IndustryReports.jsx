@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useLang } from '../lib/i18n.jsx'
+import { setSEO, breadcrumb } from '../lib/seo'
 
 const REPORT_TYPES = [
   { type: 'weekly',    path: '/industry-reports/weekly',    icon: '📅', color: 'from-blue-50 to-blue-100',       border: 'border-blue-200',    tag: 'bg-blue-100 text-blue-700' },
@@ -13,7 +14,14 @@ const REPORT_TYPES = [
 export default function IndustryReports() {
   const { t } = useLang()
 
-  useEffect(() => { document.title = `${t('reports_title')} - TG AI工具库` }, [])
+  useEffect(() => {
+    setSEO({
+      title: `${t('reports_title')} - TG AI工具库`,
+      description: 'AI工具行业周报、月报、季报，深度分析趋势与赛道动态。',
+      path: '/industry-reports',
+      jsonLD: breadcrumb([{ name: '首页', path: '/' }, { name: t('reports_title'), path: '/industry-reports' }]),
+    })
+  }, [t])
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

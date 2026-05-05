@@ -8,6 +8,7 @@ import RichTextContent from '../components/RichTextContent'
 import { fetchArticleById, fetchToolOfficialUrls } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 import QRCode from 'qrcode'
+import { setSEO, breadcrumb } from '../lib/seo'
 
 function injectToolLinks(html, toolUrlMap) {
   let result = html
@@ -159,9 +160,28 @@ export default function ArticleDetail({ type }) {
     fetchArticleById(type, id)
       .then((data) => {
         setArticle(data)
-        document.title = `${data.title} - TG AI工具库`
-        setMetaDesc(data.summary || data.title)
-        injectJsonLD(data, type)
+        const basePath = type === 'report' ? '/industry-reports' : type === 'selection' ? '/ai-tool-selection' : '/daily-briefs'
+        const subPath = type === 'report' && data.report_type ? `/industry-reports/${data.report_type}` : basePath
+        const detailPath = type === 'selection' && data.scene ? `${basePath}/${data.scene}/${data.id}` : `${basePath}/${data.id}`
+        setSEO({
+          title: `${data.title} - TG AI工具库`,
+          description: data.summary || data.title,
+          path: detailPath,
+          jsonLD: [
+            { '@context': 'https://schema.org', '@type': 'Article',
+              headline: data.title, description: data.summary,
+              datePublished: data.publish_date, dateModified: data.updated_at || data.publish_date,
+              publisher: { '@type': 'Organization', name: 'TG AI工具库', url: 'https://tgaide.com' },
+              url: `https://tgaide.com${detailPath}`,
+            },
+            breadcrumb([
+              { name: '首页', path: '/' },
+              { name: type === 'report' ? '行业报告' : type === 'selection' ? '选型速查' : '每日简报', path: basePath },
+              ...(subPath !== basePath ? [{ name: data.report_type === 'weekly' ? '周报' : data.report_type === 'monthly' ? '月报' : '季报', path: subPath }] : []),
+              { name: data.title, path: detailPath },
+            ]),
+          ],
+        })
         if (type === 'selection' && data.content) {
           const matches = [...data.content.matchAll(/<strong>([^<]+)<\/strong>/g)].map(m => m[1])
           const unique = [...new Set(matches)]

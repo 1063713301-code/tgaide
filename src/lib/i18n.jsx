@@ -182,6 +182,17 @@ export const translations = {
     admin_login_pwd: '管理员密码',
     admin_login_btn: '登录',
     admin_login_err: '密码错误',
+    // Tool detail
+    tool_visit: '访问官网',
+    tool_tg_advice: 'TG 使用建议',
+    tool_highlights: '核心亮点',
+    tool_drawbacks: '注意事项',
+    tool_full_desc: '详细介绍',
+    tool_not_found: '工具不存在或已下线',
+    // Compare
+    compare_vs_title: '深度对比',
+    compare_vs_sub: '帮你选出最适合的 AI 工具，省去踩坑时间',
+    compare_tg_advice: 'TG 选型建议',
   },
   en: {
     // Navbar

@@ -1,6 +1,19 @@
-import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { isAdminAuthenticated } from './hooks/useAuth'
+import { useLang } from './lib/i18n.jsx'
+
+function LangSync() {
+  const { pathname } = useLocation()
+  const { lang, setLang } = useLang()
+  useEffect(() => {
+    const isEn = pathname.startsWith('/en/') || pathname === '/en'
+    const target = isEn ? 'en' : 'zh'
+    if (lang !== target) setLang(target)
+    document.documentElement.lang = target === 'en' ? 'en' : 'zh-CN'
+  }, [pathname, lang, setLang])
+  return null
+}
 
 const Home = lazy(() => import('./pages/Home'))
 const AllTools = lazy(() => import('./pages/AllTools'))
@@ -11,6 +24,8 @@ const Reviews = lazy(() => import('./pages/Reviews'))
 const AIToolSelection = lazy(() => import('./pages/AIToolSelection'))
 const AIToolSelectionScene = lazy(() => import('./pages/AIToolSelectionScene'))
 const CompareTools = lazy(() => import('./pages/CompareTools'))
+const ToolDetail = lazy(() => import('./pages/ToolDetail'))
+const CompareDetail = lazy(() => import('./pages/CompareDetail'))
 const AdminLogin = lazy(() => import('./pages/admin/Login'))
 const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'))
 const AdminArticleList = lazy(() => import('./pages/admin/ArticleList'))
@@ -32,20 +47,37 @@ function PageLoader() {
 export default function App() {
   return (
     <BrowserRouter>
+      <LangSync />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/en" element={<Home />} />
           <Route path="/tools" element={<AllTools />} />
+          <Route path="/en/tools" element={<AllTools />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/en/reviews" element={<Reviews />} />
           <Route path="/industry-reports" element={<IndustryReports />} />
+          <Route path="/en/industry-reports" element={<IndustryReports />} />
           <Route path="/industry-reports/weekly" element={<ReportList reportType="weekly" />} />
+          <Route path="/en/industry-reports/weekly" element={<ReportList reportType="weekly" />} />
           <Route path="/industry-reports/monthly" element={<ReportList reportType="monthly" />} />
+          <Route path="/en/industry-reports/monthly" element={<ReportList reportType="monthly" />} />
           <Route path="/industry-reports/quarterly" element={<ReportList reportType="quarterly" />} />
+          <Route path="/en/industry-reports/quarterly" element={<ReportList reportType="quarterly" />} />
           <Route path="/industry-reports/:id" element={<ArticleDetail type="report" />} />
+          <Route path="/en/industry-reports/:id" element={<ArticleDetail type="report" />} />
+          <Route path="/tools/:slug" element={<ToolDetail />} />
+          <Route path="/en/tools/:slug" element={<ToolDetail />} />
           <Route path="/compare" element={<CompareTools />} />
+          <Route path="/en/compare" element={<CompareTools />} />
+          <Route path="/compare/:pair" element={<CompareDetail />} />
+          <Route path="/en/compare/:pair" element={<CompareDetail />} />
           <Route path="/ai-tool-selection" element={<AIToolSelection />} />
+          <Route path="/en/ai-tool-selection" element={<AIToolSelection />} />
           <Route path="/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
+          <Route path="/en/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
           <Route path="/ai-tool-selection/:scene/:id" element={<ArticleDetail type="selection" />} />
+          <Route path="/en/ai-tool-selection/:scene/:id" element={<ArticleDetail type="selection" />} />
 
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
