@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { adminLogout } from '../../hooks/useAuth'
-import { adminFetchAll, adminFetchTools, adminFetchReviews, adminFetchSelectionCount } from '../../lib/supabase'
+import { adminFetchAll, adminFetchTools, adminFetchReviews, adminFetchSelectionCount, adminFetchPendingToolsCount } from '../../lib/supabase'
 
 function StatCard({ label, value, color, link, icon }) {
   return (
@@ -27,6 +27,7 @@ const QUICK_ACTIONS = [
   { to: '/admin/reports/weekly',       icon: '📅', label: '管理周报' },
   { to: '/admin/reports/monthly',      icon: '📈', label: '管理月报' },
   { to: '/admin/tools',                icon: '🗂️', label: '管理工具列表' },
+  { to: '/admin/tools/pending',        icon: '🆕', label: '审核每日新工具' },
   { to: '/admin/reviews',              icon: '💬', label: '管理评测列表' },
   { to: '/admin/selections/new',       icon: '🎯', label: '新建选型方案' },
   { to: '/admin/selections',           icon: '📌', label: '管理选型速查' },
@@ -34,15 +35,15 @@ const QUICK_ACTIONS = [
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const [stats, setStats] = useState({ reports: 0, weekly: 0, monthly: 0, tools: 0, reviews: 0, selections: 0 })
+  const [stats, setStats] = useState({ reports: 0, weekly: 0, monthly: 0, tools: 0, reviews: 0, selections: 0, pending: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { document.title = '后台管理 - TG AI工具库' }, [])
 
   useEffect(() => {
-    Promise.all([adminFetchAll('report'), adminFetchAll('report', { reportType: 'weekly' }), adminFetchAll('report', { reportType: 'monthly' }), adminFetchTools(), adminFetchReviews(), adminFetchSelectionCount()])
-      .then(([reports, weekly, monthly, tools, reviews, selections]) => {
-        setStats({ reports: reports.length, weekly: weekly.length, monthly: monthly.length, tools: tools.length, reviews: reviews.length, selections })
+    Promise.all([adminFetchAll('report'), adminFetchAll('report', { reportType: 'weekly' }), adminFetchAll('report', { reportType: 'monthly' }), adminFetchTools(), adminFetchReviews(), adminFetchSelectionCount(), adminFetchPendingToolsCount()])
+      .then(([reports, weekly, monthly, tools, reviews, selections, pending]) => {
+        setStats({ reports: reports.length, weekly: weekly.length, monthly: monthly.length, tools: tools.length, reviews: reviews.length, selections, pending })
       })
       .catch(console.error)
       .finally(() => setLoading(false))
@@ -74,6 +75,7 @@ export default function AdminDashboard() {
               <StatCard icon="📅" label="周报"     value={stats.weekly}  color="text-purple-600" link="/admin/reports/weekly"  />
               <StatCard icon="📈" label="月报"     value={stats.monthly} color="text-indigo-600" link="/admin/reports/monthly" />
               <StatCard icon="🔧" label="AI工具"   value={stats.tools}   color="text-orange-500" link="/admin/tools"  />
+              <StatCard icon="🆕" label={`待审核 ${stats.pending > 0 ? '🔴' : ''}`} value={stats.pending} color={stats.pending > 0 ? 'text-red-500' : 'text-gray-400'} link="/admin/tools/pending" />
               <StatCard icon="💬" label="用户评测" value={stats.reviews} color="text-emerald-600" link="/admin/reviews" />
               <StatCard icon="🎯" label="选型速查" value={stats.selections} color="text-indigo-600" link="/admin/selections" />
             </>

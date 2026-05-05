@@ -261,6 +261,36 @@ export async function adminFetchTools() {
   return data || []
 }
 
+/** 后台：待审核工具列表 */
+export async function adminFetchPendingTools() {
+  const { data, error } = await supabase
+    .from('tools')
+    .select('*')
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data || []
+}
+
+/** 后台：待审核工具数量 */
+export async function adminFetchPendingToolsCount() {
+  const { count, error } = await supabase
+    .from('tools')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'pending')
+  if (error) throw error
+  return count || 0
+}
+
+/** 后台：批量发布（pending → active） */
+export async function adminApproveTools(ids) {
+  const { error } = await supabase
+    .from('tools')
+    .update({ status: 'active', updated_at: new Date().toISOString() })
+    .in('id', ids)
+  if (error) throw error
+}
+
 /** 后台：创建工具 */
 export async function adminCreateTool(payload) {
   const { data, error } = await supabase

@@ -31,6 +31,7 @@ const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'))
 const AdminArticleList = lazy(() => import('./pages/admin/ArticleList'))
 const AdminArticleEditor = lazy(() => import('./pages/admin/ArticleEditor'))
 const AdminToolList = lazy(() => import('./pages/admin/ToolList'))
+const AdminPendingToolList = lazy(() => import('./pages/admin/PendingToolList'))
 const AdminToolEditor = lazy(() => import('./pages/admin/ToolEditor'))
 const AdminReviewList = lazy(() => import('./pages/admin/ReviewList'))
 const AdminReviewEditor = lazy(() => import('./pages/admin/ReviewEditor'))
@@ -97,6 +98,7 @@ export default function App() {
           <Route path="/admin/selections/new" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="new" /></ProtectedRoute>} />
           <Route path="/admin/selections/edit/:id" element={<ProtectedRoute><AdminArticleEditor type="selection" mode="edit" /></ProtectedRoute>} />
           <Route path="/admin/tools" element={<ProtectedRoute><AdminToolList /></ProtectedRoute>} />
+          <Route path="/admin/tools/pending" element={<ProtectedRoute><AdminPendingToolList /></ProtectedRoute>} />
           <Route path="/admin/tools/new" element={<ProtectedRoute><AdminToolEditor mode="new" /></ProtectedRoute>} />
           <Route path="/admin/tools/:id/edit" element={<ProtectedRoute><AdminToolEditor mode="edit" /></ProtectedRoute>} />
           <Route path="/admin/reviews" element={<ProtectedRoute><AdminReviewList /></ProtectedRoute>} />
