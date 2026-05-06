@@ -134,14 +134,19 @@ ${candidates.map((c, i) => `${i + 1}. ${c.name} | ${c.url} | ${c.hint || '无描
   return result.items || []
 }
 
-async function generateContent(name, url, hint) {
+async function generateContent(name, url, hint, source) {
+  const isGithub = source === 'github' || url.includes('github.com')
+  const urlNote = isGithub
+    ? '（这是 GitHub 仓库地址，请在 official_url 中填写该工具真实的独立官网；若无独立官网则原样返回此 GitHub 地址）'
+    : '（请在 official_url 中填写该工具官网，与上方一致即可）'
   const prompt = `为 TG AI工具库 生成工具的中文介绍。
 工具名: ${name}
-官网/源: ${url}
+来源地址: ${url} ${urlNote}
 已知信息: ${hint || '无'}
 
 输出 JSON：
 {
+  "official_url": "工具真实官网URL",
   "description": "一句话简介，50字内",
   "short_tag": "核心标签，10字内",
   "highlights": ["亮点1（10字内）","亮点2","亮点3"],
@@ -192,13 +197,13 @@ async function main() {
   let ok = 0
   for (const p of picks) {
     try {
-      const c = await generateContent(p.name, p.url, p.hint)
+      const c = await generateContent(p.name, p.url, p.hint, p.source)
       const slug = toSlug(p.name)
       const payload = {
         name: p.name,
         slug,
         category: p.role,
-        official_url: p.url,
+        official_url: c.official_url || p.url,
         description: c.description,
         short_tag: c.short_tag,
         highlights: c.highlights || [],
