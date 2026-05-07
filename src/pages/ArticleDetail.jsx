@@ -185,14 +185,19 @@ export default function ArticleDetail({ type }) {
             ]),
           ],
         })
-        if (type === 'selection' && data.content) {
-          // Extract tool names from "推荐工具组合：" labels
-          const toolCombos = [...data.content.matchAll(/<strong>推荐工具组合：<\/strong>\s*([^<]+)/g)].map(m => m[1].trim())
-          const unique = [...new Set(
-            toolCombos.flatMap(combo => combo.split(/[+、,，]/).map(t => t.trim()))
-          )].filter(Boolean)
-          if (unique.length > 0) {
-            fetchToolOfficialUrls(unique).then(setToolUrlMap).catch(() => {})
+        if ((type === 'selection' || type === 'report') && data.content) {
+          const names = new Set()
+          // From selection: "推荐工具组合：tool1 + tool2"
+          ;[...data.content.matchAll(/<strong>推荐工具组合：<\/strong>\s*([^<]+)/g)]
+            .flatMap(m => m[1].trim().split(/[+、,，]/).map(t => t.trim()))
+            .filter(Boolean).forEach(n => names.add(n))
+          // From report: "用[工具名]做" pattern — tool name is in <strong> before ：
+          ;[...data.content.matchAll(/<strong>([^<：:]+)[：:]?<\/strong>/g)]
+            .map(m => m[1].trim()).filter(n => n.length > 1 && n.length < 30
+              && !/^(第[一二三四五六七八九十]步|本周|这是什么|怎么用|为什么|价格|使用技巧|替代方案|核心目标|具体用法|推荐工具|场景|建议|更新|区别|适合谁)/.test(n))
+            .forEach(n => names.add(n))
+          if (names.size > 0) {
+            fetchToolOfficialUrls([...names]).then(setToolUrlMap).catch(() => {})
           }
         }
       })
@@ -251,7 +256,7 @@ export default function ArticleDetail({ type }) {
               </div>
             )}
 
-            <div className="mb-10"><RichTextContent html={type === 'selection' ? injectToolLinks(article.content, toolUrlMap) : article.content} /></div>
+            <div className="mb-10"><RichTextContent html={(type === 'selection' || type === 'report') ? injectToolLinks(article.content, toolUrlMap) : article.content} /></div>
 
             {type === 'report' && (
               <div className="mb-8 p-5 bg-gray-50 border border-gray-200 rounded-xl">
