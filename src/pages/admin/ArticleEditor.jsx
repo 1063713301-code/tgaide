@@ -103,6 +103,15 @@ export default function AdminArticleEditor({ type, mode, reportType = null }) {
     const payload = { ...form, status: statusOverride || form.status }
     if (isReport && reportType) payload.report_type = reportType
 
+    // 清理不属于当前表的字段
+    if (isReport) {
+      delete payload.scene
+      delete payload.period
+    } else if (isSelection) {
+      delete payload.category
+      delete payload.pdf_url
+    }
+
     try {
       let saved
       if (mode === 'new') {
