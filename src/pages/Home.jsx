@@ -216,7 +216,7 @@ export default function Home() {
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">{scene.icon}</span>
-                    <span className={`text-sm font-semibold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
+                    <span className={`text-4xl font-bold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
                   </div>
                   <p className="text-xs text-gray-500 mb-2">{scene.desc}</p>
                   {item?.summary && (
