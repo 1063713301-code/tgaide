@@ -12,6 +12,15 @@ import { createClient } from '@supabase/supabase-js'
 const __dir = dirname(fileURLToPath(import.meta.url))
 const ROLES = ['律师', '会计', '学生', '程序员', '设计师', '营销']
 
+const ROLE_SCENE = {
+  '律师': 'legal',
+  '会计': 'finance',
+  '设计师': 'design',
+  '营销': 'marketing',
+  '程序员': 'content',
+  '学生': 'video',
+}
+
 // 职业专属关键词（用于筛选相关动态）
 const ROLE_KEYWORDS = {
   '律师': ['司法', '法律', '合规', '合同', '判例', '法规', '诉讼'],
@@ -266,7 +275,12 @@ ${topTools[0].name} - ${topTools[0].short_tag}
 {
   "title": "周报标题",
   "summary": "一句话摘要（50字内）",
-  "content": "完整周报内容（Markdown格式）"
+  "content": "完整周报内容（Markdown格式）",
+  "selection": {
+    "title": "选型方案标题，格式：[场景名] · [年份]Q[季度]选型方案",
+    "summary": "一句话摘要，说明覆盖哪些子方向、精选了哪些核心工具，60字内",
+    "content": "完整选型方案内容（Markdown格式），包含2-4个子方向，每个子方向含：核心目标、推荐工具组合、每个工具的具体用法"
+  }
 }`
 
   return await ds(prompt)
@@ -372,8 +386,26 @@ async function main() {
         status: 'draft',
       }
 
-      const { error } = await sb.from('industry_reports').insert(payload)
+      const { data: inserted, error } = await sb.from('industry_reports').insert(payload).select('id').single()
       if (error) throw error
+
+      // 同步生成选型方案
+      if (result.selection?.title && result.selection?.content) {
+        const period = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-期`
+        const selPayload = {
+          title: result.selection.title,
+          summary: result.selection.summary || '',
+          content: markdownToHtml(result.selection.content),
+          scene: ROLE_SCENE[r.role],
+          period,
+          publish_date: new Date().toISOString().split('T')[0],
+          source_report_id: inserted?.id || null,
+          status: 'draft',
+        }
+        const { error: selErr } = await sb.from('selection_guides').insert(selPayload)
+        if (selErr) console.warn(`  ⚠ ${r.role} 选型方案入库失败: ${selErr.message}`)
+        else console.log(`  ✓ ${r.role} 选型方案已生成`)
+      }
 
       console.log(`  ✓ ${r.role} 周报已生成（status=draft）`)
       successCount++
