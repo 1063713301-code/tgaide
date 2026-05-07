@@ -15,15 +15,16 @@ function injectToolLinks(html, toolUrlMap) {
   const sorted = Object.entries(toolUrlMap).sort((a, b) => b[0].length - a[0].length)
   for (const [name, href] of sorted) {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    // Match: <strong>工具名</strong>
+    const link = `<a href="${href}" class="text-blue-600 hover:underline font-medium">${name}</a>`
+    // Match: <strong>工具名：</strong> or <strong>工具名</strong>
     result = result.replace(
-      new RegExp(`(<strong>)(${escaped})(</strong>)`, 'g'),
-      `$1<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$2</a>$3`
+      new RegExp(`<strong>(${escaped})([：:]?)<\\/strong>`, 'g'),
+      `<strong>${link}$2</strong>`
     )
-    // Match: 推荐工具：工具名
+    // Match: 推荐工具组合：工具名 + 工具名
     result = result.replace(
-      new RegExp(`(推荐工具：)(${escaped})`, 'g'),
-      `$1<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$2</a>`
+      new RegExp(`(?<=推荐工具组合：[^<]*)(${escaped})`, 'g'),
+      link
     )
   }
   return result
@@ -189,9 +190,11 @@ export default function ArticleDetail({ type }) {
           ],
         })
         if (type === 'selection' && data.content) {
-          const fromStrong = [...data.content.matchAll(/<strong>([^<]+)<\/strong>/g)].map(m => m[1])
-          const fromLabel = [...data.content.matchAll(/推荐工具：([^<\n]+)/g)].map(m => m[1].trim())
+          const fromStrong = [...data.content.matchAll(/<strong>([^<:：]+)/g)].map(m => m[1].trim())
+          const fromLabel = [...data.content.matchAll(/推荐工具组合：([^<\n]+)/g)].map(m => m[1].trim())
           const unique = [...new Set([...fromStrong, ...fromLabel])]
+            .flatMap(s => s.split(/[+、,，]/).map(t => t.trim()))
+            .filter(Boolean)
           if (unique.length > 0) {
             fetchToolOfficialUrls(unique).then(setToolUrlMap).catch(() => {})
           }
