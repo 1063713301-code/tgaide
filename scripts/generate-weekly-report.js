@@ -272,6 +272,65 @@ ${topTools[0].name} - ${topTools[0].short_tag}
   return await ds(prompt)
 }
 
+// ─── Markdown → HTML ────────────────────────────────────
+
+function markdownToHtml(md) {
+  if (!md) return ''
+  const lines = md.split('\n')
+  const out = []
+  let inUl = false
+
+  const closeUl = () => { if (inUl) { out.push('</ul>'); inUl = false } }
+
+  const inlineFormat = (s) => s
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+
+  for (const raw of lines) {
+    const line = raw.trimEnd()
+
+    // horizontal rule (━ or ---)
+    if (/^━{3,}/.test(line) || /^-{3,}$/.test(line)) {
+      closeUl()
+      out.push('<hr>')
+      continue
+    }
+
+    // headings
+    const h4 = line.match(/^####\s+(.+)/)
+    const h3 = line.match(/^###\s+(.+)/)
+    const h2 = line.match(/^##\s+(.+)/)
+    const h1 = line.match(/^#\s+(.+)/)
+    if (h4) { closeUl(); out.push(`<h4>${inlineFormat(h4[1])}</h4>`); continue }
+    if (h3) { closeUl(); out.push(`<h3>${inlineFormat(h3[1])}</h3>`); continue }
+    if (h2) { closeUl(); out.push(`<h2>${inlineFormat(h2[1])}</h2>`); continue }
+    if (h1) { closeUl(); out.push(`<h1>${inlineFormat(h1[1])}</h1>`); continue }
+
+    // list item
+    const li = line.match(/^[-*]\s+(.+)/)
+    if (li) {
+      if (!inUl) { out.push('<ul>'); inUl = true }
+      out.push(`<li>${inlineFormat(li[1])}</li>`)
+      continue
+    }
+
+    // blank line
+    if (line.trim() === '') {
+      closeUl()
+      continue
+    }
+
+    // paragraph
+    closeUl()
+    out.push(`<p>${inlineFormat(line)}</p>`)
+  }
+
+  closeUl()
+  return out.join('\n')
+}
+
 // ─── 主流程 ────────────────────────────────────
 
 async function main() {
@@ -306,7 +365,7 @@ async function main() {
       const payload = {
         title: result.title,
         summary: result.summary,
-        content: result.content,
+        content: markdownToHtml(result.content),
         category: r.role,
         report_type: 'weekly',
         publish_date: new Date().toISOString().split('T')[0],
