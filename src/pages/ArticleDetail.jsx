@@ -16,14 +16,10 @@ function injectToolLinks(html, toolUrlMap) {
   for (const [name, href] of sorted) {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const link = `<a href="${href}" class="text-blue-600 hover:underline font-medium">${name}</a>`
-    // Match: <strong>工具名：</strong> or <strong>工具名</strong>
+
+    // Match tool names in various contexts (avoid replacing inside existing <a> tags)
     result = result.replace(
-      new RegExp(`<strong>(${escaped})([：:]?)<\\/strong>`, 'g'),
-      `<strong>${link}$2</strong>`
-    )
-    // Match: 推荐工具组合：工具名 + 工具名
-    result = result.replace(
-      new RegExp(`(?<=推荐工具组合：[^<]*)(${escaped})`, 'g'),
+      new RegExp(`(?<!<a[^>]*>)(?<!href=")\\b(${escaped})\\b(?![^<]*<\\/a>)`, 'g'),
       link
     )
   }
