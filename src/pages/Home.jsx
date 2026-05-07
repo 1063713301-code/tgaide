@@ -166,7 +166,7 @@ export default function Home() {
                 className={`article-card flex flex-col items-center text-center p-4 rounded-xl bg-gradient-to-b ${cat.color} border ${cat.border} no-underline`}
               >
                 <span className="text-3xl mb-2">{cat.icon}</span>
-                <span className={`text-base font-semibold px-2 py-0.5 rounded-full mb-1 ${cat.tag}`}>
+                <span className={`text-2xl font-bold px-2 py-0.5 rounded-full mb-1 ${cat.tag}`}>
                   {t(cat.nameKey)}
                 </span>
                 {categoryCount[cat.category] && (
