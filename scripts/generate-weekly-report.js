@@ -277,7 +277,6 @@ ${topTools[0].name} - ${topTools[0].short_tag}
   "summary": "一句话摘要（50字内）",
   "content": "完整周报内容（Markdown格式）",
   "selection": {
-    "title": "选型方案标题，格式：[场景名] · [年份]Q[季度]选型方案",
     "summary": "一句话摘要，说明覆盖哪些子方向、精选了哪些核心工具，60字内",
     "content": "完整选型方案内容（Markdown格式），包含2-4个子方向，每个子方向含：核心目标、推荐工具组合、每个工具的具体用法"
   }
@@ -390,14 +389,13 @@ async function main() {
       if (error) throw error
 
       // 同步生成选型方案
-      if (result.selection?.title && result.selection?.content) {
-        const period = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-期`
+      if (result.selection?.content) {
         const selPayload = {
-          title: result.selection.title,
+          title: `${r.role}AI工具选型 · ${weekRange.year}年第${weekRange.weekNum}周`,
           summary: result.selection.summary || '',
           content: markdownToHtml(result.selection.content),
           scene: ROLE_SCENE[r.role],
-          period,
+          period: `${weekRange.year}年第${weekRange.weekNum}周`,
           publish_date: new Date().toISOString().split('T')[0],
           source_report_id: inserted?.id || null,
           status: 'draft',
