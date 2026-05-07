@@ -186,11 +186,11 @@ export default function ArticleDetail({ type }) {
           ],
         })
         if (type === 'selection' && data.content) {
-          const fromStrong = [...data.content.matchAll(/<strong>([^<:：]+)/g)].map(m => m[1].trim())
-          const fromLabel = [...data.content.matchAll(/推荐工具组合：([^<\n]+)/g)].map(m => m[1].trim())
-          const unique = [...new Set([...fromStrong, ...fromLabel])]
-            .flatMap(s => s.split(/[+、,，]/).map(t => t.trim()))
-            .filter(Boolean)
+          // Extract tool names from "推荐工具组合：" labels
+          const toolCombos = [...data.content.matchAll(/<strong>推荐工具组合：<\/strong>\s*([^<]+)/g)].map(m => m[1].trim())
+          const unique = [...new Set(
+            toolCombos.flatMap(combo => combo.split(/[+、,，]/).map(t => t.trim()))
+          )].filter(Boolean)
           if (unique.length > 0) {
             fetchToolOfficialUrls(unique).then(setToolUrlMap).catch(() => {})
           }
