@@ -431,16 +431,16 @@ export async function adminDeleteReview(id) {
   if (error) throw error
 }
 
-/** 按工具名批量获取官网地址（选型详情页工具链接用） */
+/** 按工具名批量获取站内详情页路径（选型详情页工具链接用） */
 export async function fetchToolOfficialUrls(names) {
   const { data, error } = await supabase
     .from('tools')
-    .select('name, official_url')
+    .select('name, slug')
     .in('name', names)
     .eq('status', 'active')
   if (error) throw error
   const map = {}
-  ;(data || []).forEach(t => { if (t.official_url && !map[t.name]) map[t.name] = t.official_url })
+  ;(data || []).forEach(t => { if (t.slug && !map[t.name]) map[t.name] = `/tools/${t.slug}` })
   return map
 }
 
