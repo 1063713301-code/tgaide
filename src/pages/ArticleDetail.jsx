@@ -12,15 +12,20 @@ import { setSEO, breadcrumb } from '../lib/seo'
 
 function injectToolLinks(html, toolUrlMap) {
   let result = html
+  // Sort longest first to avoid partial replacements
   const sorted = Object.entries(toolUrlMap).sort((a, b) => b[0].length - a[0].length)
   for (const [name, href] of sorted) {
     const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const link = `<a href="${href}" class="text-blue-600 hover:underline font-medium">${name}</a>`
-
-    // Match tool names in various contexts (avoid replacing inside existing <a> tags)
+    // 1. Replace <strong>工具名</strong> → <strong><a>工具名</a></strong>
     result = result.replace(
-      new RegExp(`(?<!<a[^>]*>)(?<!href=")\\b(${escaped})\\b(?![^<]*<\\/a>)`, 'g'),
-      link
+      new RegExp(`<strong>(${escaped})</strong>`, 'g'),
+      `<strong>${link}</strong>`
+    )
+    // 2. Replace plain text occurrences (after tag boundary, space, or punctuation)
+    result = result.replace(
+      new RegExp(`([ （(+、,，：:>])(${escaped})(?=[ ）)：:+、,，<])`, 'g'),
+      `$1${link}`
     )
   }
   return result

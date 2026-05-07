@@ -433,14 +433,23 @@ export async function adminDeleteReview(id) {
 
 /** 按工具名批量获取站内详情页路径（选型详情页工具链接用） */
 export async function fetchToolOfficialUrls(names) {
+  if (!names || names.length === 0) return {}
+  // Use ilike for case-insensitive matching
   const { data, error } = await supabase
     .from('tools')
     .select('name, slug')
-    .in('name', names)
     .eq('status', 'active')
+    .or(names.map(n => `name.ilike.${n}`).join(','))
   if (error) throw error
   const map = {}
-  ;(data || []).forEach(t => { if (t.slug && !map[t.name]) map[t.name] = `/tools/${t.slug}` })
+  const lowerNames = names.map(n => n.toLowerCase())
+  ;(data || []).forEach(t => {
+    if (!t.slug) return
+    // Map back to the original name used in content (case-insensitive)
+    const idx = lowerNames.indexOf(t.name.toLowerCase())
+    const key = idx >= 0 ? names[idx] : t.name
+    if (!map[key]) map[key] = `/tools/${t.slug}`
+  })
   return map
 }
 
