@@ -118,6 +118,7 @@ async function classifyBatch(candidates) {
 1. 是不是真正的 AI 工具（不是教程/玩具/早期demo/普通软件）
 2. 最适合哪个职业（必须从这6个里选一个）：律师/设计师/会计/营销/程序员/学生
 3. 价值评分 1-10（10=非常实用、有差异化）
+4. 该工具是否有独立官网（非 GitHub/npm/pypi 等代码托管平台的独立产品网站）；如果有，填写官网 URL；如果只有 GitHub 仓库、没有独立官网，填 null
 
 候选清单（共 ${candidates.length} 个）：
 ${candidates.map((c, i) => `${i + 1}. ${c.name} | ${c.url} | ${c.hint || '无描述'}`).join('\n')}
@@ -125,28 +126,28 @@ ${candidates.map((c, i) => `${i + 1}. ${c.name} | ${c.url} | ${c.hint || '无描
 严格输出 JSON：
 {
   "items": [
-    {"index": 1, "is_ai_tool": true, "role": "程序员", "score": 8, "reason": "简短理由"},
+    {"index": 1, "is_ai_tool": true, "role": "程序员", "score": 8, "official_url": "https://example.com", "reason": "简短理由"},
+    {"index": 2, "is_ai_tool": true, "role": "设计师", "score": 7, "official_url": null, "reason": "仅有GitHub仓库无独立官网"},
     ...
   ]
 }
-对所有候选都要返回（按 index 顺序），不是 AI 工具的 is_ai_tool=false 即可。`
+规则：
+- 对所有候选都要返回（按 index 顺序）
+- 不是 AI 工具的 is_ai_tool=false
+- official_url 必须是真实存在的独立官网，不能是 GitHub/npm/pypi 地址；不确定就填 null
+- 只有 GitHub 仓库没有独立官网的工具，official_url 填 null`
   const result = await ds(prompt)
   return result.items || []
 }
 
-async function generateContent(name, url, hint, source) {
-  const isGithub = source === 'github' || url.includes('github.com')
-  const urlNote = isGithub
-    ? '（这是 GitHub 仓库地址，请在 official_url 中填写该工具真实的独立官网；若无独立官网则原样返回此 GitHub 地址）'
-    : '（请在 official_url 中填写该工具官网，与上方一致即可）'
+async function generateContent(name, officialUrl, hint) {
   const prompt = `为 TG AI工具库 生成工具的中文介绍。
 工具名: ${name}
-来源地址: ${url} ${urlNote}
+官网: ${officialUrl}
 已知信息: ${hint || '无'}
 
 输出 JSON：
 {
-  "official_url": "工具真实官网URL",
   "description": "一句话简介，50字内",
   "short_tag": "核心标签，10字内",
   "highlights": ["亮点1（10字内）","亮点2","亮点3"],
@@ -180,14 +181,15 @@ async function main() {
   console.log('▶ 3/5 DeepSeek 分类打分...')
   const classified = await classifyBatch(candidates.slice(0, 60))
 
-  console.log('▶ 4/5 按职业挑 top 1...')
+  console.log('▶ 4/5 按职业挑 top 1（必须有独立官网）...')
   const byRole = {}
   classified.forEach(c => {
     if (!c.is_ai_tool || !ROLES.includes(c.role) || c.score < 6) return
+    if (!c.official_url) return  // 没有独立官网，跳过
     const cand = candidates[c.index - 1]
     if (!cand) return
     if (!byRole[c.role] || byRole[c.role].score < c.score) {
-      byRole[c.role] = { ...cand, role: c.role, score: c.score, reason: c.reason }
+      byRole[c.role] = { ...cand, role: c.role, score: c.score, reason: c.reason, official_url: c.official_url }
     }
   })
   const picks = Object.values(byRole)
@@ -197,13 +199,13 @@ async function main() {
   let ok = 0
   for (const p of picks) {
     try {
-      const c = await generateContent(p.name, p.url, p.hint, p.source)
+      const c = await generateContent(p.name, p.official_url, p.hint)
       const slug = toSlug(p.name)
       const payload = {
         name: p.name,
         slug,
         category: p.role,
-        official_url: c.official_url || p.url,
+        official_url: p.official_url,
         description: c.description,
         short_tag: c.short_tag,
         highlights: c.highlights || [],
