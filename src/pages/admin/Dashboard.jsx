@@ -31,6 +31,7 @@ const QUICK_ACTIONS = [
   { to: '/admin/reviews',              icon: '💬', label: '管理评测列表' },
   { to: '/admin/selections/new',       icon: '🎯', label: '新建选型方案' },
   { to: '/admin/selections',           icon: '📌', label: '管理选型速查' },
+  { to: '/admin/analytics',            icon: '📉', label: '数据分析看板' },
 ]
 
 export default function AdminDashboard() {

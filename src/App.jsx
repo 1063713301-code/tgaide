@@ -35,6 +35,7 @@ const AdminPendingToolList = lazy(() => import('./pages/admin/PendingToolList'))
 const AdminToolEditor = lazy(() => import('./pages/admin/ToolEditor'))
 const AdminReviewList = lazy(() => import('./pages/admin/ReviewList'))
 const AdminReviewEditor = lazy(() => import('./pages/admin/ReviewEditor'))
+const AdminAnalytics = lazy(() => import('./pages/admin/Analytics'))
 
 function ProtectedRoute({ children }) {
   if (!isAdminAuthenticated()) return <Navigate to="/admin" replace />
@@ -104,6 +105,7 @@ export default function App() {
           <Route path="/admin/reviews" element={<ProtectedRoute><AdminReviewList /></ProtectedRoute>} />
           <Route path="/admin/reviews/new" element={<ProtectedRoute><AdminReviewEditor mode="new" /></ProtectedRoute>} />
           <Route path="/admin/reviews/:id/edit" element={<ProtectedRoute><AdminReviewEditor mode="edit" /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

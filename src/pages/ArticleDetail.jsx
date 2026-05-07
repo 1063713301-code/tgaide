@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import PdfButton from '../components/PdfButton'
 import RichTextContent from '../components/RichTextContent'
 import { fetchArticleById, fetchToolOfficialUrls } from '../lib/supabase'
+import { trackEvent } from '../lib/analytics'
 import { useLang } from '../lib/i18n.jsx'
 import QRCode from 'qrcode'
 import { setSEO, breadcrumb } from '../lib/seo'
@@ -168,6 +169,7 @@ export default function ArticleDetail({ type }) {
     fetchArticleById(type, id)
       .then((data) => {
         setArticle(data)
+        if (type === 'report') trackEvent('report_view', { report_id: data.id, report_title: data.title })
         const basePath = type === 'report' ? '/industry-reports' : type === 'selection' ? '/ai-tool-selection' : '/daily-briefs'
         const subPath = type === 'report' && data.report_type ? `/industry-reports/${data.report_type}` : basePath
         const detailPath = type === 'selection' && data.scene ? `${basePath}/${data.scene}/${data.id}` : `${basePath}/${data.id}`
@@ -252,7 +254,7 @@ export default function ArticleDetail({ type }) {
                 </span>
                 <span>{t('article_source')}</span>
               </div>
-              {article.pdf_url && <div className="mt-5"><PdfButton url={article.pdf_url} /></div>}
+              {article.pdf_url && <div className="mt-5"><PdfButton url={article.pdf_url} articleId={article.id} articleTitle={article.title} /></div>}
             </header>
 
             {article.summary && (
@@ -301,7 +303,7 @@ export default function ArticleDetail({ type }) {
 
             <ArticleShareBar article={article} type={type} />
 
-            {article.pdf_url && <div className="flex justify-center mb-10"><PdfButton url={article.pdf_url} /></div>}
+            {article.pdf_url && <div className="flex justify-center mb-10"><PdfButton url={article.pdf_url} articleId={article.id} articleTitle={article.title} /></div>}
 
             <footer className="pt-6 border-t border-gray-100 text-sm text-gray-400 text-center">
               {t('article_source')} | {formatDate(article.publish_date)}

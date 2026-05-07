@@ -1,10 +1,12 @@
 import { useLang } from '../lib/i18n.jsx'
+import { trackEvent } from '../lib/analytics'
 
-export default function PdfButton({ url, labelKey }) {
+export default function PdfButton({ url, labelKey, articleId, articleTitle }) {
   const { t } = useLang()
   if (!url) return null
   return (
     <a href={url} target="_blank" rel="nofollow noopener noreferrer"
+      onClick={() => trackEvent('report_download', { report_id: articleId, report_title: articleTitle })}
       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white font-semibold text-sm transition-colors"
       style={{ backgroundColor: '#10B981' }}
       onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#059669')}

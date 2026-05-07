@@ -5,6 +5,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { fetchTools } from '../lib/supabase'
+import { trackEvent } from '../lib/analytics'
 import { useLang } from '../lib/i18n.jsx'
 import { setSEO, breadcrumb } from '../lib/seo'
 
@@ -271,7 +272,7 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) 
       {/* 底部按钮 */}
       <div className="flex gap-2 mt-auto">
         <a href={tool.official_url || '#'} target="_blank" rel="nofollow noopener noreferrer"
-          onClick={(e) => !tool.official_url && e.preventDefault()}
+          onClick={(e) => { if (!tool.official_url) { e.preventDefault(); return } trackEvent('tool_click', { tool_slug: tool.slug || tool.id, tool_name: tool.name }) }}
           className="flex-1 flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
           {t('tools_visit')}
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -406,6 +407,7 @@ export default function AllTools() {
       if (searchQuery.trim()) {
         saveSearchHistory(searchQuery)
         setSearchHistory(getSearchHistory())
+        trackEvent('search', { search_query: searchQuery.trim() })
       }
     }, 300)
     return () => clearTimeout(searchTimerRef.current)
@@ -470,7 +472,10 @@ export default function AllTools() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')}
+                    onClick={() => {
+                      navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')
+                      if (cat.id) trackEvent('profession_filter', { profession: cat.id })
+                    }}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left ${bgCls}`}
                   >
                     <span className="text-base w-5 text-center">{cat.icon}</span>
@@ -502,7 +507,10 @@ export default function AllTools() {
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')}
+                    onClick={() => {
+                      navigate(cat.id ? `/tools?category=${encodeURIComponent(cat.id)}` : '/tools')
+                      if (cat.id) trackEvent('profession_filter', { profession: cat.id })
+                    }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
                       isActive
                         ? 'bg-blue-600 text-white border-blue-600'
