@@ -92,7 +92,7 @@ export default function AIToolSelection() {
                     {SCENE_ICONS[scene.slug]}
                   </div>
                   <div>
-                    <span className={`text-sm font-semibold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
+                    <span className={`text-base font-semibold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
                     <p className="text-xs text-gray-500 mt-1">{scene.desc}</p>
                   </div>
                 </div>
