@@ -41,8 +41,6 @@ button:not(:disabled):active {
 .article-card,
 .card {
   border-radius: 14px !important;
-  background: #FFFFFF;
-  border: 1px solid rgba(255,255,255,0.8) !important;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
   transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
