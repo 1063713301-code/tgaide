@@ -117,24 +117,32 @@ export default function Analytics() {
           for (let i = 47; i >= 0; i--) {
             const d = new Date(Date.now() - i * 3600000)
             const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
-            bucketMap[k] = { views: 0, visitors: new Set() }
+            bucketMap[k] = { views: 0, visitors: new Set(), sessions: new Set() }
           }
           pvRows.forEach(r => {
             const d = new Date(r.created_at)
             const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
-            if (bucketMap[k]) { bucketMap[k].views++; if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id) }
+            if (bucketMap[k]) {
+              bucketMap[k].views++
+              if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
+              if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+            }
           })
         } else {
           for (let i = 29; i >= 0; i--) {
             const d = new Date(); d.setDate(d.getDate() - i)
-            bucketMap[d.toISOString().slice(0,10)] = { views: 0, visitors: new Set() }
+            bucketMap[d.toISOString().slice(0,10)] = { views: 0, visitors: new Set(), sessions: new Set() }
           }
           pvRows.forEach(r => {
             const k = r.created_at.slice(0,10)
-            if (bucketMap[k]) { bucketMap[k].views++; if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id) }
+            if (bucketMap[k]) {
+              bucketMap[k].views++
+              if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
+              if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+            }
           })
         }
-        const buckets = Object.entries(bucketMap).map(([label, v]) => ({ label, views: v.views, visitors: v.visitors.size }))
+        const buckets = Object.entries(bucketMap).map(([label, v]) => ({ label, views: v.views, visitors: v.visitors.size, visits: v.sessions.size }))
         const maxB = Math.max(...buckets.map(b => b.views), 1)
         setTrend(buckets.map(b => ({ ...b, viewsPct: Math.round(b.views/maxB*100), visitorsPct: Math.round(b.visitors/maxB*100) })))
       })
@@ -247,6 +255,12 @@ export default function Analytics() {
           )}
         </div>
 
+        {/* Visitors / Visits 折线图 */}
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
+          <h2 className="font-semibold text-gray-800 mb-4">访客与访问次数趋势</h2>
+          {loading ? <Skeleton rows={1} height="h-32" /> : <LineChart data={trend} />}
+        </div>
+
         {/* 搜索关键词 */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
           <h2 className="font-semibold text-gray-800 mb-4">最近 100 条搜索词</h2>
@@ -304,4 +318,56 @@ function Skeleton({ rows = 4, height = 'h-4' }) {
 
 function Empty() {
   return <p className="text-sm text-gray-400 py-4 text-center">暂无数据</p>
+}
+
+function LineChart({ data }) {
+  if (!data.length) return <Empty />
+  const W = 800, H = 120, PAD = 4
+  const maxV = Math.max(...data.map(d => d.visitors), 1)
+  const maxS = Math.max(...data.map(d => d.visits ?? d.visitors), 1)
+  const maxAll = Math.max(maxV, maxS, 1)
+
+  const pts = (key) => data.map((d, i) => {
+    const x = PAD + (i / (data.length - 1 || 1)) * (W - PAD * 2)
+    const y = H - PAD - (d[key] / maxAll) * (H - PAD * 2)
+    return `${x},${y}`
+  }).join(' ')
+
+  const midIdx = Math.floor(data.length / 2)
+
+  return (
+    <>
+      <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ minWidth: 320, height: 120 }}>
+          {/* 网格线 */}
+          {[0.25, 0.5, 0.75, 1].map(r => (
+            <line key={r} x1={PAD} x2={W - PAD} y1={H - PAD - r * (H - PAD * 2)} y2={H - PAD - r * (H - PAD * 2)} stroke="#F1F5F9" strokeWidth="1" />
+          ))}
+          {/* Visits 折线（浅蓝） */}
+          <polyline points={pts('visits' in data[0] ? 'visits' : 'visitors')} fill="none" stroke="#93C5FD" strokeWidth="2" strokeLinejoin="round" />
+          {/* Visitors 折线（深蓝） */}
+          <polyline points={pts('visitors')} fill="none" stroke="#3B82F6" strokeWidth="2" strokeLinejoin="round" />
+          {/* 数据点 hover */}
+          {data.map((d, i) => {
+            const x = PAD + (i / (data.length - 1 || 1)) * (W - PAD * 2)
+            const yV = H - PAD - (d.visitors / maxAll) * (H - PAD * 2)
+            return <circle key={i} cx={x} cy={yV} r="3" fill="#3B82F6" opacity="0.7"><title>{d.label}: Visitors {d.visitors} · Visits {d.visits ?? d.visitors}</title></circle>
+          })}
+        </svg>
+      </div>
+      <div className="flex justify-between text-xs text-gray-400 mt-1">
+        <span>{data[0]?.label}</span>
+        <span>{data[midIdx]?.label}</span>
+        <span>{data[data.length - 1]?.label}</span>
+      </div>
+      <div className="flex items-center gap-4 mt-3 justify-center">
+        <span className="flex items-center gap-1.5 text-xs text-gray-500">
+          <span className="w-6 h-0.5 inline-block" style={{ background: '#3B82F6' }} />Visitors
+        </span>
+        <span className="flex items-center gap-1.5 text-xs text-gray-500">
+          <span className="w-6 h-0.5 inline-block" style={{ background: '#93C5FD' }} />Visits
+        </span>
+      </div>
+    </>
+  )
 }
