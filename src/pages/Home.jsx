@@ -121,10 +121,10 @@ export default function Home() {
       {/* ── 头部横幅 ── */}
       <header className="bg-gradient-to-br from-blue-700 via-blue-600 to-teal-500 text-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
-          <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-3 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-3 tracking-tight text-white" style={{color:'#fff'}}>
             {t('home_hero_title')}
           </h1>
-          <p className="text-base sm:text-lg text-blue-50 mb-8">
+          <p className="text-base sm:text-lg mb-8 text-white" style={{color:'#fff'}}>
             {t('home_hero_sub')}
           </p>
           <form onSubmit={handleSearch} className="max-w-xl mx-auto flex gap-2 mb-8">
@@ -248,7 +248,7 @@ export default function Home() {
             <div className="text-center py-12 text-gray-400"><p>{t('home_no_reports')}</p></div>
           ) : (
             <div className="marquee-wrap">
-              <div className="marquee-track" style={{ animationDuration: `${reports.length * 4}s` }}>
+              <div className="marquee-track" style={{ animationDuration: `${reports.length * 8}s` }}>
                 {[...reports, ...reports].map((item, idx) => (
                   <div key={idx} className="flex-shrink-0 w-72" style={{ marginRight: '1rem' }}>
                     <ArticleCard article={item} type="report" />
@@ -289,13 +289,32 @@ export default function Home() {
               <p className="text-gray-400 text-sm py-6">{t('home_no_tools')}</p>
             ) : (
               <div className="marquee-wrap">
-                <div className="marquee-track" style={{ animationDuration: `${tools.length * 4}s` }}>
+                <div className="marquee-track" style={{ animationDuration: `${tools.length * 8}s` }}>
                   {[...tools, ...tools].map((tool, idx) => {
                     const toolName = (lang === 'en' && tool.name_en) ? tool.name_en : tool.name
                     const toolDesc = (lang === 'en' && tool.description_en) ? tool.description_en : tool.description
                     return (
                     <Link key={idx} to={`/tools/${tool.slug || tool.id}`}
-                      className="flex-shrink-0 w-56 bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow no-underline" style={{ marginRight: '1rem' }}>
+                      className="flex-shrink-0 w-56 rounded-xl p-4 no-underline transition-all duration-300"
+                      style={{
+                        background: 'rgba(255,255,255,0.55)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(255,255,255,0.8)',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05)',
+                        marginRight: '1rem',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.75)'
+                        e.currentTarget.style.transform = 'translateY(-4px)'
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.08)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.55)'
+                        e.currentTarget.style.transform = ''
+                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05)'
+                      }}
+                    >
                       <div className="flex items-center gap-3 mb-3">
                         {tool.icon_url ? (
                           <img src={tool.icon_url} alt={toolName} className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />

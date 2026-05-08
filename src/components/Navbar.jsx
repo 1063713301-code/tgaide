@@ -19,7 +19,15 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="navbar-glass">
+    <nav style={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 50,
+      background: 'rgba(250,250,250,0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      borderBottom: '1px solid rgba(0,0,0,0.05)',
+    }}>
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">

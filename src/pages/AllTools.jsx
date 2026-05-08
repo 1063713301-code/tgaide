@@ -234,9 +234,26 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) 
 
   return (
     <div
-      className="relative bg-white border border-gray-200 rounded-xl p-5 flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 hover:z-10"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className="relative rounded-xl p-5 flex flex-col transition-all duration-300 hover:z-10"
+      style={{
+        background: 'rgba(255,255,255,0.55)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid rgba(255,255,255,0.8)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.75)'
+        e.currentTarget.style.transform = 'translateY(-4px)'
+        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.08)'
+        handleMouseEnter()
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'rgba(255,255,255,0.55)'
+        e.currentTarget.style.transform = ''
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.05)'
+        handleMouseLeave()
+      }}
     >
       {/* 悬浮窗（桌面端） */}
       {showTooltip && (

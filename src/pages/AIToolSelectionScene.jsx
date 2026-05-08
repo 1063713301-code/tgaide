@@ -72,7 +72,7 @@ export default function AIToolSelectionScene() {
               <Link
                 key={item.id}
                 to={`/ai-tool-selection/${scene}/${item.id}`}
-                className="block bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow no-underline"
+                className="block article-card p-5 no-underline"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
