@@ -129,7 +129,7 @@ export default function Home() {
 
       {/* ── 头部横幅 ── */}
       <header className="bg-gradient-to-br from-blue-700 via-blue-600 to-teal-500 text-white">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center">
           <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-3 tracking-tight text-white" style={{color:'#fff'}}>
             {t('home_hero_title')}
           </h1>
@@ -183,7 +183,7 @@ export default function Home() {
                 {categoryCount[cat.category] && (
                   <span className="text-sm font-bold text-gray-700">【{categoryCount[cat.category]} 款工具】</span>
                 )}
-                <p className="text-xs text-gray-600 leading-relaxed hidden sm:block mt-1">{t(cat.descKey)}</p>
+                <p className="text-xs text-gray-600 leading-relaxed line-clamp-2 hidden sm:block mt-1">{t(cat.descKey)}</p>
               </Link>
             ))}
           </div>
