@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 import ArticleCard from '../components/ArticleCard'
 import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount, fetchLatestSelections } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
-import { SELECTION_SCENES } from './AIToolSelection'
+import { SELECTION_SCENES, SCENE_ICONS } from './AIToolSelection'
 import { setSEO, orgJsonLD } from '../lib/seo'
 
 // ─── 职业分类数据 ────────────────
@@ -215,8 +215,10 @@ export default function Home() {
                   className={`article-card flex flex-col p-5 rounded-xl bg-gradient-to-b ${scene.color} border ${scene.border} no-underline`}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl">{scene.icon}</span>
-                    <span className={`text-2xl font-bold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
+                    <div className={`w-8 h-8 rounded-lg ${scene.iconBg} flex items-center justify-center flex-shrink-0`}>
+                      {SCENE_ICONS[scene.slug]}
+                    </div>
+                    <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${scene.tag}`}>{scene.title}</span>
                   </div>
                   <p className="text-xs text-gray-500 mb-2">{scene.desc}</p>
                   {item?.summary && (
