@@ -177,7 +177,7 @@ export default function Home() {
                 <div className={`w-10 h-10 rounded-xl ${cat.iconBg} flex items-center justify-center mb-2 shadow-sm`}>
                   {CAREER_ICONS[cat.key]}
                 </div>
-                <span className="text-2xl font-bold text-gray-800 mb-1">
+                <span className="text-[22px] font-bold text-gray-800 mb-1">
                   {t(cat.nameKey)}
                 </span>
                 {categoryCount[cat.category] && (
@@ -231,7 +231,7 @@ export default function Home() {
                     <div className={`w-8 h-8 rounded-lg ${scene.iconBg} flex items-center justify-center flex-shrink-0`}>
                       {SCENE_ICONS[scene.slug]}
                     </div>
-                    <span className="text-2xl font-bold text-gray-800">{scene.title}</span>
+                    <span className="text-[22px] font-bold text-gray-800">{scene.title}</span>
                   </div>
                   <p className="text-xs text-gray-500 mb-2">{scene.desc}</p>
                   {item?.summary && (
