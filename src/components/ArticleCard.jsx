@@ -6,6 +6,15 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+const CATEGORY_BAR = {
+  律师: 'report-bar-律师',
+  设计师: 'report-bar-设计师',
+  会计财税: 'report-bar-会计',
+  营销运营: 'report-bar-营销',
+  程序员: 'report-bar-程序员',
+  学生科研: 'report-bar-学生',
+}
+
 function CategoryBadge({ category }) {
   const colorMap = {
     律师: 'bg-blue-50 text-blue-700', 设计师: 'bg-purple-50 text-purple-700',
@@ -18,8 +27,9 @@ function CategoryBadge({ category }) {
 export default function ArticleCard({ article, type }) {
   const { t } = useLang()
   const detailPath = `/${type === 'report' ? 'industry-reports' : 'daily-briefs'}/${article.id}`
+  const barClass = CATEGORY_BAR[article.category] || 'report-bar-default'
   return (
-    <Link to={detailPath} className="article-card block bg-white border border-gray-200 rounded-xl p-5 cursor-pointer no-underline">
+    <Link to={detailPath} className={`article-card block bg-white border border-gray-200 rounded-xl p-5 cursor-pointer no-underline ${barClass}`}>
       <div className="flex items-center justify-between mb-3">
         <time className="text-xs text-gray-400">{formatDate(article.publish_date)}</time>
         {article.category && <CategoryBadge category={article.category} />}
@@ -32,9 +42,6 @@ export default function ArticleCard({ article, type }) {
       )}
       <div className="mt-3 flex items-center gap-1 text-xs text-blue-700 font-medium">
         <span>{t('article_read_more')}</span>
-        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
       </div>
     </Link>
   )
