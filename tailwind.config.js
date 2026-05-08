@@ -27,7 +27,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Noto Sans SC"', '"Inter"', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"PingFang SC"', 'sans-serif'],
+        sans: ['"Inter"', '"Noto Sans SC"', '-apple-system', 'BlinkMacSystemFont', '"PingFang SC"', 'sans-serif'],
       },
       typography: {
         DEFAULT: {
