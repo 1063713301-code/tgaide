@@ -3,111 +3,127 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 
 const PERIODS = [
-  { label: '今日', days: 1 },
-  { label: '本周', days: 7 },
-  { label: '本月', days: 30 },
+  { label: '今日', getValue: () => { const d = new Date(); d.setHours(0,0,0,0); return d.toISOString() } },
+  { label: '过去24小时', getValue: () => new Date(Date.now() - 86400000).toISOString() },
+  { label: '本周', getValue: () => { const d = new Date(); d.setDate(d.getDate() - d.getDay()); d.setHours(0,0,0,0); return d.toISOString() } },
+  { label: '本月', getValue: () => { const d = new Date(); d.setDate(1); d.setHours(0,0,0,0); return d.toISOString() } },
+  { label: '过去30天', getValue: () => new Date(Date.now() - 30*86400000).toISOString() },
+  { label: '过去90天', getValue: () => new Date(Date.now() - 90*86400000).toISOString() },
+  { label: '今年', getValue: () => { const d = new Date(); d.setMonth(0,1); d.setHours(0,0,0,0); return d.toISOString() } },
+  { label: '过去半年', getValue: () => new Date(Date.now() - 180*86400000).toISOString() },
+  { label: '过去一年', getValue: () => new Date(Date.now() - 365*86400000).toISOString() },
+  { label: '全部', getValue: () => '2020-01-01T00:00:00.000Z' },
 ]
 
-function dayStart(daysAgo = 0) {
-  const d = new Date()
-  d.setDate(d.getDate() - daysAgo)
-  d.setHours(0, 0, 0, 0)
-  return d.toISOString()
+function fmt(n) {
+  if (n >= 10000) return (n/10000).toFixed(1) + 'w'
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k'
+  return String(n)
 }
 
-async function query(eventType, since, select = '*', options = {}) {
-  let q = supabase.from('analytics_events').select(select, options).eq('event_type', eventType).gte('created_at', since)
-  return q
+function fmtDuration(ms) {
+  if (!ms || ms < 0) return '—'
+  const s = Math.round(ms / 1000)
+  if (s < 60) return `${s}s`
+  return `${Math.floor(s/60)}m ${s%60}s`
 }
 
 export default function Analytics() {
-  const [overview, setOverview] = useState({ tool_click: 0, report_view: 0, search: 0, page_view: 0 })
+  const [periodIdx, setPeriodIdx] = useState(0)
+  const [stats, setStats] = useState(null)
   const [toolRank, setToolRank] = useState([])
   const [reportRank, setReportRank] = useState([])
   const [professions, setProfessions] = useState([])
   const [searches, setSearches] = useState([])
   const [trend, setTrend] = useState([])
-  const [period, setPeriod] = useState(7)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => { document.title = '数据分析 - TG AI工具库' }, [])
 
   useEffect(() => {
     setLoading(true)
-    const since = dayStart(period - 1)
-    const todayStart = dayStart(0)
+    const since = PERIODS[periodIdx].getValue()
 
-    Promise.all([
-      // 概览（今日）
-      supabase.from('analytics_events').select('event_type').gte('created_at', todayStart),
-      // 工具点击排行
-      supabase.from('analytics_events').select('target_id, target_name').eq('event_type', 'tool_click').gte('created_at', since),
-      // 报告阅读排行
-      supabase.from('analytics_events').select('target_id, target_name').eq('event_type', 'report_view').gte('created_at', since),
-      // 职业偏好
-      supabase.from('analytics_events').select('profession').eq('event_type', 'profession_filter').gte('created_at', since).not('profession', 'is', null),
-      // 搜索关键词
-      supabase.from('analytics_events').select('search_query, created_at').eq('event_type', 'search').order('created_at', { ascending: false }).limit(100),
-      // 过去30天趋势
-      supabase.from('analytics_events').select('created_at').eq('event_type', 'page_view').gte('created_at', dayStart(29)),
-    ]).then(([ov, tools, reports, profs, srch, trendData]) => {
-      // 概览
-      const ovData = ov.data || []
-      setOverview({
-        tool_click: ovData.filter(e => e.event_type === 'tool_click').length,
-        report_view: ovData.filter(e => e.event_type === 'report_view').length,
-        search: ovData.filter(e => e.event_type === 'search').length,
-        page_view: ovData.filter(e => e.event_type === 'page_view').length,
+    supabase.from('analytics_events').select('event_type, visitor_id, session_id, created_at, target_id, target_name, profession, search_query')
+      .gte('created_at', since)
+      .order('created_at', { ascending: true })
+      .limit(50000)
+      .then(({ data }) => {
+        const rows = data || []
+
+        // Views = page_view 数
+        const pvRows = rows.filter(r => r.event_type === 'page_view')
+        const views = pvRows.length
+
+        // Visitors = 唯一 visitor_id
+        const visitors = new Set(pvRows.map(r => r.visitor_id).filter(Boolean)).size
+
+        // Visits = 唯一 session_id
+        const sessionMap = {}
+        pvRows.forEach(r => {
+          if (!r.session_id) return
+          if (!sessionMap[r.session_id]) sessionMap[r.session_id] = []
+          sessionMap[r.session_id].push(new Date(r.created_at).getTime())
+        })
+        const sessions = Object.values(sessionMap)
+        const visits = sessions.length
+
+        // Bounce rate = session 只有 1 个 PV 的比例
+        const bounced = sessions.filter(ts => ts.length === 1).length
+        const bounceRate = visits > 0 ? Math.round(bounced / visits * 100) : 0
+
+        // Visit duration = 平均 (session最后 - session第一)，排除单页 session
+        const multiSessions = sessions.filter(ts => ts.length > 1)
+        const avgDuration = multiSessions.length > 0
+          ? multiSessions.reduce((sum, ts) => sum + (Math.max(...ts) - Math.min(...ts)), 0) / multiSessions.length
+          : 0
+
+        setStats({ views, visitors, visits, bounceRate, avgDuration })
+
+        // 工具排行
+        const toolMap = {}
+        rows.filter(r => r.event_type === 'tool_click').forEach(r => {
+          const k = r.target_id || r.target_name; if (!k) return
+          toolMap[k] = toolMap[k] || { name: r.target_name || r.target_id, count: 0 }
+          toolMap[k].count++
+        })
+        setToolRank(Object.values(toolMap).sort((a,b) => b.count - a.count).slice(0, 20))
+
+        // 报告排行
+        const repMap = {}
+        rows.filter(r => r.event_type === 'report_view').forEach(r => {
+          const k = r.target_id || r.target_name; if (!k) return
+          repMap[k] = repMap[k] || { name: r.target_name || r.target_id, count: 0 }
+          repMap[k].count++
+        })
+        setReportRank(Object.values(repMap).sort((a,b) => b.count - a.count).slice(0, 20))
+
+        // 职业偏好
+        const profMap = {}
+        rows.filter(r => r.event_type === 'profession_filter' && r.profession).forEach(r => {
+          profMap[r.profession] = (profMap[r.profession] || 0) + 1
+        })
+        const profArr = Object.entries(profMap).sort((a,b) => b[1]-a[1])
+        const maxP = profArr[0]?.[1] || 1
+        setProfessions(profArr.map(([name, count]) => ({ name, count, pct: Math.round(count/maxP*100) })))
+
+        // 搜索词
+        setSearches(rows.filter(r => r.event_type === 'search' && r.search_query).map(r => r.search_query).reverse().slice(0, 100))
+
+        // 趋势（过去30天 PV）
+        const dayMap = {}
+        for (let i = 29; i >= 0; i--) {
+          const d = new Date(); d.setDate(d.getDate() - i)
+          dayMap[d.toISOString().slice(0,10)] = 0
+        }
+        pvRows.forEach(r => { const day = r.created_at.slice(0,10); if (dayMap[day] !== undefined) dayMap[day]++ })
+        const tArr = Object.entries(dayMap).map(([date, count]) => ({ date, count }))
+        const maxT = Math.max(...tArr.map(d => d.count), 1)
+        setTrend(tArr.map(d => ({ ...d, pct: Math.round(d.count/maxT*100) })))
       })
-
-      // 工具排行
-      const toolMap = {}
-      ;(tools.data || []).forEach(e => {
-        const k = e.target_id || e.target_name
-        if (!k) return
-        toolMap[k] = toolMap[k] || { name: e.target_name || e.target_id, count: 0 }
-        toolMap[k].count++
-      })
-      setToolRank(Object.values(toolMap).sort((a, b) => b.count - a.count).slice(0, 20))
-
-      // 报告排行
-      const repMap = {}
-      ;(reports.data || []).forEach(e => {
-        const k = e.target_id || e.target_name
-        if (!k) return
-        repMap[k] = repMap[k] || { name: e.target_name || e.target_id, count: 0 }
-        repMap[k].count++
-      })
-      setReportRank(Object.values(repMap).sort((a, b) => b.count - a.count).slice(0, 20))
-
-      // 职业偏好
-      const profMap = {}
-      ;(profs.data || []).forEach(e => {
-        if (!e.profession) return
-        profMap[e.profession] = (profMap[e.profession] || 0) + 1
-      })
-      const profArr = Object.entries(profMap).sort((a, b) => b[1] - a[1])
-      const maxProf = profArr[0]?.[1] || 1
-      setProfessions(profArr.map(([name, count]) => ({ name, count, pct: Math.round(count / maxProf * 100) })))
-
-      // 搜索
-      setSearches((srch.data || []).map(e => e.search_query).filter(Boolean))
-
-      // 趋势：过去30天每日
-      const dayMap = {}
-      for (let i = 29; i >= 0; i--) {
-        const d = new Date(); d.setDate(d.getDate() - i)
-        dayMap[d.toISOString().slice(0, 10)] = 0
-      }
-      ;(trendData.data || []).forEach(e => {
-        const day = e.created_at.slice(0, 10)
-        if (dayMap[day] !== undefined) dayMap[day]++
-      })
-      const trendArr = Object.entries(dayMap).map(([date, count]) => ({ date, count }))
-      const maxTrend = Math.max(...trendArr.map(d => d.count), 1)
-      setTrend(trendArr.map(d => ({ ...d, pct: Math.round(d.count / maxTrend * 100) })))
-    }).catch(console.error).finally(() => setLoading(false))
-  }, [period])
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [periodIdx])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -121,32 +137,30 @@ export default function Analytics() {
 
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-8">
 
-        {/* 概览卡片（今日） */}
-        <div>
-          <h2 className="text-sm font-semibold text-gray-500 mb-3">今日概览</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {[
-              { label: '页面访问 (PV)', value: overview.page_view, color: 'text-green-600' },
-              { label: '工具点击', value: overview.tool_click, color: 'text-blue-600' },
-              { label: '报告阅读', value: overview.report_view, color: 'text-purple-600' },
-              { label: '搜索次数', value: overview.search, color: 'text-orange-500' },
-            ].map(c => (
-              <div key={c.label} className="bg-white border border-gray-200 rounded-xl p-5">
-                <div className={`text-3xl font-bold ${c.color} mb-1`}>{loading ? '—' : c.value}</div>
-                <div className="text-sm text-gray-500">{c.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 时间段切换 */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">统计周期：</span>
-          {PERIODS.map(p => (
-            <button key={p.days} onClick={() => setPeriod(p.days)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${period === p.days ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-400'}`}>
+        {/* 时间段选择 */}
+        <div className="flex flex-wrap gap-2">
+          {PERIODS.map((p, i) => (
+            <button key={i} onClick={() => setPeriodIdx(i)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${periodIdx === i ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-400'}`}>
               {p.label}
             </button>
+          ))}
+        </div>
+
+        {/* 核心指标 */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          {[
+            { label: 'Visitors', value: stats?.visitors, sub: '独立访客', color: 'text-green-600' },
+            { label: 'Visits', value: stats?.visits, sub: '访问次数', color: 'text-blue-600' },
+            { label: 'Views', value: stats?.views, sub: '页面浏览', color: 'text-purple-600' },
+            { label: 'Bounce Rate', value: stats ? `${stats.bounceRate}%` : null, sub: '跳出率', color: stats?.bounceRate > 70 ? 'text-red-500' : 'text-orange-500' },
+            { label: 'Avg Duration', value: stats ? fmtDuration(stats.avgDuration) : null, sub: '平均时长', color: 'text-teal-600' },
+          ].map(c => (
+            <div key={c.label} className="bg-white border border-gray-200 rounded-xl p-5">
+              <div className="text-xs text-gray-400 mb-1">{c.label}</div>
+              <div className={`text-2xl font-bold ${c.color} mb-0.5`}>{loading ? '—' : (c.value !== undefined ? (typeof c.value === 'number' ? fmt(c.value) : c.value) : '—')}</div>
+              <div className="text-xs text-gray-400">{c.sub}</div>
+            </div>
           ))}
         </div>
 
@@ -174,7 +188,7 @@ export default function Analytics() {
           )}
         </div>
 
-        {/* 过去30天趋势 */}
+        {/* 过去30天 PV 趋势 */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
           <h2 className="font-semibold text-gray-800 mb-4">过去 30 天页面访问趋势 (PV)</h2>
           {loading ? <Skeleton rows={1} height="h-24" /> : (
@@ -191,7 +205,7 @@ export default function Analytics() {
           )}
           <div className="flex justify-between text-xs text-gray-400 mt-1">
             <span>{trend[0]?.date?.slice(5)}</span>
-            <span>{trend[trend.length - 1]?.date?.slice(5)}</span>
+            <span>{trend[trend.length-1]?.date?.slice(5)}</span>
           </div>
         </div>
 
@@ -228,7 +242,7 @@ function RankTable({ title, data, loading }) {
           <tbody>
             {data.map((row, i) => (
               <tr key={i} className="border-b border-gray-50 last:border-0">
-                <td className="py-2 text-gray-400 text-xs">{i + 1}</td>
+                <td className="py-2 text-gray-400 text-xs">{i+1}</td>
                 <td className="py-2 text-gray-700 truncate max-w-[160px]">{row.name}</td>
                 <td className="py-2 text-right font-semibold text-gray-800">{row.count}</td>
               </tr>
