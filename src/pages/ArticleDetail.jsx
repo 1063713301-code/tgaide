@@ -5,31 +5,29 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import PdfButton from '../components/PdfButton'
 import RichTextContent from '../components/RichTextContent'
-import { fetchArticleById, fetchToolOfficialUrls } from '../lib/supabase'
+import { fetchArticleById, fetchToolOfficialUrls, fetchAllToolSlugs } from '../lib/supabase'
 import { trackEvent } from '../lib/analytics'
 import { useLang } from '../lib/i18n.jsx'
 import QRCode from 'qrcode'
 import { setSEO, breadcrumb } from '../lib/seo'
 
 function injectToolLinks(html, toolUrlMap) {
-  let result = html
-  // Sort longest first to avoid partial replacements
+  if (!html || !Object.keys(toolUrlMap).length) return html
+  // Split on tags to avoid replacing inside href/alt attributes
+  const parts = html.split(/(<[^>]+>)/)
   const sorted = Object.entries(toolUrlMap).sort((a, b) => b[0].length - a[0].length)
-  for (const [name, href] of sorted) {
-    const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const link = `<a href="${href}" class="text-blue-600 hover:underline font-medium">${name}</a>`
-    // 1. Replace <strong>工具名</strong> → <strong><a>工具名</a></strong>
-    result = result.replace(
-      new RegExp(`<strong>(${escaped})</strong>`, 'g'),
-      `<strong>${link}</strong>`
-    )
-    // 2. Replace plain text occurrences (after tag boundary, space, or punctuation)
-    result = result.replace(
-      new RegExp(`([ （(+、,，：:>])(${escaped})(?=[ ）)：:+、,，<])`, 'g'),
-      `$1${link}`
-    )
-  }
-  return result
+  return parts.map(part => {
+    if (part.startsWith('<')) return part
+    let text = part
+    for (const [name, href] of sorted) {
+      const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      text = text.replace(
+        new RegExp(escaped, 'g'),
+        `<a href="${href}" class="text-blue-600 hover:underline font-medium">${name}</a>`
+      )
+    }
+    return text
+  }).join('')
 }
 
 function formatDate(dateStr) {
@@ -192,20 +190,8 @@ export default function ArticleDetail({ type }) {
             ]),
           ],
         })
-        if ((type === 'selection' || type === 'report') && data.content) {
-          const names = new Set()
-          // From selection: "推荐工具组合：tool1 + tool2"
-          ;[...data.content.matchAll(/<strong>推荐工具组合：<\/strong>\s*([^<]+)/g)]
-            .flatMap(m => m[1].trim().split(/[+、,，]/).map(t => t.trim()))
-            .filter(Boolean).forEach(n => names.add(n))
-          // From report: "用[工具名]做" pattern — tool name is in <strong> before ：
-          ;[...data.content.matchAll(/<strong>([^<：:]+)[：:]?<\/strong>/g)]
-            .map(m => m[1].trim()).filter(n => n.length > 1 && n.length < 30
-              && !/^(第[一二三四五六七八九十]步|本周|这是什么|怎么用|为什么|价格|使用技巧|替代方案|核心目标|具体用法|推荐工具|场景|建议|更新|区别|适合谁)/.test(n))
-            .forEach(n => names.add(n))
-          if (names.size > 0) {
-            fetchToolOfficialUrls([...names]).then(setToolUrlMap).catch(() => {})
-          }
+        if (type === 'selection' || type === 'report') {
+          fetchAllToolSlugs().then(setToolUrlMap).catch(() => {})
         }
       })
       .catch(() => setError(t('article_not_found')))
