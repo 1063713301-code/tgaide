@@ -6,10 +6,10 @@ import { fetchLatestSelections } from '../lib/supabase'
 
 export const SELECTION_SCENES = [
   { slug: 'design',    icon: '🎨', title: '设计系统生成',   desc: '海报/建模/视觉全套AI方案',     color: 'from-purple-50 to-purple-100', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-700' },
-  { slug: 'video',     icon: '🎬', title: '视频内容制作',   desc: '剪辑/数字人/短视频自动化工具', color: 'from-red-50 to-red-100',       border: 'border-red-200',    tag: 'bg-red-100 text-red-700'       },
-  { slug: 'marketing', icon: '📣', title: '全链路运营推广', desc: '文案选题/投放/数据运营套装',   color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
+  { slug: 'video',     icon: '🎓', title: '论文科研辅助',   desc: '论文写作/文献综述/数据分析工具', color: 'from-red-50 to-red-100',       border: 'border-red-200',    tag: 'bg-red-100 text-red-700'       },
+  { slug: 'marketing', icon: '📣', title: '全链路营销',     desc: '文案选题/投放/数据运营套装',   color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
   { slug: 'legal',     icon: '⚖️', title: '律师合同审查',   desc: '文书拟写/风险检测/法律辅助',   color: 'from-blue-50 to-blue-100',     border: 'border-blue-200',   tag: 'bg-blue-100 text-blue-700'     },
-  { slug: 'content',   icon: '✍️', title: '商业内容营销',   desc: '品牌文案/策划/种草内容生成',   color: 'from-green-50 to-green-100',   border: 'border-green-200',  tag: 'bg-green-100 text-green-700'   },
+  { slug: 'content',   icon: '💻', title: '高效开发与调试', desc: 'AI编程/代码审查/调试部署工具', color: 'from-green-50 to-green-100',   border: 'border-green-200',  tag: 'bg-green-100 text-green-700'   },
   { slug: 'finance',   icon: '💹', title: '专业财务分析',   desc: '报税做账/发票识别/报表分析',   color: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', tag: 'bg-yellow-100 text-yellow-700' },
 ]
 

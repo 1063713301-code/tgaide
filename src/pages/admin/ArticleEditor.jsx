@@ -9,10 +9,10 @@ const CATEGORY_OPTIONS = CATEGORIES.filter((c) => c.id !== '')
 
 const SELECTION_SCENE_OPTIONS = [
   { id: 'design',    label: '设计系统生成' },
-  { id: 'video',     label: '视频内容制作' },
-  { id: 'marketing', label: '全链路运营推广' },
+  { id: 'video',     label: '论文科研辅助' },
+  { id: 'marketing', label: '全链路营销' },
   { id: 'legal',     label: '律师合同审查' },
-  { id: 'content',   label: '商业内容营销' },
+  { id: 'content',   label: '高效开发与调试' },
   { id: 'finance',   label: '专业财务分析' },
 ]
 
