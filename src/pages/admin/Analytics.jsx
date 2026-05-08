@@ -230,9 +230,9 @@ export default function Analytics() {
                       </div>
                     </div>
                     {/* Views 浅色（底层） */}
-                    <div className="w-full rounded-sm" style={{ height: `${Math.max(b.viewsPct, b.views > 0 ? 3 : 0)}%`, background: '#cfddee' }} />
+                    <div className="w-full rounded-sm" style={{ height: `${Math.max(b.viewsPct, b.views > 0 ? 3 : 0)}%`, background: '#c7dcf6' }} />
                     {/* Visitors 深色（叠在上面，实际是绝对定位覆盖底部） */}
-                    <div className="w-full rounded-sm absolute bottom-0" style={{ height: `${Math.max(b.visitorsPct, b.visitors > 0 ? 3 : 0)}%`, background: '#6a8ec7' }} />
+                    <div className="w-full rounded-sm absolute bottom-0" style={{ height: `${Math.max(b.visitorsPct, b.visitors > 0 ? 3 : 0)}%`, background: '#5288df' }} />
                   </div>
                 ))}
               </div>
@@ -245,10 +245,10 @@ export default function Analytics() {
               {/* 图例 */}
               <div className="flex items-center gap-4 mt-3 justify-center">
                 <span className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#6a8ec7'}} />Visitors
+                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#5288df'}} />Visitors
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#cfddee'}} />Views
+                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#c7dcf6'}} />Views
                 </span>
               </div>
             </>
@@ -344,14 +344,14 @@ function LineChart({ data }) {
             <line key={r} x1={PAD} x2={W - PAD} y1={H - PAD - r * (H - PAD * 2)} y2={H - PAD - r * (H - PAD * 2)} stroke="#F1F5F9" strokeWidth="1" />
           ))}
           {/* Visits 折线（浅蓝） */}
-          <polyline points={pts('visits' in data[0] ? 'visits' : 'visitors')} fill="none" stroke="#aec6e3" strokeWidth="2" strokeLinejoin="round" />
+          <polyline points={pts('visits' in data[0] ? 'visits' : 'visitors')} fill="none" stroke="#a0c5f0" strokeWidth="2" strokeLinejoin="round" />
           {/* Visitors 折线（深蓝） */}
-          <polyline points={pts('visitors')} fill="none" stroke="#6a8ec7" strokeWidth="2" strokeLinejoin="round" />
+          <polyline points={pts('visitors')} fill="none" stroke="#5288df" strokeWidth="2" strokeLinejoin="round" />
           {/* 数据点 hover */}
           {data.map((d, i) => {
             const x = PAD + (i / (data.length - 1 || 1)) * (W - PAD * 2)
             const yV = H - PAD - (d.visitors / maxAll) * (H - PAD * 2)
-            return <circle key={i} cx={x} cy={yV} r="3" fill="#6a8ec7" opacity="0.7"><title>{d.label}: Visitors {d.visitors} · Visits {d.visits ?? d.visitors}</title></circle>
+            return <circle key={i} cx={x} cy={yV} r="3" fill="#5288df" opacity="0.7"><title>{d.label}: Visitors {d.visitors} · Visits {d.visits ?? d.visitors}</title></circle>
           })}
         </svg>
       </div>
@@ -362,10 +362,10 @@ function LineChart({ data }) {
       </div>
       <div className="flex items-center gap-4 mt-3 justify-center">
         <span className="flex items-center gap-1.5 text-xs text-gray-500">
-          <span className="w-6 h-0.5 inline-block" style={{ background: '#6a8ec7' }} />Visitors
+          <span className="w-6 h-0.5 inline-block" style={{ background: '#5288df' }} />Visitors
         </span>
         <span className="flex items-center gap-1.5 text-xs text-gray-500">
-          <span className="w-6 h-0.5 inline-block" style={{ background: '#aec6e3' }} />Visits
+          <span className="w-6 h-0.5 inline-block" style={{ background: '#a0c5f0' }} />Visits
         </span>
       </div>
     </>
