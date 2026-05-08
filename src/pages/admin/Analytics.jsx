@@ -21,7 +21,7 @@ async function query(eventType, since, select = '*', options = {}) {
 }
 
 export default function Analytics() {
-  const [overview, setOverview] = useState({ tool_click: 0, report_view: 0, search: 0 })
+  const [overview, setOverview] = useState({ tool_click: 0, report_view: 0, search: 0, page_view: 0 })
   const [toolRank, setToolRank] = useState([])
   const [reportRank, setReportRank] = useState([])
   const [professions, setProfessions] = useState([])
@@ -49,7 +49,7 @@ export default function Analytics() {
       // 搜索关键词
       supabase.from('analytics_events').select('search_query, created_at').eq('event_type', 'search').order('created_at', { ascending: false }).limit(100),
       // 过去30天趋势
-      supabase.from('analytics_events').select('created_at').eq('event_type', 'tool_click').gte('created_at', dayStart(29)),
+      supabase.from('analytics_events').select('created_at').eq('event_type', 'page_view').gte('created_at', dayStart(29)),
     ]).then(([ov, tools, reports, profs, srch, trendData]) => {
       // 概览
       const ovData = ov.data || []
@@ -57,6 +57,7 @@ export default function Analytics() {
         tool_click: ovData.filter(e => e.event_type === 'tool_click').length,
         report_view: ovData.filter(e => e.event_type === 'report_view').length,
         search: ovData.filter(e => e.event_type === 'search').length,
+        page_view: ovData.filter(e => e.event_type === 'page_view').length,
       })
 
       // 工具排行
@@ -123,8 +124,9 @@ export default function Analytics() {
         {/* 概览卡片（今日） */}
         <div>
           <h2 className="text-sm font-semibold text-gray-500 mb-3">今日概览</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
+              { label: '页面访问 (PV)', value: overview.page_view, color: 'text-green-600' },
               { label: '工具点击', value: overview.tool_click, color: 'text-blue-600' },
               { label: '报告阅读', value: overview.report_view, color: 'text-purple-600' },
               { label: '搜索次数', value: overview.search, color: 'text-orange-500' },
@@ -174,7 +176,7 @@ export default function Analytics() {
 
         {/* 过去30天趋势 */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="font-semibold text-gray-800 mb-4">过去 30 天工具点击趋势</h2>
+          <h2 className="font-semibold text-gray-800 mb-4">过去 30 天页面访问趋势 (PV)</h2>
           {loading ? <Skeleton rows={1} height="h-24" /> : (
             <div className="flex items-end gap-0.5 h-24">
               {trend.map(d => (

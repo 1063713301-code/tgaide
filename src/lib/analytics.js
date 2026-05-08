@@ -5,8 +5,8 @@ export function trackEvent(eventType, payload = {}) {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return
   const body = {
     event_type: eventType,
-    target_id: payload.tool_slug || payload.report_id || null,
-    target_name: payload.tool_name || payload.report_title || null,
+    target_id: payload.tool_slug || payload.report_id || payload.page_path || null,
+    target_name: payload.tool_name || payload.report_title || payload.page_path || null,
     profession: payload.profession || null,
     search_query: payload.search_query || null,
   }

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { isAdminAuthenticated } from './hooks/useAuth'
 import { useLang } from './lib/i18n.jsx'
+import { trackEvent } from './lib/analytics'
 
 function LangSync() {
   const { pathname } = useLocation()
@@ -11,7 +12,11 @@ function LangSync() {
     const target = isEn ? 'en' : 'zh'
     if (lang !== target) setLang(target)
     document.documentElement.lang = target === 'en' ? 'en' : 'zh-CN'
-  }, [pathname, lang, setLang])
+    // 跳过后台页面的 PV 统计
+    if (!pathname.startsWith('/admin')) {
+      trackEvent('page_view', { page_path: pathname })
+    }
+  }, [pathname])
   return null
 }
 
