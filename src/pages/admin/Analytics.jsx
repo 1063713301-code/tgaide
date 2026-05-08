@@ -318,6 +318,7 @@ export default function Analytics() {
   const [referrers,   setReferrers]   = useState([])
   const [devices,     setDevices]     = useState([])
   const [browsers,    setBrowsers]    = useState([])
+  const [provinces,   setProvinces]   = useState([])
   const [hourly,      setHourly]      = useState(Array(24).fill(0))
   const [segment,     setSegment]     = useState(null)
   const [retention,   setRetention]   = useState(null)
@@ -465,6 +466,14 @@ export default function Analytics() {
     const brMap = {}
     pvRows.filter(r => r.browser).forEach(r => { brMap[r.browser] = (brMap[r.browser] || 0) + 1 })
     setBrowsers(Object.entries(brMap).sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ label: k, value: v })))
+
+    // 省份分布
+    const provMap = {}
+    pvRows.filter(r => r.province).forEach(r => {
+      const p = r.province.replace(/省|市|自治区|维吾尔|壮族|回族/g, '')
+      provMap[p] = (provMap[p] || 0) + 1
+    })
+    setProvinces(Object.entries(provMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([label, value]) => ({ label, value })))
 
     // 24小时分布
     const hourArr = Array(24).fill(0)
@@ -802,6 +811,12 @@ export default function Analytics() {
                 {loading ? <Skel rows={8} />
                   : pageRank.length === 0 ? <Empty />
                   : <BarH data={pageRank.map(r => ({ label: r.name, value: r.count }))} color="#a78bfa" />}
+              </Card>
+              <Card title="地域分布（省份 TOP 15）">
+                {loading ? <Skel rows={8} />
+                  : provinces.length === 0
+                  ? <NoData msg="暂无地域数据。新访客访问后将自动采集（首次访问时查询 IP 归属地）。" />
+                  : <BarH data={provinces} color="#34d399" />}
               </Card>
             </div>
           )}

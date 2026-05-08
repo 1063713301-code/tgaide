@@ -22,8 +22,8 @@ function getSessionId() {
 
 function detectDevice() {
   const ua = navigator.userAgent
-  if (/tablet|ipad|playbook|silk/i.test(ua))                                         return 'tablet'
-  if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile/i.test(ua))         return 'mobile'
+  if (/tablet|ipad|playbook|silk/i.test(ua))                                           return 'tablet'
+  if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile/i.test(ua))           return 'mobile'
   return 'desktop'
 }
 
@@ -39,9 +39,38 @@ function detectBrowser() {
 
 function classifyChannel(ref) {
   if (!ref) return 'direct'
-  if (/google|bing|baidu|sogou|360\.cn|shenma|yandex/i.test(ref))                          return 'search'
+  if (/google|bing|baidu|sogou|360\.cn|shenma|yandex/i.test(ref))                               return 'search'
   if (/weibo|wechat|facebook|twitter|instagram|tiktok|douyin|xiaohongshu|zhihu|bilibili/i.test(ref)) return 'social'
   return 'referral'
+}
+
+// IP 地理位置（缓存至 localStorage，首次访问异步获取，后续命中缓存直接用）
+const GEO_KEY     = 'tg_geo'
+const GEO_TTL     = 7 * 24 * 3600 * 1000 // 7天重新查一次
+
+function getCachedGeo() {
+  try {
+    const raw = localStorage.getItem(GEO_KEY)
+    if (!raw) return null
+    const { province, city, ts } = JSON.parse(raw)
+    if (Date.now() - ts > GEO_TTL) { localStorage.removeItem(GEO_KEY); return null }
+    return { province: province || null, city: city || null }
+  } catch { return null }
+}
+
+async function fetchGeo() {
+  try {
+    // ip-api.com 免费接口，45次/分钟限制，中文省市名
+    const res = await fetch('https://ip-api.com/json/?lang=zh-CN&fields=regionName,city', { signal: AbortSignal.timeout(4000) })
+    if (!res.ok) throw new Error()
+    const { regionName, city } = await res.json()
+    if (regionName) {
+      localStorage.setItem(GEO_KEY, JSON.stringify({ province: regionName, city: city || null, ts: Date.now() }))
+    }
+    return { province: regionName || null, city: city || null }
+  } catch {
+    return { province: null, city: null }
+  }
 }
 
 function post(body) {
@@ -59,24 +88,35 @@ function post(body) {
 }
 
 export function trackEvent(eventType, payload = {}) {
-  const isPV   = eventType === 'page_view'
-  const ref    = document.referrer || null
-  post({
-    event_type:  eventType,
-    target_id:   payload.tool_slug   || payload.report_id   || payload.page_path || null,
-    target_name: payload.tool_name   || payload.report_title || payload.page_path || null,
-    profession:  payload.profession  || null,
+  const isPV  = eventType === 'page_view'
+  const ref   = document.referrer || null
+  const base  = {
+    event_type:   eventType,
+    target_id:    payload.tool_slug   || payload.report_id    || payload.page_path || null,
+    target_name:  payload.tool_name   || payload.report_title || payload.page_path || null,
+    profession:   payload.profession  || null,
     search_query: payload.search_query || null,
-    visitor_id:  getVisitorId(),
-    session_id:  getSessionId(),
-    referrer:    isPV ? ref : null,
-    channel:     isPV ? classifyChannel(ref) : null,
-    device_type: isPV ? detectDevice()  : null,
-    browser:     isPV ? detectBrowser() : null,
-  })
+    visitor_id:   getVisitorId(),
+    session_id:   getSessionId(),
+    referrer:     isPV ? ref : null,
+    channel:      isPV ? classifyChannel(ref) : null,
+    device_type:  isPV ? detectDevice()  : null,
+    browser:      isPV ? detectBrowser() : null,
+  }
+
+  if (!isPV) { post(base); return }
+
+  // page_view：带上 geo（有缓存立即用，无缓存先上报再后台拉取供下次用）
+  const cached = getCachedGeo()
+  if (cached) {
+    post({ ...base, province: cached.province, city: cached.city })
+  } else {
+    post(base) // 先上报，不阻塞
+    fetchGeo() // 后台静默拉取，缓存结果供下次使用
+  }
 }
 
-// 页面加载性能上报（使用 Navigation Timing API）
+// 页面加载性能上报（Navigation Timing API）
 export function trackPerformance() {
   try {
     const [nav] = performance.getEntriesByType('navigation')
@@ -104,7 +144,7 @@ export function trackError(errorType, pagePath) {
   })
 }
 
-// 模块加载后自动采集一次性能数据
+// 模块加载后自动采集性能数据
 if (typeof window !== 'undefined') {
   window.addEventListener('load', () => setTimeout(trackPerformance, 200))
 }
