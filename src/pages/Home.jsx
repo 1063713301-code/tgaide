@@ -183,7 +183,9 @@ export default function Home() {
                 {categoryCount[cat.category] && (
                   <span className="text-sm font-bold text-gray-700">【{categoryCount[cat.category]} 款工具】</span>
                 )}
-                <p className="text-xs text-gray-600 leading-relaxed line-clamp-2 hidden sm:block mt-1">{t(cat.descKey)}</p>
+                <div className="hidden sm:block mt-1">
+                  <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{t(cat.descKey)}</p>
+                </div>
               </Link>
             ))}
           </div>
@@ -278,8 +280,8 @@ export default function Home() {
           { title: t('home_recommended'), tools: recommended },
           { title: t('home_hot'), tools: hotTools },
           { title: t('home_new'), tools: newTools },
-        ].map(({ title, tools }) => (
-          <section key={title} className="mb-14">
+        ].map(({ title, tools }, idx, arr) => (
+          <section key={title} className={idx === arr.length - 1 ? 'mb-2' : 'mb-14'}>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl font-bold text-gray-900">{title}</h2>
               <Link to="/tools" className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1">

@@ -255,4 +255,4 @@ button:not(:disabled):active { transform: scale(0.97); }
 }
 .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
-.marquee-wrap { overflow: hidden; }
+.marquee-wrap { overflow: hidden; mask-image: linear-gradient(to right, transparent 0, black 56px, black calc(100% - 56px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0, black 56px, black calc(100% - 56px), transparent 100%); }
