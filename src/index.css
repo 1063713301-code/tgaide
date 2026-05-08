@@ -91,8 +91,8 @@ nav.navbar-glass {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 500;
-  background: rgba(59,130,246,0.08);
-  color: #3B82F6;
+  background: rgba(106,142,199,0.08);
+  color: #6a8ec7;
   border: none;
 }
 .tag-pill-purple { background: rgba(139,92,246,0.08); color: #7C3AED; }
@@ -109,18 +109,18 @@ a {
   transition: all 0.2s ease;
 }
 .btn-primary {
-  background: #3B82F6;
+  background: #6a8ec7;
   color: #fff;
   border-radius: 12px;
   font-weight: 500;
   transition: background 0.2s ease;
 }
-.btn-primary:hover { background: #2563EB; }
+.btn-primary:hover { background: #5776ba; }
 
 /* ══════════════════════════════════════════════════
    10. 报告卡片左侧彩色竖线
 ══════════════════════════════════════════════════ */
-.report-bar-律师     { border-left: 3px solid #93C5FD; }
+.report-bar-律师     { border-left: 3px solid #aec6e3; }
 .report-bar-设计师   { border-left: 3px solid #C4B5FD; }
 .report-bar-会计     { border-left: 3px solid #6EE7B7; }
 .report-bar-营销     { border-left: 3px solid #FCA5A5; }
@@ -199,11 +199,11 @@ button:not(:disabled):active { transform: scale(0.97); }
 .rich-text-content em, .rich-text-content i { font-style: italic; }
 .rich-text-content u { text-decoration: underline; }
 .rich-text-content s { text-decoration: line-through; }
-.rich-text-content blockquote { border-left: 3px solid #3B82F6; background: #F8FAFC; padding: 14px 18px; margin: 0 0 20px; color: #64748B; border-radius: 0 8px 8px 0; }
+.rich-text-content blockquote { border-left: 3px solid #6a8ec7; background: #F8FAFC; padding: 14px 18px; margin: 0 0 20px; color: #64748B; border-radius: 0 8px 8px 0; }
 .rich-text-content blockquote p { margin: 0; }
 .rich-text-content img { max-width: 100%; height: auto; margin: 16px auto; display: block; border-radius: 10px; }
-.rich-text-content a { color: #3B82F6; text-decoration: underline; }
-.rich-text-content a:hover { color: #2563EB; }
+.rich-text-content a { color: #6a8ec7; text-decoration: underline; }
+.rich-text-content a:hover { color: #5776ba; }
 .rich-text-content code { font-family: 'Fira Code', Consolas, monospace; background: #F1F5F9; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #C2410C; }
 .rich-text-content pre { background: #1E293B; color: #E2E8F0; padding: 16px 20px; border-radius: 10px; overflow-x: auto; margin: 0 0 20px; font-size: 13px; line-height: 1.6; }
 .rich-text-content pre code { background: transparent; padding: 0; color: inherit; }
@@ -218,7 +218,7 @@ button:not(:disabled):active { transform: scale(0.97); }
 .tiptap-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 8px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; align-items: center; }
 .tiptap-toolbar button { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: none; background: transparent; border-radius: 4px; cursor: pointer; color: #475569; font-size: 13px; font-weight: 500; transition: background 0.15s; }
 .tiptap-toolbar button:hover { background: #E2E8F0; }
-.tiptap-toolbar button.is-active { background: #DBEAFE; color: #3B82F6; }
+.tiptap-toolbar button.is-active { background: #e4ebf5; color: #6a8ec7; }
 .tiptap-toolbar .toolbar-divider { width: 1px; height: 24px; background: #E2E8F0; margin: 0 4px; }
 .tiptap-content-area { min-height: 500px; max-height: 800px; overflow-y: auto; padding: 24px; background: #fff; outline: none; }
 .ProseMirror { outline: none; min-height: 480px; }
@@ -233,11 +233,11 @@ button:not(:disabled):active { transform: scale(0.97); }
 .ProseMirror table { border-collapse: collapse; width: 100%; margin: 0 0 1em; }
 .ProseMirror td, .ProseMirror th { border: 1px solid #E2E8F0; padding: 8px 12px; min-width: 100px; }
 .ProseMirror th { background: #F8FAFC; font-weight: 600; }
-.ProseMirror .selectedCell:after { z-index: 2; position: absolute; content: ""; inset: 0; background: rgba(59,130,246,0.1); pointer-events: none; }
-.ProseMirror .column-resize-handle { position: absolute; right: -2px; top: 0; bottom: -2px; width: 4px; background: #3B82F6; pointer-events: none; }
-.ProseMirror blockquote { border-left: 3px solid #3B82F6; padding: 8px 16px; margin: 0 0 1em; color: #64748B; font-style: italic; background: #F8FAFC; }
+.ProseMirror .selectedCell:after { z-index: 2; position: absolute; content: ""; inset: 0; background: rgba(106,142,199,0.1); pointer-events: none; }
+.ProseMirror .column-resize-handle { position: absolute; right: -2px; top: 0; bottom: -2px; width: 4px; background: #6a8ec7; pointer-events: none; }
+.ProseMirror blockquote { border-left: 3px solid #6a8ec7; padding: 8px 16px; margin: 0 0 1em; color: #64748B; font-style: italic; background: #F8FAFC; }
 .ProseMirror img { max-width: 100%; height: auto; border-radius: 6px; cursor: pointer; }
-.ProseMirror img.ProseMirror-selectednode { outline: 3px solid #3B82F6; }
+.ProseMirror img.ProseMirror-selectednode { outline: 3px solid #6a8ec7; }
 .ProseMirror .placeholder-text::before { content: attr(data-placeholder); color: #94A3B8; pointer-events: none; float: left; height: 0; }
 .ProseMirror-focused .placeholder-text::before { display: none; }
 
