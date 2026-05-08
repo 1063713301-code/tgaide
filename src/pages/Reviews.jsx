@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import RichTextEditor from '../components/RichTextEditor'
-import { fetchReviews, submitReview, supabase } from '../lib/supabase'
+import { fetchReviews, submitReview, supabase, fetchAllToolSlugs } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
 
 const OCCUPATIONS = ['律师', '设计师', '会计', '营销', '程序员', '学生', '其他']
@@ -287,6 +288,7 @@ function LightboxModal({ src, onClose }) {
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([])
+  const [toolSlugMap, setToolSlugMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -295,7 +297,13 @@ export default function Reviews() {
 
   useEffect(() => {
     document.title = '用户评测 - TG AI工具库'
-    fetchReviews().then(setReviews).catch(console.error).finally(() => setLoading(false))
+    Promise.all([
+      fetchReviews(),
+      fetchAllToolSlugs(),
+    ]).then(([reviewData, slugMap]) => {
+      setReviews(reviewData)
+      setToolSlugMap(slugMap)
+    }).catch(console.error).finally(() => setLoading(false))
   }, [])
 
   function handleSuccess() {
@@ -373,7 +381,10 @@ export default function Reviews() {
                 {r.tool_name && (
                   <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-2">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    推荐工具：<span className="text-blue-600 font-medium">{r.tool_name}</span>
+                    推荐工具：{toolSlugMap[r.tool_name]
+                      ? <Link to={toolSlugMap[r.tool_name]} className="text-blue-600 font-medium hover:underline">{r.tool_name}</Link>
+                      : <span className="text-blue-600 font-medium">{r.tool_name}</span>
+                    }
                   </div>
                 )}
                 {/* 媒体账号 */}
