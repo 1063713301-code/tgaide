@@ -110,16 +110,33 @@ export default function Analytics() {
         // 搜索词
         setSearches(rows.filter(r => r.event_type === 'search' && r.search_query).map(r => r.search_query).reverse().slice(0, 100))
 
-        // 趋势（过去30天 PV）
-        const dayMap = {}
-        for (let i = 29; i >= 0; i--) {
-          const d = new Date(); d.setDate(d.getDate() - i)
-          dayMap[d.toISOString().slice(0,10)] = 0
+        // 时间轴图表（今日/过去24小时用小时粒度，其他用天粒度）
+        const useHour = periodIdx <= 1
+        const bucketMap = {}
+        if (useHour) {
+          for (let i = 47; i >= 0; i--) {
+            const d = new Date(Date.now() - i * 3600000)
+            const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
+            bucketMap[k] = { views: 0, visitors: new Set() }
+          }
+          pvRows.forEach(r => {
+            const d = new Date(r.created_at)
+            const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
+            if (bucketMap[k]) { bucketMap[k].views++; if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id) }
+          })
+        } else {
+          for (let i = 29; i >= 0; i--) {
+            const d = new Date(); d.setDate(d.getDate() - i)
+            bucketMap[d.toISOString().slice(0,10)] = { views: 0, visitors: new Set() }
+          }
+          pvRows.forEach(r => {
+            const k = r.created_at.slice(0,10)
+            if (bucketMap[k]) { bucketMap[k].views++; if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id) }
+          })
         }
-        pvRows.forEach(r => { const day = r.created_at.slice(0,10); if (dayMap[day] !== undefined) dayMap[day]++ })
-        const tArr = Object.entries(dayMap).map(([date, count]) => ({ date, count }))
-        const maxT = Math.max(...tArr.map(d => d.count), 1)
-        setTrend(tArr.map(d => ({ ...d, pct: Math.round(d.count/maxT*100) })))
+        const buckets = Object.entries(bucketMap).map(([label, v]) => ({ label, views: v.views, visitors: v.visitors.size }))
+        const maxB = Math.max(...buckets.map(b => b.views), 1)
+        setTrend(buckets.map(b => ({ ...b, viewsPct: Math.round(b.views/maxB*100), visitorsPct: Math.round(b.visitors/maxB*100) })))
       })
       .catch(console.error)
       .finally(() => setLoading(false))
@@ -188,25 +205,46 @@ export default function Analytics() {
           )}
         </div>
 
-        {/* 过去30天 PV 趋势 */}
+        {/* 访问趋势图 */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="font-semibold text-gray-800 mb-4">过去 30 天页面访问趋势 (PV)</h2>
-          {loading ? <Skeleton rows={1} height="h-24" /> : (
-            <div className="flex items-end gap-0.5 h-24">
-              {trend.map(d => (
-                <div key={d.date} className="flex-1 flex flex-col items-center justify-end group relative" title={`${d.date}: ${d.count}`}>
-                  <div className="w-full bg-blue-500 rounded-sm transition-all hover:bg-blue-600" style={{ height: `${Math.max(d.pct, d.count > 0 ? 4 : 0)}%` }} />
-                  <div className="absolute bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-1.5 py-0.5 whitespace-nowrap z-10">
-                    {d.date.slice(5)}: {d.count}
+          <h2 className="font-semibold text-gray-800 mb-4">
+            访问趋势 — {periodIdx <= 1 ? '按小时' : '按天'}
+          </h2>
+          {loading ? <Skeleton rows={1} height="h-32" /> : (
+            <>
+              <div className="flex items-end gap-px h-32 overflow-x-auto">
+                {trend.map((b, i) => (
+                  <div key={i} className="flex-shrink-0 flex flex-col items-center justify-end group relative"
+                    style={{ minWidth: trend.length > 48 ? '10px' : trend.length > 24 ? '14px' : '20px', height: '100%' }}>
+                    <div className="absolute bottom-full mb-1 hidden group-hover:flex flex-col items-center z-10 pointer-events-none">
+                      <div className="bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                        {b.label}<br/>Visitors: {b.visitors} · Views: {b.views}
+                      </div>
+                    </div>
+                    {/* Views 浅色（底层） */}
+                    <div className="w-full rounded-sm" style={{ height: `${Math.max(b.viewsPct, b.views > 0 ? 3 : 0)}%`, background: '#BFDBFE' }} />
+                    {/* Visitors 深色（叠在上面，实际是绝对定位覆盖底部） */}
+                    <div className="w-full rounded-sm absolute bottom-0" style={{ height: `${Math.max(b.visitorsPct, b.visitors > 0 ? 3 : 0)}%`, background: '#3B82F6' }} />
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+              {/* X轴标签：只显示首尾和中间几个 */}
+              <div className="flex justify-between text-xs text-gray-400 mt-2">
+                <span>{trend[0]?.label}</span>
+                <span>{trend[Math.floor(trend.length/2)]?.label}</span>
+                <span>{trend[trend.length-1]?.label}</span>
+              </div>
+              {/* 图例 */}
+              <div className="flex items-center gap-4 mt-3 justify-center">
+                <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#3B82F6'}} />Visitors
+                </span>
+                <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                  <span className="w-3 h-3 rounded-sm inline-block" style={{background:'#BFDBFE'}} />Views
+                </span>
+              </div>
+            </>
           )}
-          <div className="flex justify-between text-xs text-gray-400 mt-1">
-            <span>{trend[0]?.date?.slice(5)}</span>
-            <span>{trend[trend.length-1]?.date?.slice(5)}</span>
-          </div>
         </div>
 
         {/* 搜索关键词 */}
