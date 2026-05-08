@@ -277,7 +277,7 @@ export default function Home() {
             {loading ? (
               <div className="flex gap-4 overflow-x-auto pb-2">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="flex-shrink-0 w-56 bg-white border border-gray-200 rounded-xl p-4">
+                  <div key={i} className="flex-shrink-0 w-56 rounded-xl p-4" style={{background:'rgba(255,255,255,0.55)',border:'1px solid rgba(255,255,255,0.8)'}}>
                     <div className="skeleton w-10 h-10 rounded-xl mb-3" />
                     <div className="skeleton h-4 w-3/4 rounded mb-2" />
                     <div className="skeleton h-3 w-full rounded mb-1" />

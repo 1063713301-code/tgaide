@@ -4,7 +4,13 @@ import { useLang } from '../lib/i18n.jsx'
 export default function Footer() {
   const { t } = useLang()
   return (
-    <footer className="bg-white border-t border-gray-200 mt-16">
+    <footer style={{
+      background: 'rgba(255,255,255,0.5)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      borderTop: '1px solid rgba(255,255,255,0.7)',
+      marginTop: '4rem',
+    }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           <div>
