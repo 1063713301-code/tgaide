@@ -14,9 +14,13 @@ alter table analytics_events enable row level security;
 create policy "allow anon insert" on analytics_events
   for insert to anon with check (true);
 
--- 仅 service_role 可读（后台查询用 service_role key 或直接在 Supabase Dashboard 查看）
+-- service_role 可读
 create policy "allow service read" on analytics_events
   for select to service_role using (true);
+
+-- anon 也可读（数据看板前端查询用）
+create policy "allow anon select" on analytics_events
+  for select to anon using (true);
 
 -- 加速查询的索引
 create index on analytics_events (event_type, created_at desc);
