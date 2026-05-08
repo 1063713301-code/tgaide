@@ -12,7 +12,10 @@ import QRCode from 'qrcode'
 import { setSEO, breadcrumb } from '../lib/seo'
 
 function injectToolLinks(html, toolUrlMap) {
-  if (!html || !Object.keys(toolUrlMap).length) return html
+  if (!html) return html
+  // 去掉"→ 查看详情"类文字（箭头+空格+查看详情，各种箭头变体）
+  html = html.replace(/\s*[→➜➡→]\s*查看详情/g, '')
+  if (!Object.keys(toolUrlMap).length) return html
   // Split on tags to avoid replacing inside href/alt attributes
   const parts = html.split(/(<[^>]+>)/)
   const sorted = Object.entries(toolUrlMap).sort((a, b) => b[0].length - a[0].length)
