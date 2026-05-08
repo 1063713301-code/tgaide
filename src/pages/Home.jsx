@@ -8,14 +8,23 @@ import { useLang } from '../lib/i18n.jsx'
 import { SELECTION_SCENES, SCENE_ICONS } from './AIToolSelection'
 import { setSEO, orgJsonLD } from '../lib/seo'
 
+const CAREER_ICONS = {
+  lawyer:     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18M5 7l7-4 7 4M5 7l3.5 7H1.5L5 7zM19 7l3.5 7h-7L19 7z"/><line x1="3" y1="21" x2="21" y2="21"/></svg>,
+  designer:   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M17.44 10.44l-9.88 9.88a2 2 0 01-2.83-2.83l9.88-9.88"/><path d="M3 21l3-1-2-2-1 3z"/></svg>,
+  accountant: <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="3" x2="3" y2="21"/><polyline points="7,16 7,10 12,10 12,5 17,5 17,16"/></svg>,
+  marketing:  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12A10 10 0 1112 2"/><path d="M22 2L12 12"/><circle cx="12" cy="12" r="3"/></svg>,
+  developer:  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+  student:    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>,
+}
+
 // ─── 职业分类数据 ────────────────
 const CAREER_CATEGORIES = [
-  { icon: '⚖️', nameKey: 'career_lawyer', descKey: 'career_lawyer_desc', link: '/tools?category=律师', category: '律师', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-700' },
-  { icon: '🎨', nameKey: 'career_designer', descKey: 'career_designer_desc', link: '/tools?category=设计师', category: '设计师', color: 'from-purple-50 to-purple-100', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-700' },
-  { icon: '💼', nameKey: 'career_accountant', descKey: 'career_accountant_desc', link: '/tools?category=会计', category: '会计', color: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', tag: 'bg-yellow-100 text-yellow-700' },
-  { icon: '📣', nameKey: 'career_marketing', descKey: 'career_marketing_desc', link: '/tools?category=营销', category: '营销', color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
-  { icon: '💻', nameKey: 'career_developer', descKey: 'career_developer_desc', link: '/tools?category=程序员', category: '程序员', color: 'from-blue-50 to-blue-100', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-800' },
-  { icon: '🎓', nameKey: 'career_student', descKey: 'career_student_desc', link: '/tools?category=学生', category: '学生', color: 'from-pink-50 to-pink-100', border: 'border-pink-200', tag: 'bg-pink-100 text-pink-700' },
+  { key: 'lawyer',     iconBg: 'bg-blue-500',    nameKey: 'career_lawyer',     descKey: 'career_lawyer_desc',     link: '/tools?category=律师',   category: '律师',   color: 'from-blue-50 to-blue-100',     border: 'border-blue-200',   tag: 'bg-blue-100 text-blue-700'     },
+  { key: 'designer',   iconBg: 'bg-violet-500',  nameKey: 'career_designer',   descKey: 'career_designer_desc',   link: '/tools?category=设计师', category: '设计师', color: 'from-purple-50 to-purple-100', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-700' },
+  { key: 'accountant', iconBg: 'bg-amber-500',   nameKey: 'career_accountant', descKey: 'career_accountant_desc', link: '/tools?category=会计',   category: '会计',   color: 'from-yellow-50 to-yellow-100', border: 'border-yellow-200', tag: 'bg-yellow-100 text-yellow-700' },
+  { key: 'marketing',  iconBg: 'bg-orange-500',  nameKey: 'career_marketing',  descKey: 'career_marketing_desc',  link: '/tools?category=营销',   category: '营销',   color: 'from-orange-50 to-orange-100', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-700' },
+  { key: 'developer',  iconBg: 'bg-emerald-500', nameKey: 'career_developer',  descKey: 'career_developer_desc',  link: '/tools?category=程序员', category: '程序员', color: 'from-blue-50 to-blue-100',     border: 'border-blue-200',   tag: 'bg-blue-100 text-blue-800'     },
+  { key: 'student',    iconBg: 'bg-rose-500',    nameKey: 'career_student',    descKey: 'career_student_desc',    link: '/tools?category=学生',   category: '学生',   color: 'from-pink-50 to-pink-100',     border: 'border-pink-200',   tag: 'bg-pink-100 text-pink-700'     },
 ]
 
 function SectionHeader({ title, link }) {
@@ -165,7 +174,9 @@ export default function Home() {
                 to={cat.link}
                 className={`article-card flex flex-col items-center text-center p-4 rounded-xl bg-gradient-to-b ${cat.color} border ${cat.border} no-underline`}
               >
-                <span className="text-3xl mb-2">{cat.icon}</span>
+                <div className={`w-10 h-10 rounded-xl ${cat.iconBg} flex items-center justify-center mb-2 shadow-sm`}>
+                  {CAREER_ICONS[cat.key]}
+                </div>
                 <span className={`text-2xl font-bold px-2 py-0.5 rounded-full mb-1 ${cat.tag}`}>
                   {t(cat.nameKey)}
                 </span>
@@ -184,7 +195,9 @@ export default function Home() {
                 to={cat.link}
                 className="flex items-start gap-3 bg-white border border-gray-100 rounded-xl p-4 no-underline"
               >
-                <span className="text-2xl flex-shrink-0">{cat.icon}</span>
+                <div className={`w-9 h-9 rounded-xl ${cat.iconBg} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                  {CAREER_ICONS[cat.key]}
+                </div>
                 <div>
                   <span className="font-semibold text-gray-800 text-sm block mb-0.5">
                     {t(cat.nameKey)}
