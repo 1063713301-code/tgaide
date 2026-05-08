@@ -17,6 +17,7 @@ export default function AdminReviewList() {
   const [busy, setBusy]           = useState(null)
   const [rejectId, setRejectId]   = useState(null)
   const [rejectReason, setRejectReason] = useState('')
+  const [expandedId, setExpandedId] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -115,10 +116,14 @@ export default function AdminReviewList() {
                 <tbody>
                   {filtered.map((r, idx) => (
                     <>
-                      <tr key={r.id} className={`border-b border-gray-100 hover:bg-gray-50 ${idx === filtered.length - 1 && rejectId !== r.id ? 'border-0' : ''}`}>
+                      <tr key={r.id} className={`border-b border-gray-100 hover:bg-gray-50 ${idx === filtered.length - 1 && rejectId !== r.id && expandedId !== r.id ? 'border-0' : ''}`}>
                         <td className="px-4 py-3">
                           <div className="font-medium text-gray-800">{r.user_nickname || r.nickname}</div>
                           <div className="text-xs text-gray-400 truncate max-w-[180px]">{r.content?.slice(0, 35)}…</div>
+                          <button onClick={() => setExpandedId(expandedId === r.id ? null : r.id)}
+                            className="text-xs text-blue-600 hover:text-blue-700 mt-1">
+                            {expandedId === r.id ? '收起' : '查看详情'}
+                          </button>
                         </td>
                         <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{r.user_occupation || r.occupation || '-'}</td>
                         <td className="px-4 py-3 text-gray-500 hidden md:table-cell">{r.tool_name || '-'}</td>
@@ -147,6 +152,36 @@ export default function AdminReviewList() {
                           </div>
                         </td>
                       </tr>
+                      {expandedId === r.id && (
+                        <tr key={`detail-${r.id}`} className="bg-blue-50 border-b border-gray-100">
+                          <td colSpan={7} className="px-4 py-4">
+                            <div className="space-y-3">
+                              <div>
+                                <div className="text-xs text-gray-500 mb-1">评测内容：</div>
+                                <div className="text-sm text-gray-700 leading-relaxed bg-white rounded-lg p-3 border border-blue-100">{r.content}</div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-3 text-xs">
+                                <div><span className="text-gray-500">评分：</span><span className="text-yellow-600 font-medium">{'★'.repeat(r.rating || 5)}{'☆'.repeat(5 - (r.rating || 5))}</span></div>
+                                <div><span className="text-gray-500">邮箱：</span><span className="text-gray-700">{r.email || '未填写'}</span></div>
+                                {r.weibo && <div><span className="text-gray-500">微博：</span><span className="text-gray-700">{r.weibo}</span></div>}
+                                {r.xiaohongshu && <div><span className="text-gray-500">小红书：</span><span className="text-gray-700">{r.xiaohongshu}</span></div>}
+                                {r.bilibili && <div><span className="text-gray-500">B站：</span><span className="text-gray-700">{r.bilibili}</span></div>}
+                                {r.douyin && <div><span className="text-gray-500">抖音：</span><span className="text-gray-700">{r.douyin}</span></div>}
+                              </div>
+                              {Array.isArray(r.images) && r.images.length > 0 && (
+                                <div>
+                                  <div className="text-xs text-gray-500 mb-2">上传图片：</div>
+                                  <div className="flex gap-2 flex-wrap">
+                                    {r.images.map((url, i) => (
+                                      <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-lg border border-gray-200" />
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
                       {rejectId === r.id && (
                         <tr key={`reject-${r.id}`} className="bg-orange-50 border-b border-gray-100">
                           <td colSpan={7} className="px-4 py-3">
