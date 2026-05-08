@@ -55,21 +55,34 @@ const CATEGORY_BG = {
 }
 
 // ─── 工具图标 ─────────────────────────────────────
+const CATEGORY_ICON_BG = {
+  律师:  'rgba(59,130,246,0.08)',
+  设计师: 'rgba(139,92,246,0.08)',
+  会计:  'rgba(16,185,129,0.08)',
+  营销:  'rgba(249,115,22,0.08)',
+  程序员: 'rgba(6,182,212,0.08)',
+  学生:  'rgba(234,179,8,0.08)',
+}
+
 function ToolIcon({ tool }) {
   const [imgError, setImgError] = useState(false)
   const gradient = CATEGORY_GRADIENT[tool.category] || 'from-gray-400 to-gray-600'
+  const iconBg = CATEGORY_ICON_BG[tool.category] || 'rgba(59,130,246,0.08)'
 
   return (
-    <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-gray-50 border border-gray-100">
+    <div
+      className="w-12 h-12 mx-auto rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
+      style={{ background: iconBg }}
+    >
       {tool.icon_url && !imgError ? (
         <img
           src={tool.icon_url}
           alt={tool.name}
           onError={() => setImgError(true)}
-          className="max-w-full max-h-full object-contain"
+          className="w-8 h-8 object-contain"
         />
       ) : (
-        <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-2xl select-none`}>
+        <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center text-white font-bold text-lg select-none`}>
           {tool.name.charAt(0)}
         </div>
       )}
@@ -235,10 +248,10 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) 
       {/* 顶部：标签组 + 分享按钮 */}
       <div className="flex items-center justify-between mb-3 min-h-[22px]">
         <div className="flex items-center gap-1 flex-wrap">
-          {tool.price === '免费' && <span className="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md">{t('tools_free')}</span>}
-          {tool.is_hot && <span className="text-xs font-medium bg-red-50 text-red-500 px-2 py-0.5 rounded-md">{t('tools_hot')}</span>}
-          {tool.is_recommended && <span className="text-xs font-medium bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md">{t('tools_recommended')}</span>}
-          {tags.includes('TG精选') && <span className="text-xs font-medium bg-yellow-50 text-yellow-600 px-2 py-0.5 rounded-md">TG精选</span>}
+          {tool.price === '免费' && <span className="tag-pill">{t('tools_free')}</span>}
+          {tool.is_hot && <span className="tag-pill" style={{background:'rgba(239,68,68,0.08)',color:'#DC2626'}}>🔥 {t('tools_hot')}</span>}
+          {tool.is_recommended && <span className="tag-pill" style={{background:'rgba(100,116,139,0.08)',color:'#64748B'}}>{t('tools_recommended')}</span>}
+          {tags.includes('TG精选') && <span className="tag-pill tag-pill-yellow">TG精选</span>}
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setShowTooltip(false); clearTimeout(hoverTimer); setShareOpen(true) }}
@@ -273,7 +286,7 @@ function ToolCard({ tool, onCompare, inCompare, compareDisabled, isRightEdge }) 
       <div className="flex gap-2 mt-auto">
         <a href={tool.official_url || '#'} target="_blank" rel="nofollow noopener noreferrer"
           onClick={(e) => { if (!tool.official_url) { e.preventDefault(); return } trackEvent('tool_click', { tool_slug: tool.slug || tool.id, tool_name: tool.name }) }}
-          className="flex-1 flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors">
+          className="flex-1 flex items-center justify-center gap-1.5 btn-primary text-sm font-semibold py-2.5 rounded-lg transition-colors">
           {t('tools_visit')}
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
         </a>
@@ -444,7 +457,7 @@ export default function AllTools() {
               ))}
             </div>
             <button onClick={() => navigate('/compare')}
-              className="flex-shrink-0 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+              className="flex-shrink-0 px-4 py-1.5 btn-primary text-sm font-semibold rounded-lg transition-colors">
               {t('tools_compare_start')}
             </button>
             <button onClick={() => { saveCompare([]); setCompareList([]) }}

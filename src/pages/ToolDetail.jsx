@@ -118,8 +118,8 @@ export default function ToolDetail() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <h1 className="text-2xl font-bold text-gray-900">{tool.name}</h1>
-                {tool.short_tag && <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">{tool.short_tag}</span>}
-                {tool.is_recommended && <span className="text-xs bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full">TG推荐</span>}
+                {tool.short_tag && <span className="tag-pill">{tool.short_tag}</span>}
+                {tool.is_recommended && <span className="tag-pill tag-pill-green">TG推荐</span>}
               </div>
               <p className="text-gray-500 text-sm mb-3">{tool.category} · {tool.price || '价格未知'}</p>
               <p className="text-gray-700 text-sm leading-relaxed">{desc}</p>
@@ -128,7 +128,7 @@ export default function ToolDetail() {
           {tool.official_url && (
             <div className="mt-4 pt-4 border-t border-gray-100">
               <a href={tool.official_url} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                className="inline-flex items-center gap-2 px-4 py-2 btn-primary text-sm font-medium rounded-lg transition-colors">
                 访问官网 ↗
               </a>
             </div>

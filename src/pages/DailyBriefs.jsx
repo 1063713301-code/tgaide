@@ -53,7 +53,7 @@ export default function DailyBriefs() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-8">
+      <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 py-8">
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">📰 {t('briefs_title')}</h1>
           <p className="text-gray-500 text-sm">{t('briefs_page_sub')} · {t('articles_count')} {total}</p>

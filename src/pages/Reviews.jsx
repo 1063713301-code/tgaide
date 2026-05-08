@@ -268,7 +268,7 @@ function SubmitModal({ onClose, onSuccess }) {
 
         <div className="flex gap-3 px-6 py-4 border-t border-gray-100">
           <button onClick={onClose} className="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50">{t('reviews_cancel')}</button>
-          <button onClick={handleSubmit} disabled={submitting} className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50 transition-colors">
+          <button onClick={handleSubmit} disabled={submitting} className="flex-1 px-4 py-2.5 btn-primary text-sm font-semibold rounded-lg disabled:opacity-50 transition-colors">
             {submitting ? t('reviews_submitting') : t('reviews_submit')}
           </button>
         </div>
@@ -313,7 +313,7 @@ export default function Reviews() {
             <h1 className="text-2xl font-bold text-gray-900 mb-1">{t('reviews_title')}</h1>
             <p className="text-gray-500 text-sm">{t('reviews_sub')}</p>
           </div>
-          <button onClick={() => setShowModal(true)} className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+          <button onClick={() => setShowModal(true)} className="px-5 py-2.5 btn-primary text-sm font-semibold rounded-lg transition-colors">
             {t('reviews_submit_btn')}
           </button>
         </div>

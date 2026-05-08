@@ -24,7 +24,7 @@ export default function AIToolSelection() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8">
+      <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 py-8">
         <nav className="text-xs text-gray-400 mb-6 flex items-center gap-1">
           <Link to="/" className="hover:text-gray-600">首页</Link>
           <span>/</span>

@@ -120,7 +120,7 @@ export default function Home() {
 
       {/* ── 头部横幅 ── */}
       <header className="bg-gradient-to-br from-blue-700 via-blue-600 to-teal-500 text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
           <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight mb-3 tracking-tight">
             {t('home_hero_title')}
           </h1>
@@ -150,7 +150,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-10">
+      <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 py-10">
 
         {/* ── 核心职业分类 ── */}
         <section className="mb-14">

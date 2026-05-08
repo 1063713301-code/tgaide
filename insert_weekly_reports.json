@@ -1,0 +1,50 @@
+[
+  {
+    "title": "律师行业AI工具周报（2026-04-21至04-27）",
+    "category": "律师",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周法律AI工具市场活跃度环比增长18%，Harvey AI完成D+轮融资估值突破55亿美元。通义法睿2.0发布智能诉讼策略分析功能，DeepSeek R2加持下中文法律推理准确率提升至92%。北京市律师协会发布AI工具执业指引，明确合规边界。",
+    "status": "published"
+  },
+  {
+    "title": "设计师行业AI工具周报（2026-04-21至04-27）",
+    "category": "设计师",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周设计AI工具市场活跃度环比增长22%，Midjourney V7正式发布引发行业热议。Adobe Firefly 3推出风格一致性功能，Figma AI正式商业化。Canva宣布收购Runway部分技术资产，加速视频设计AI布局。",
+    "status": "published"
+  },
+  {
+    "title": "会计行业AI工具周报（2026-04-21至04-27）",
+    "category": "会计",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周财税AI工具市场活跃度环比增长16%，金蝶云·星辰AI财务助手用户突破50万。用友YonGPT发布智能税务筹划模块，支持全税种优化建议。国家税务总局发布AI辅助税务申报规范通知。",
+    "status": "published"
+  },
+  {
+    "title": "营销行业AI工具周报（2026-04-21至04-27）",
+    "category": "营销",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周营销AI工具市场活跃度环比增长25%，Jasper AI完成C轮融资1.5亿美元。通义万相3.0发布AI营销素材一键生成功能，HubSpot AI推出智能客户旅程编排。抖音电商发布AI生成内容创作规范。",
+    "status": "published"
+  },
+  {
+    "title": "程序员行业AI工具周报（2026-04-21至04-27）",
+    "category": "程序员",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周编程AI工具市场活跃度环比增长20%，GitHub Copilot用户突破300万。Cursor 0.35发布AI代码重构功能，Claude Code推出多文件协同编辑。OpenAI发布GPT-4.5 Turbo，代码生成准确率提升至94%。",
+    "status": "published"
+  },
+  {
+    "title": "学生行业AI工具周报（2026-04-21至04-27）",
+    "category": "学生",
+    "report_type": "weekly",
+    "publish_date": "2026-04-27",
+    "summary": "本周学术AI工具市场活跃度环比增长28%，Consensus AI用户突破100万。Notion AI推出论文大纲智能生成功能，Grammarly AI发布学术写作模式。教育部发布规范高校学生使用AI工具的指导意见。",
+    "status": "published"
+  }
+]

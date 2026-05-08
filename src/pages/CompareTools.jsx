@@ -80,7 +80,7 @@ export default function CompareTools() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-10">
+      <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 py-10">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">{t('compare_title')}</h1>
           <button onClick={() => navigate('/tools')} className="text-sm text-blue-600 hover:text-blue-700">{t('compare_back')}</button>
@@ -116,7 +116,7 @@ export default function CompareTools() {
                 {tools.map(tool => (
                   <td key={tool.id} className="px-4 py-3 text-center">
                     <a href={tool.official_url || '#'} target="_blank" rel="nofollow noopener noreferrer"
-                      className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                      className="inline-block px-4 py-2 btn-primary text-xs font-semibold rounded-lg transition-colors">
                       {t('compare_visit')}
                     </a>
                   </td>
