@@ -270,7 +270,7 @@ export default function ArticleDetail({ type }) {
                   ].map(({ name, href }) => (
                     <Link key={href} to={href}
                       className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors">
-                      {name} →
+                      {name}
                     </Link>
                   ))}
                 </div>
@@ -287,7 +287,7 @@ export default function ArticleDetail({ type }) {
                   to={`/industry-reports/${article.source_report_id}`}
                   className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shrink-0"
                 >
-                  查看原始报告 →
+                  查看原始报告
                 </Link>
               </div>
             )}
