@@ -710,7 +710,7 @@ export default function Analytics() {
               </div>
               <div>
                 <h2 className="font-semibold text-gray-800 mb-4">Visitors / Visits 折线趋势</h2>
-                {loading ? <Skel rows={1} h="h-32" /> : <LineChart data={trend} />}
+                {loading ? <Skel rows={1} h="h-32" /> : <LineChart data={trend} colors={['#5288df','#ef4444']} />}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <RankTable title="工具点击 TOP 20" data={toolRank} loading={loading} onExport={expTools} />
