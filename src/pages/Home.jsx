@@ -265,7 +265,7 @@ export default function Home() {
             <div className="text-center py-12 text-gray-400"><p>{t('home_no_reports')}</p></div>
           ) : (
             <div className="marquee-wrap">
-              <div className="marquee-track" style={{ animationDuration: `${reports.length * 8}s` }}>
+              <div className="marquee-track" style={{ animationDuration: `${reports.length * 10}s` }}>
                 {[...reports, ...reports].map((item, idx) => (
                   <div key={idx} className="flex-shrink-0 w-72" style={{ marginRight: '1rem' }}>
                     <ArticleCard article={item} type="report" />
@@ -306,7 +306,7 @@ export default function Home() {
               <p className="text-gray-400 text-sm py-6">{t('home_no_tools')}</p>
             ) : (
               <div className="marquee-wrap">
-                <div className="marquee-track" style={{ animationDuration: `${tools.length * 8}s` }}>
+                <div className="marquee-track" style={{ animationDuration: `${tools.length * 10}s` }}>
                   {[...tools, ...tools].map((tool, idx) => {
                     const toolName = (lang === 'en' && tool.name_en) ? tool.name_en : tool.name
                     const toolDesc = (lang === 'en' && tool.description_en) ? tool.description_en : tool.description
