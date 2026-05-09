@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 每日发现新工具：聚合多源候选 → 去重 → DeepSeek 分类 → 每职业1个 → 入库 status=pending
+ * 每日发现新工具：DeepSeek 生成候选 → 去重 → 每职业1个 → 入库 status=pending
  */
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
@@ -31,7 +31,7 @@ async function ds(prompt, json = true) {
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],
       ...(json ? { response_format: { type: 'json_object' } } : {}),
-      temperature: 0.4,
+      temperature: 0.7,
     }),
   })
   if (!res.ok) throw new Error(`DeepSeek ${res.status}: ${await res.text()}`)
@@ -40,104 +40,49 @@ async function ds(prompt, json = true) {
   return json ? JSON.parse(text) : text
 }
 
-// ─── 数据源 ────────────────────────────────────
-
-async function fetchGithubTrending() {
-  // GitHub trending 没有官方 API，用 ossinsight 镜像 API（公开免费）
-  try {
-    const res = await fetch('https://api.ossinsight.io/v1/trends/repos/?period=past_24_hours&language=Python&limit=30')
-    if (!res.ok) return []
-    const data = await res.json()
-    return (data.data?.rows || [])
-      .filter(r => /ai|gpt|llm|agent|chat|ml/i.test((r.repo_name || '') + ' ' + (r.description || '')))
-      .map(r => ({
-        name: r.repo_name.split('/').pop(),
-        url: `https://github.com/${r.repo_name}`,
-        hint: r.description || '',
-        source: 'github',
-      }))
-  } catch (e) { console.warn('GitHub trending 抓取失败:', e.message); return [] }
-}
-
-async function fetchAibase() {
-  try {
-    const res = await fetch('https://top.aibase.com/?type=newest', {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-    })
-    if (!res.ok) return []
-    const html = await res.text()
-    const items = []
-    const re = /<a[^>]+href="(\/tool\/[^"]+)"[^>]*>[^<]*<[^>]*>([^<]+)</g
-    let m
-    while ((m = re.exec(html)) && items.length < 30) {
-      const name = m[2].trim()
-      if (name && name.length < 50) {
-        items.push({ name, url: 'https://top.aibase.com' + m[1], hint: '', source: 'aibase' })
-      }
-    }
-    return items
-  } catch (e) { console.warn('aibase 抓取失败:', e.message); return [] }
-}
-
-async function fetchTAAFT() {
-  try {
-    const res = await fetch('https://theresanaiforthat.com/just-launched/', {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-    })
-    if (!res.ok) return []
-    const html = await res.text()
-    const items = []
-    const re = /<a[^>]+class="[^"]*ai_link[^"]*"[^>]+href="([^"]+)"[^>]*>([^<]+)</g
-    let m
-    while ((m = re.exec(html)) && items.length < 30) {
-      items.push({ name: m[2].trim(), url: m[1], hint: '', source: 'taaft' })
-    }
-    return items
-  } catch (e) { console.warn('TAAFT 抓取失败:', e.message); return [] }
-}
-
-// ─── 主流程 ────────────────────────────────────
-
 async function loadExistingNames() {
   const { data } = await sb.from('tools').select('name')
   return new Set((data || []).map(t => t.name.toLowerCase().trim()))
 }
 
-function dedupCandidates(candidates, existingSet) {
-  const seen = new Set()
-  return candidates.filter(c => {
-    const key = c.name.toLowerCase().trim()
-    if (!key || key.length < 2 || seen.has(key) || existingSet.has(key)) return false
-    seen.add(key)
-    return true
-  })
-}
+/** 让 DeepSeek 直接推荐每个职业1个近期值得收录的 AI 工具 */
+async function discoverByAI(existingNames, today) {
+  const existingList = [...existingNames].slice(0, 150).join('、')
+  const prompt = `今天是 ${today}。你是 TG AI工具库 的内容编辑，负责每日发现值得收录的 AI 工具。
 
-async function classifyBatch(candidates) {
-  const prompt = `你是 TG AI工具库 的内容编辑。下面是从多个数据源抓到的工具候选名单，请判断每一个：
-1. 是不是真正的 AI 工具（不是教程/玩具/早期demo/普通软件）
-2. 最适合哪个职业（必须从这6个里选一个）：律师/设计师/会计/营销/程序员/学生
-3. 价值评分 1-10（10=非常实用、有差异化）
-4. 该工具是否有独立官网（非 GitHub/npm/pypi 等代码托管平台的独立产品网站）；如果有，填写官网 URL；如果只有 GitHub 仓库、没有独立官网，填 null
+请为以下6个职业各推荐3个近期（2024年至今）发布或更新、真实存在、有独立官网的 AI 工具：
+律师、设计师、会计、营销、程序员、学生
 
-候选清单（共 ${candidates.length} 个）：
-${candidates.map((c, i) => `${i + 1}. ${c.name} | ${c.url} | ${c.hint || '无描述'}`).join('\n')}
+要求：
+1. 必须是真实存在的 AI 工具，有独立官网（非 GitHub/npm 等代码托管平台）
+2. 尽量避免以下已收录工具（${existingNames.size}个，列举部分）：${existingList}
+3. 每个工具评分 1-10（10=非常实用、有差异化），只推荐评分 ≥ 7 的
+4. 尽量推荐近期有热度或更新的工具，不要推荐过于冷门的
+5. 每个职业给3个候选，方便去重后仍有足够选择
 
-严格输出 JSON：
+输出 JSON：
 {
   "items": [
-    {"index": 1, "is_ai_tool": true, "role": "程序员", "score": 8, "official_url": "https://example.com", "reason": "简短理由"},
-    {"index": 2, "is_ai_tool": true, "role": "设计师", "score": 7, "official_url": null, "reason": "仅有GitHub仓库无独立官网"},
-    ...
+    {
+      "role": "律师",
+      "name": "工具英文名",
+      "official_url": "https://...",
+      "score": 8,
+      "hint": "一句话描述这个工具是什么"
+    }
   ]
-}
-规则：
-- 对所有候选都要返回（按 index 顺序）
-- 不是 AI 工具的 is_ai_tool=false
-- official_url 必须是真实存在的独立官网，不能是 GitHub/npm/pypi 地址；不确定就填 null
-- 只有 GitHub 仓库没有独立官网的工具，official_url 填 null`
+}`
   const result = await ds(prompt)
-  return result.items || []
+  const filtered = (result.items || []).filter(item =>
+    item.name && item.official_url && item.score >= 7 &&
+    !existingNames.has(item.name.toLowerCase().trim())
+  )
+  // 每个职业只取最高分的1个
+  const byRole = {}
+  for (const item of filtered) {
+    if (!byRole[item.role] || byRole[item.role].score < item.score) byRole[item.role] = item
+  }
+  return Object.values(byRole)
 }
 
 async function generateContent(name, officialUrl, hint) {
@@ -167,41 +112,24 @@ function toSlug(name) {
 }
 
 async function main() {
-  console.log('▶ 1/5 抓取候选...')
-  const [gh, ab, ta] = await Promise.all([fetchGithubTrending(), fetchAibase(), fetchTAAFT()])
-  const all = [...gh, ...ab, ...ta]
-  console.log(`  GitHub:${gh.length} aibase:${ab.length} TAAFT:${ta.length} 合计:${all.length}`)
+  const today = new Date().toISOString().slice(0, 10)
 
-  console.log('▶ 2/5 去重...')
+  console.log('▶ 1/4 加载已有工具名单...')
   const existing = await loadExistingNames()
-  const candidates = dedupCandidates(all, existing)
-  console.log(`  去重后: ${candidates.length}`)
-  if (candidates.length === 0) { console.log('无新候选，结束'); return }
+  console.log(`  已收录: ${existing.size} 个`)
 
-  console.log('▶ 3/5 DeepSeek 分类打分...')
-  const classified = await classifyBatch(candidates.slice(0, 60))
+  console.log('▶ 2/4 DeepSeek AI 推荐候选工具...')
+  const picks = await discoverByAI(existing, today)
+  console.log(`  推荐: ${picks.length} 个 (${picks.map(p => p.role).join(',')})`)
+  if (picks.length === 0) { console.log('无新候选，结束'); return }
 
-  console.log('▶ 4/5 按职业挑 top 1（必须有独立官网）...')
-  const byRole = {}
-  classified.forEach(c => {
-    if (!c.is_ai_tool || !ROLES.includes(c.role) || c.score < 6) return
-    if (!c.official_url) return  // 没有独立官网，跳过
-    const cand = candidates[c.index - 1]
-    if (!cand) return
-    if (!byRole[c.role] || byRole[c.role].score < c.score) {
-      byRole[c.role] = { ...cand, role: c.role, score: c.score, reason: c.reason, official_url: c.official_url }
-    }
-  })
-  const picks = Object.values(byRole)
-  console.log(`  选中: ${picks.length} 个 (${picks.map(p => p.role).join(',')})`)
-
-  console.log('▶ 5/5 生成内容并入库...')
+  console.log('▶ 3/4 生成详细内容...')
   let ok = 0
   for (const p of picks) {
     try {
       const c = await generateContent(p.name, p.official_url, p.hint)
       const slug = toSlug(p.name)
-      const payload = {
+      const { error } = await sb.from('tools').insert({
         name: p.name,
         slug,
         category: p.role,
@@ -216,16 +144,15 @@ async function main() {
         is_new: true,
         status: 'pending',
         sort_order: 0,
-      }
-      const { error } = await sb.from('tools').insert(payload)
+      })
       if (error) throw error
-      console.log(`  ✓ ${p.role}: ${p.name}`)
+      console.log(`  ✓ ${p.role}: ${p.name} (${p.official_url})`)
       ok++
     } catch (e) {
       console.error(`  ✗ ${p.name}: ${e.message}`)
     }
   }
-  console.log(`完成: 成功入库 ${ok}/${picks.length}`)
+  console.log(`▶ 4/4 完成: 成功入库 ${ok}/${picks.length}`)
 }
 
 main().catch(e => { console.error(e); process.exit(1) })
