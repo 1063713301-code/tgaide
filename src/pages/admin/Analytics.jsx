@@ -691,42 +691,79 @@ export default function Analytics() {
           {activeTab === 0 && (
             <div className="p-6 space-y-6">
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold text-gray-800">访问趋势 — {periodIdx <= 1 ? '按小时' : '按天（最近30天）'}</h2>
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#5288df'}} />Visitors</span>
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#c7dcf6'}} />Views</span>
-                  </div>
-                </div>
-                {loading ? <Skel rows={1} h="h-32" /> : (
-                  <>
-                    <div className="flex items-end gap-px h-32 overflow-x-auto">
-                      {trend.map((b, i) => (
-                        <div key={i} className="flex-shrink-0 flex flex-col items-center justify-end group relative"
-                          style={{ minWidth: trend.length > 48 ? '9px' : trend.length > 24 ? '14px' : '20px', height: '100%' }}>
-                          <div className="absolute bottom-full mb-1 hidden group-hover:flex flex-col items-center z-10 pointer-events-none">
-                            <div className="bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
-                              {b.label}<br />Visitors: {b.visitors} · Views: {b.views}
-                            </div>
-                          </div>
-                          <div className="w-full rounded-sm" style={{ height: `${Math.max(b.viewsPct, b.views > 0 ? 3 : 0)}%`, background: '#c7dcf6' }} />
-                          <div className="w-full rounded-sm absolute bottom-0" style={{ height: `${Math.max(b.visitorsPct, b.visitors > 0 ? 3 : 0)}%`, background: '#5288df' }} />
-                        </div>
+                <h2 className="font-semibold text-gray-800 mb-4">访问趋势 — {periodIdx <= 1 ? '按小时' : '按天（最近30天）'}</h2>
+                {loading ? <Skel rows={1} h="h-48" /> : (() => {
+                  if (!trend.length) return <Empty />
+                  const W = 800, H = 200, PL = 40, PR = 10, PT = 10, PB = 40
+                  const cW = W - PL - PR, cH = H - PT - PB
+                  const maxVal = Math.max(...trend.map(b => b.views), 1)
+                  // Y轴刻度
+                  const yTicks = []
+                  const rawStep = maxVal / 5
+                  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)))
+                  const niceStep = Math.ceil(rawStep / mag) * mag || 1
+                  for (let v = 0; v <= maxVal + niceStep; v += niceStep) yTicks.push(v)
+                  const yMax = yTicks[yTicks.length - 1]
+                  const yScale = v => cH - (v / yMax) * cH
+                  // X轴标签间隔：按小时每2小时，按天均匀8个
+                  const xStep = periodIdx <= 1 ? 2 : Math.max(1, Math.ceil(trend.length / 8))
+                  const barW = Math.max(2, cW / trend.length - 1)
+                  const xPos = i => PL + (i + 0.5) * (cW / trend.length)
+                  // 格式化X标签
+                  const fmtLabel = (label) => {
+                    if (periodIdx <= 1) {
+                      // "5/9 14:00" → "2:00 PM"
+                      const m = label.match(/(\d+):00$/)
+                      if (m) {
+                        const h = parseInt(m[1])
+                        return h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
+                      }
+                    }
+                    return label
+                  }
+                  return (
+                    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{height: 220}}>
+                      {/* 网格线 + Y轴刻度 */}
+                      {yTicks.map(v => (
+                        <g key={v}>
+                          <line x1={PL} x2={W-PR} y1={PT+yScale(v)} y2={PT+yScale(v)} stroke="#e5e7eb" strokeWidth="1" />
+                          <text x={PL-4} y={PT+yScale(v)+4} textAnchor="end" fontSize="10" fill="#9ca3af">{v}</text>
+                        </g>
                       ))}
-                    </div>
-                    <div className="flex justify-between text-xs text-gray-400 mt-2 relative" style={{height:'16px'}}>
+                      {/* 柱子 */}
                       {trend.map((b, i) => {
-                        const step = periodIdx <= 1 ? 6 : Math.ceil(trend.length / 8)
-                        if (i % step !== 0 && i !== trend.length - 1) return null
+                        const x = xPos(i)
+                        const viewsH = (b.views / yMax) * cH
+                        const visH = (b.visitors / yMax) * cH
                         return (
-                          <span key={i} className="absolute" style={{ left: `${(i / (trend.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}>
-                            {b.label}
-                          </span>
+                          <g key={i}>
+                            <rect x={x - barW/2} y={PT + yScale(b.views)} width={barW} height={viewsH} fill="#c7dcf6" rx="1">
+                              <title>{b.label}{'\n'}Visitors: {b.visitors} · Views: {b.views}</title>
+                            </rect>
+                            <rect x={x - barW/2} y={PT + yScale(b.visitors)} width={barW} height={visH} fill="#5288df" rx="1">
+                              <title>{b.label}{'\n'}Visitors: {b.visitors} · Views: {b.views}</title>
+                            </rect>
+                          </g>
                         )
                       })}
-                    </div>
-                  </>
-                )}
+                      {/* X轴标签 */}
+                      {trend.map((b, i) => {
+                        if (i % xStep !== 0) return null
+                        return (
+                          <text key={i} x={xPos(i)} y={H-6} textAnchor="middle" fontSize="10" fill="#9ca3af">
+                            {fmtLabel(b.label)}
+                          </text>
+                        )
+                      })}
+                      {/* X轴线 */}
+                      <line x1={PL} x2={W-PR} y1={PT+cH} y2={PT+cH} stroke="#e5e7eb" strokeWidth="1" />
+                    </svg>
+                  )
+                })()}
+                <div className="flex justify-center gap-6 mt-2 text-xs text-gray-500">
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#5288df'}} />访客</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#c7dcf6'}} />观点</span>
+                </div>
               </div>
               <div>
                 <h2 className="font-semibold text-gray-800 mb-4">Visitors / Visits 折线趋势</h2>
