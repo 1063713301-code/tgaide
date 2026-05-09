@@ -353,7 +353,7 @@ export default function Analytics() {
         .order('created_at', { ascending: true })
         .limit(50000)
       if (error) throw error
-      processData(data || [], sinceMs, periodIdx <= 1)
+      await processData(data || [], sinceMs)
       setLastRefresh(new Date())
     } catch (e) {
       console.error('analytics fetch error', e)
@@ -372,7 +372,7 @@ export default function Analytics() {
   }, [autoRefresh, fetchData])
 
   // ── 数据处理 ──────────────────────────────────────────────────
-  function processData(rows, sinceMs, useHour) {
+  async function processData(rows, sinceMs) {
     const pvRows = rows.filter(r => r.event_type === 'page_view')
 
     // 核心指标
@@ -565,10 +565,24 @@ export default function Analytics() {
     // 错误事件
     setErrors(rows.filter(r => r.event_type === 'error_event').reverse().slice(0, 50))
 
-    // 趋势图（今日/过去24小时用小时，其余用天）
+    // 趋势图：今日固定24小时 / 过去24h滚动 / 按天
     const bucketMap = {}
-    if (useHour) {
-      for (let i = 47; i >= 0; i--) {
+    if (periodIdx === 0) {
+      // 今日：0-23时固定桶
+      for (let h = 0; h < 24; h++) {
+        bucketMap[`${String(h).padStart(2, '0')}:00`] = { views: 0, visitors: new Set(), sessions: new Set() }
+      }
+      pvRows.forEach(r => {
+        const k = `${String(new Date(r.created_at).getHours()).padStart(2, '0')}:00`
+        if (bucketMap[k]) {
+          bucketMap[k].views++
+          if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
+          if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+        }
+      })
+    } else if (periodIdx === 1) {
+      // 过去24小时：滚动24桶
+      for (let i = 23; i >= 0; i--) {
         const d = new Date(Date.now() - i * 3600000)
         const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
         bucketMap[k] = { views: 0, visitors: new Set(), sessions: new Set() }
@@ -705,18 +719,26 @@ export default function Analytics() {
                   for (let v = 0; v <= maxVal + niceStep; v += niceStep) yTicks.push(v)
                   const yMax = yTicks[yTicks.length - 1]
                   const yScale = v => cH - (v / yMax) * cH
-                  // X轴标签间隔：按小时每2小时，按天均匀8个
+                  // X轴：每2小时一标签（今日/24h共24桶=12标签，按天8个均匀）
                   const xStep = periodIdx <= 1 ? 2 : Math.max(1, Math.ceil(trend.length / 8))
-                  const barW = Math.max(2, cW / trend.length - 1)
-                  const xPos = i => PL + (i + 0.5) * (cW / trend.length)
-                  // 格式化X标签
+                  const slotW = cW / trend.length
+                  const barW = slotW - 0.5
+                  const xPos = i => PL + (i + 0.5) * slotW
                   const fmtLabel = (label) => {
-                    if (periodIdx <= 1) {
-                      // "5/9 14:00" → "2:00 PM"
-                      const m = label.match(/(\d+):00$/)
+                    if (periodIdx === 0) {
+                      // "06:00" → "6:00 AM"
+                      const m = label.match(/^(\d+):00$/)
                       if (m) {
                         const h = parseInt(m[1])
                         return h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
+                      }
+                    } else if (periodIdx === 1) {
+                      // rolling: 0点显示"M/D"，其余显示AM/PM
+                      const m = label.match(/^(\d+\/\d+) (\d+):00$/)
+                      if (m) {
+                        const h = parseInt(m[2])
+                        if (h === 0) return m[1]
+                        return h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
                       }
                     }
                     return label
