@@ -58,16 +58,29 @@ function getCachedGeo() {
   } catch { return null }
 }
 
+const CN_PROVINCES = {
+  'Beijing':'北京','Tianjin':'天津','Shanghai':'上海','Chongqing':'重庆',
+  'Hebei':'河北','Shanxi':'山西','Inner Mongolia':'内蒙古','Liaoning':'辽宁',
+  'Jilin':'吉林','Heilongjiang':'黑龙江','Jiangsu':'江苏','Zhejiang':'浙江',
+  'Anhui':'安徽','Fujian':'福建','Jiangxi':'江西','Shandong':'山东',
+  'Henan':'河南','Hubei':'湖北','Hunan':'湖南','Guangdong':'广东',
+  'Guangxi':'广西','Hainan':'海南','Sichuan':'四川','Guizhou':'贵州',
+  'Yunnan':'云南','Tibet':'西藏','Shaanxi':'陕西','Gansu':'甘肃',
+  'Qinghai':'青海','Ningxia':'宁夏','Xinjiang':'新疆',
+  'Hong Kong':'香港','Macao':'澳门','Taiwan':'台湾',
+}
+
 async function fetchGeo() {
   try {
-    // ip-api.com 免费接口，45次/分钟限制，中文省市名
-    const res = await fetch('https://ip-api.com/json/?lang=zh-CN&fields=regionName,city', { signal: AbortSignal.timeout(4000) })
+    // ipwho.is 支持 HTTPS，免费无限制
+    const res = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(4000) })
     if (!res.ok) throw new Error()
-    const { regionName, city } = await res.json()
-    if (regionName) {
-      localStorage.setItem(GEO_KEY, JSON.stringify({ province: regionName, city: city || null, ts: Date.now() }))
+    const { region, city, country } = await res.json()
+    const province = country === 'China' ? (CN_PROVINCES[region] || region) : (region || null)
+    if (province) {
+      localStorage.setItem(GEO_KEY, JSON.stringify({ province, city: city || null, ts: Date.now() }))
     }
-    return { province: regionName || null, city: city || null }
+    return { province, city: city || null }
   } catch {
     return { province: null, city: null }
   }
