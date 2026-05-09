@@ -714,10 +714,16 @@ export default function Analytics() {
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400 mt-2">
-                      <span>{trend[0]?.label}</span>
-                      <span>{trend[Math.floor(trend.length / 2)]?.label}</span>
-                      <span>{trend[trend.length - 1]?.label}</span>
+                    <div className="flex justify-between text-xs text-gray-400 mt-2 relative" style={{height:'16px'}}>
+                      {trend.map((b, i) => {
+                        const step = periodIdx <= 1 ? 6 : Math.ceil(trend.length / 8)
+                        if (i % step !== 0 && i !== trend.length - 1) return null
+                        return (
+                          <span key={i} className="absolute" style={{ left: `${(i / (trend.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}>
+                            {b.label}
+                          </span>
+                        )
+                      })}
                     </div>
                   </>
                 )}
