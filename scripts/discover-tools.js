@@ -95,6 +95,7 @@ async function generateContent(name, officialUrl, hint) {
 {
   "description": "一句话简介，50字内",
   "short_tag": "核心标签，10字内",
+  "price": "价格，如：免费、免费/付费、$20/月、按量计费，10字内",
   "highlights": ["亮点1（10字内）","亮点2","亮点3"],
   "drawbacks": ["注意事项1","注意事项2"],
   "tg_advice": "TG使用建议：最适合谁、什么场景用，80字内"
@@ -140,7 +141,7 @@ async function main() {
         drawbacks: c.drawbacks || [],
         tg_advice: c.tg_advice,
         rating: 4.0,
-        price: '待补充',
+        price: c.price || '待补充',
         is_new: true,
         status: 'pending',
         sort_order: 0,
