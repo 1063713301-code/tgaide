@@ -73,7 +73,7 @@ const CN_PROVINCES = {
 async function fetchGeo() {
   try {
     // ipwho.is 支持 HTTPS，免费无限制
-    const res = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(4000) })
+    const res = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(2000) })
     if (!res.ok) throw new Error()
     const { region, city, country } = await res.json()
     const province = country === 'China' ? (CN_PROVINCES[region] || region) : (region || null)
@@ -119,13 +119,16 @@ export function trackEvent(eventType, payload = {}) {
 
   if (!isPV) { post(base); return }
 
-  // page_view：带上 geo（有缓存立即用，无缓存先上报再后台拉取供下次用）
+  // page_view：带上 geo（有缓存立即用，无缓存等待拉取后再上报）
   const cached = getCachedGeo()
   if (cached) {
     post({ ...base, province: cached.province, city: cached.city })
   } else {
-    post(base) // 先上报，不阻塞
-    fetchGeo() // 后台静默拉取，缓存结果供下次使用
+    fetchGeo().then(geo => {
+      post({ ...base, province: geo.province, city: geo.city })
+    }).catch(() => {
+      post(base)
+    })
   }
 }
 
