@@ -27,6 +27,15 @@ const CAREER_CATEGORIES = [
   { key: 'student',    iconBg: 'bg-rose-500',    nameKey: 'career_student',    descKey: 'career_student_desc',    link: '/tools?category=学生',   category: '学生',   color: 'from-pink-50 to-pink-100',     border: 'border-pink-200',   tag: 'bg-pink-100 text-pink-700'     },
 ]
 
+const TOOL_CATEGORY_COLOR = {
+  律师: 'bg-blue-50 text-blue-700', 设计师: 'bg-purple-50 text-purple-700',
+  会计: 'bg-yellow-50 text-yellow-700', 营销: 'bg-orange-50 text-orange-700',
+  程序员: 'bg-green-50 text-green-700', 学生: 'bg-pink-50 text-pink-700',
+}
+function ToolCategoryBadge({ category }) {
+  return <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-medium flex-shrink-0 ${TOOL_CATEGORY_COLOR[category] || 'bg-gray-100 text-gray-600'}`}>{category}</span>
+}
+
 function SectionHeader({ title, link }) {
   const { t } = useLang()
   return (
@@ -341,7 +350,10 @@ export default function Home() {
                           </div>
                         )}
                         <div className="min-w-0">
-                          <div className="font-semibold text-gray-800 text-sm truncate">{toolName}</div>
+                          <div className="flex items-center gap-1.5 mb-0.5">
+                            <div className="font-semibold text-gray-800 text-sm truncate">{toolName}</div>
+                            {tool.category && <ToolCategoryBadge category={tool.category} />}
+                          </div>
                           <div className="flex items-center gap-1 mt-0.5">
                             <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
