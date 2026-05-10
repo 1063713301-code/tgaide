@@ -84,15 +84,23 @@ async function processOneToJson(name, url) {
   saveJson(tools)
 }
 
+function getFaviconUrl(officialUrl) {
+  try {
+    const { hostname } = new URL(officialUrl)
+    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=128`
+  } catch { return null }
+}
+
 async function processAllDB() {
   if (!sb) { console.error('❌ 无法连接 Supabase'); process.exit(1) }
   const { data } = await sb.from('tools')
-    .select('id,name,description,short_tag,highlights,drawbacks,tg_advice,official_url')
+    .select('id,name,description,short_tag,highlights,drawbacks,tg_advice,official_url,icon_url')
     .eq('status', 'active')
   const need = (data || []).filter(t =>
     !t.short_tag || !t.tg_advice ||
     !Array.isArray(t.highlights) || t.highlights.length === 0 ||
-    !Array.isArray(t.drawbacks) || t.drawbacks.length === 0
+    !Array.isArray(t.drawbacks) || t.drawbacks.length === 0 ||
+    !t.icon_url
   )
   console.log(`待处理: ${need.length}/${data.length} 个工具`)
   let ok = 0, fail = 0
@@ -104,6 +112,7 @@ async function processAllDB() {
         highlights: (Array.isArray(t.highlights) && t.highlights.length) ? t.highlights : r.highlights,
         drawbacks: (Array.isArray(t.drawbacks) && t.drawbacks.length) ? t.drawbacks : r.drawbacks,
         tg_advice: t.tg_advice || r.tg_advice,
+        icon_url: t.icon_url || getFaviconUrl(t.official_url),
       }
       const { error } = await sb.from('tools').update(update).eq('id', t.id)
       if (error) throw error
