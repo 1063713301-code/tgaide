@@ -143,20 +143,25 @@ async function fetchToolCountByRole(role) {
   return count || 0
 }
 
-/** 获取本周的日期范围（用于标题） */
+function getISOWeek(d) {
+  const date = new Date(d)
+  date.setHours(0, 0, 0, 0)
+  date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7) // 定位到本周四
+  const week1 = new Date(date.getFullYear(), 0, 4) // 1月4日必在第1周
+  return 1 + Math.round(((date - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7)
+}
+
+/** 获取刚结束的一周日期范围（脚本在周日运行，覆盖上周一~本周日） */
 function getWeekRange() {
   const now = new Date()
-  const weekNum = Math.ceil((now - new Date(now.getFullYear(), 0, 1)) / (7 * 24 * 60 * 60 * 1000))
   const sunday = new Date(now)
-  sunday.setDate(now.getDate() - now.getDay())
-  const saturday = new Date(sunday)
-  saturday.setDate(sunday.getDate() + 6)
-
+  const monday = new Date(now)
+  monday.setDate(now.getDate() - 6)
   return {
-    year: now.getFullYear(),
-    weekNum,
-    startDate: `${sunday.getMonth() + 1}月${sunday.getDate()}日`,
-    endDate: `${saturday.getMonth() + 1}月${saturday.getDate()}日`,
+    year: sunday.getFullYear(),
+    weekNum: getISOWeek(monday),
+    startDate: `${monday.getMonth() + 1}月${monday.getDate()}日`,
+    endDate: `${sunday.getMonth() + 1}月${sunday.getDate()}日`,
   }
 }
 
