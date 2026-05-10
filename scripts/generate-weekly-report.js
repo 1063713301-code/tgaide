@@ -153,7 +153,8 @@ function getISOWeek(d) {
 
 /** 获取刚结束的一周日期范围（脚本在周日运行，覆盖上周一~本周日） */
 function getWeekRange() {
-  const now = new Date()
+  // REPORT_DATE 可指定任意周日日期，用于补跑历史周报
+  const now = process.env.REPORT_DATE ? new Date(process.env.REPORT_DATE) : new Date()
   const sunday = new Date(now)
   const monday = new Date(now)
   monday.setDate(now.getDate() - 6)
