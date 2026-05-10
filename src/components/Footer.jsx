@@ -25,6 +25,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-gray-500">
               <li><Link to="/reviews" className="hover:text-blue-600 transition-colors">{t('nav_reviews')}</Link></li>
               <li><Link to="/tools" className="hover:text-blue-600 transition-colors">{t('nav_tools')}</Link></li>
+              <li><Link to="/industry-reports" className="hover:text-blue-600 transition-colors">{t('nav_reports')}</Link></li>
             </ul>
           </div>
           <div>
