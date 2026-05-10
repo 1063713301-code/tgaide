@@ -121,7 +121,7 @@ export function trackEvent(eventType, payload = {}) {
 
   // page_view：带上 geo（有缓存立即用，无缓存等待拉取后再上报）
   const cached = getCachedGeo()
-  if (cached) {
+  if (cached?.province) {
     post({ ...base, province: cached.province, city: cached.city })
   } else {
     fetchGeo().then(geo => {
