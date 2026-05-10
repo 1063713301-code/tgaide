@@ -103,6 +103,13 @@ async function generateContent(name, officialUrl, hint) {
   return await ds(prompt)
 }
 
+function getFaviconUrl(officialUrl) {
+  try {
+    const { hostname } = new URL(officialUrl)
+    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=128`
+  } catch { return null }
+}
+
 function toSlug(name) {
   return name.toLowerCase()
     .replace(/[^\w\s-]/g, '')
@@ -135,6 +142,7 @@ async function main() {
         slug,
         category: p.role,
         official_url: p.official_url,
+        icon_url: getFaviconUrl(p.official_url),
         description: c.description,
         short_tag: c.short_tag,
         highlights: c.highlights || [],
