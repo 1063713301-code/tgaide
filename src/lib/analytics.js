@@ -71,19 +71,34 @@ const CN_PROVINCES = {
 }
 
 async function fetchGeo() {
-  try {
-    // ipwho.is 支持 HTTPS，免费无限制
-    const res = await fetch('https://ipwho.is/', { signal: AbortSignal.timeout(2000) })
-    if (!res.ok) throw new Error()
-    const { region, city, country } = await res.json()
-    const province = country === 'China' ? (CN_PROVINCES[region] || region) : (region || null)
-    if (province) {
-      localStorage.setItem(GEO_KEY, JSON.stringify({ province, city: city || null, ts: Date.now() }))
-    }
-    return { province, city: city || null }
-  } catch {
-    return { province: null, city: null }
+  const APIS = [
+    {
+      url:   'https://ipapi.co/json/',
+      parse: ({ region, city, country_name }) => ({
+        province: country_name === 'China' ? (CN_PROVINCES[region] || region || null) : (region || null),
+        city:     city || null,
+      }),
+    },
+    {
+      url:   'https://ipwho.is/',
+      parse: ({ region, city, country }) => ({
+        province: country === 'China' ? (CN_PROVINCES[region] || region || null) : (region || null),
+        city:     city || null,
+      }),
+    },
+  ]
+  for (const api of APIS) {
+    try {
+      const res = await fetch(api.url, { signal: AbortSignal.timeout(3000) })
+      if (!res.ok) continue
+      const geo = api.parse(await res.json())
+      if (geo.province) {
+        localStorage.setItem(GEO_KEY, JSON.stringify({ ...geo, ts: Date.now() }))
+      }
+      return geo
+    } catch { /* try next */ }
   }
+  return { province: null, city: null }
 }
 
 function post(body) {
