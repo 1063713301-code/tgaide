@@ -30,7 +30,7 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('footer_contact')}</h4>
-            <p className="text-xs text-gray-500 leading-relaxed">邮箱：1063713301@qq.com</p>
+            <p className="text-xs text-gray-500 leading-relaxed">邮箱：3863779908@qq.com</p>
             <div className="mt-3">
               <p className="text-xs text-gray-500 mb-1">微信公众号</p>
               <img src="/wechat-qrcode.jpg" alt="微信公众号二维码" className="w-24 h-24 rounded" />
