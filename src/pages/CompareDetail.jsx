@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { supabase } from '../lib/supabase'
+import { useLang } from '../lib/i18n.jsx'
 
 function setCanonical(pair) {
   let el = document.querySelector('link[rel="canonical"]')
@@ -26,11 +27,11 @@ function injectCompareJsonLD(a, b) {
 }
 
 const FIELDS = [
-  { key: 'category', label: '职业分类' },
-  { key: 'price', label: '价格' },
-  { key: 'rating', label: '评分' },
-  { key: 'description', label: '简介' },
-  { key: 'short_tag', label: '核心标签' },
+  { key: 'category', labelKey: 'compare_row_category' },
+  { key: 'price', labelKey: 'compare_row_price' },
+  { key: 'rating', labelKey: 'compare_row_rating' },
+  { key: 'description', labelKey: 'compare_row_desc' },
+  { key: 'short_tag', labelKey: 'compare_row_tags' },
 ]
 
 export default function CompareDetail() {
@@ -38,6 +39,7 @@ export default function CompareDetail() {
   const [tools, setTools] = useState([null, null])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const { t } = useLang()
 
   useEffect(() => {
     const match = pair?.match(/^(.+)-vs-(.+)$/)
@@ -88,15 +90,15 @@ export default function CompareDetail() {
       <Navbar />
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8">
         <nav className="flex items-center gap-2 text-sm text-gray-400 mb-6">
-          <Link to="/" className="hover:text-blue-700">首页</Link>
+          <Link to="/" className="hover:text-blue-700">{t('article_home')}</Link>
           <span>/</span>
-          <Link to="/tools" className="hover:text-blue-700">AI工具库</Link>
+          <Link to="/tools" className="hover:text-blue-700">{t('nav_tools')}</Link>
           <span>/</span>
           <span className="text-gray-600">{a.name} vs {b.name}</span>
         </nav>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{a.name} vs {b.name} 深度对比</h1>
-        <p className="text-gray-500 text-sm mb-8">帮你选出最适合的 AI 工具，省去踩坑时间</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">{a.name} vs {b.name} {t('compare_vs_title')}</h1>
+        <p className="text-gray-500 text-sm mb-8">{t('compare_vs_sub')}</p>
 
         {/* 头部卡片 */}
         <div className="grid grid-cols-2 gap-4 mb-6">
@@ -110,7 +112,7 @@ export default function CompareDetail() {
               <p className="text-xs text-gray-400">{tool.price || '—'}</p>
               {tool.official_url && (
                 <a href={tool.official_url} target="_blank" rel="noopener noreferrer"
-                  className="mt-3 inline-block text-xs text-blue-600 hover:underline">访问官网 ↗</a>
+                  className="mt-3 inline-block text-xs text-blue-600 hover:underline">{t('tool_visit')} ↗</a>
               )}
             </div>
           ))}
@@ -121,15 +123,15 @@ export default function CompareDetail() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="text-left px-4 py-3 text-gray-500 font-medium w-1/4">对比项</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-medium w-1/4">{t('compare_table_header')}</th>
                 <th className="text-center px-4 py-3 text-gray-800 font-semibold">{a.name}</th>
                 <th className="text-center px-4 py-3 text-gray-800 font-semibold">{b.name}</th>
               </tr>
             </thead>
             <tbody>
-              {FIELDS.map(({ key, label }) => (
+              {FIELDS.map(({ key, labelKey }) => (
                 <tr key={key} className="border-b border-gray-50 last:border-0">
-                  <td className="px-4 py-3 text-gray-500">{label}</td>
+                  <td className="px-4 py-3 text-gray-500">{t(labelKey)}</td>
                   <td className="px-4 py-3 text-center text-gray-700">{a[key] || '—'}</td>
                   <td className="px-4 py-3 text-center text-gray-700">{b[key] || '—'}</td>
                 </tr>
@@ -157,7 +159,7 @@ export default function CompareDetail() {
                     {cons.map((c, i) => <li key={i} className="flex items-start gap-2 text-xs text-gray-500"><span className="text-orange-400">!</span>{c}</li>)}
                   </ul>
                 )}
-                {pros.length === 0 && cons.length === 0 && <p className="text-xs text-gray-400">暂无详细数据</p>}
+                {pros.length === 0 && cons.length === 0 && <p className="text-xs text-gray-400">{t('compare_no_data')}</p>}
               </div>
             )
           })}
@@ -166,14 +168,14 @@ export default function CompareDetail() {
         {/* TG建议 */}
         {(a.tg_advice || b.tg_advice) && (
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6">
-            <h3 className="text-sm font-semibold text-amber-800 mb-3">TG 选型建议</h3>
+            <h3 className="text-sm font-semibold text-amber-800 mb-3">{t('compare_tg_advice')}</h3>
             {a.tg_advice && <p className="text-sm text-amber-700 mb-2"><strong>{a.name}：</strong>{a.tg_advice}</p>}
             {b.tg_advice && <p className="text-sm text-amber-700"><strong>{b.name}：</strong>{b.tg_advice}</p>}
           </div>
         )}
 
         <div className="text-center">
-          <Link to="/tools" className="text-sm text-gray-400 hover:text-blue-600">← 返回工具列表</Link>
+          <Link to="/tools" className="text-sm text-gray-400 hover:text-blue-600">{t('compare_back')}</Link>
         </div>
       </main>
       <Footer />

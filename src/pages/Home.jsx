@@ -156,7 +156,7 @@ export default function Home() {
           <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-sm text-blue-50">
             <span className="flex items-center gap-1.5">
               <svg className="w-4 h-4 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>
-              已收录{toolCount > 0 ? toolCount : ''}款职业专用AI工具
+              {t('home_tools_collected')}{toolCount > 0 ? toolCount : ''}{t('home_tools_unit')}
             </span>
             {['home_tag2','home_tag3','home_tag4'].map(k => (
               <span key={k} className="flex items-center gap-1.5">
@@ -190,7 +190,7 @@ export default function Home() {
                   {t(cat.nameKey)}
                 </span>
                 {categoryCount[cat.category] && (
-                  <span className="text-sm font-bold text-gray-700">【{categoryCount[cat.category]} 款工具】</span>
+                  <span className="text-sm font-bold text-gray-700">【{categoryCount[cat.category]} {t('home_tools_count_unit')}】</span>
                 )}
                 <div className="hidden sm:block mt-1">
                   <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{t(cat.descKey)}</p>
@@ -214,7 +214,7 @@ export default function Home() {
                     {t(cat.nameKey)}
                   </span>
                   {categoryCount[cat.category] && (
-                    <span className="text-sm font-bold text-gray-700 block mb-1">【{categoryCount[cat.category]} 款工具】</span>
+                    <span className="text-sm font-bold text-gray-700 block mb-1">【{categoryCount[cat.category]} {t('home_tools_count_unit')}】</span>
                   )}
                   <span className="text-xs text-gray-500">{t(cat.descKey)}</span>
                 </div>
@@ -226,8 +226,8 @@ export default function Home() {
         {/* ── 选型速查 ── */}
         <section className="mb-14">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">AI工具选型速查</h2>
-            <p className="text-gray-500 text-sm">成熟场景化工具组合，直接落地使用</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('selection_title')}</h2>
+            <p className="text-gray-500 text-sm">{t('selection_sub')}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {SELECTION_SCENES.map((scene) => {
@@ -257,15 +257,15 @@ export default function Home() {
               to="/ai-tool-selection"
               className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-full hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md"
             >
-              查看完整选型建议
+              {t('selection_view_all')}
             </Link>
           </div>
         </section>
 
         {/* ── 最新行业报告 ── */}
         <section className="mb-10">
-          <SectionHeader title="📊 最新行业报告" link="/industry-reports" />
-          <div className="mb-4 text-sm text-gray-500">收录最新职业AI工具实测及行业发展报告，含周报、月报、季报</div>
+          <SectionHeader title={t('home_reports_latest')} link="/industry-reports" />
+          <div className="mb-4 text-sm text-gray-500">{t('home_reports_desc')}</div>
           {loading ? (
             <div className="flex gap-4 overflow-x-auto pb-2">
               {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}

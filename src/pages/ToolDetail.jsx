@@ -37,7 +37,7 @@ export default function ToolDetail() {
   const [related, setRelated] = useState([])
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
-  const { lang } = useLang()
+  const { lang, t } = useLang()
 
   useEffect(() => {
     supabase.from('tools').select('*').eq('slug', slug).eq('status', 'active').single()
@@ -83,8 +83,8 @@ export default function ToolDetail() {
       <main className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <div className="text-4xl mb-3">🔍</div>
-          <p className="text-gray-500 mb-4">工具不存在或已下线</p>
-          <Link to="/tools" className="text-blue-600 hover:underline text-sm">返回工具列表</Link>
+          <p className="text-gray-500 mb-4">{t('tool_not_found')}</p>
+          <Link to="/tools" className="text-blue-600 hover:underline text-sm">{t('compare_back')}</Link>
         </div>
       </main>
       <Footer />
@@ -101,9 +101,9 @@ export default function ToolDetail() {
       <Navbar />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8">
         <nav className="flex items-center gap-2 text-sm text-gray-400 mb-6">
-          <Link to="/" className="hover:text-blue-700">首页</Link>
+          <Link to="/" className="hover:text-blue-700">{t('article_home')}</Link>
           <span>/</span>
-          <Link to="/tools" className="hover:text-blue-700">AI工具库</Link>
+          <Link to="/tools" className="hover:text-blue-700">{t('nav_tools')}</Link>
           <span>/</span>
           <span className="text-gray-600">{tool.name}</span>
         </nav>
@@ -129,7 +129,7 @@ export default function ToolDetail() {
             <div className="mt-4 pt-4 border-t border-gray-100">
               <a href={tool.official_url} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 btn-primary text-sm font-medium rounded-lg transition-colors">
-                访问官网 ↗
+                {t('tool_visit')} ↗
               </a>
             </div>
           )}
@@ -138,7 +138,7 @@ export default function ToolDetail() {
         {/* JTBD / TG建议 */}
         {tool.tg_advice && (
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-5">
-            <h2 className="text-sm font-semibold text-amber-800 mb-2">TG 使用建议</h2>
+            <h2 className="text-sm font-semibold text-amber-800 mb-2">{t('tool_tg_advice')}</h2>
             <p className="text-sm text-amber-700 leading-relaxed">{tool.tg_advice}</p>
           </div>
         )}
@@ -148,7 +148,7 @@ export default function ToolDetail() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             {highlights.length > 0 && (
               <div className="bg-white border border-gray-200 rounded-2xl p-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-3">核心亮点</h2>
+                <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('tool_highlights')}</h2>
                 <ul className="space-y-2">
                   {highlights.map((h, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
@@ -160,7 +160,7 @@ export default function ToolDetail() {
             )}
             {drawbacks.length > 0 && (
               <div className="bg-white border border-gray-200 rounded-2xl p-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-3">注意事项</h2>
+                <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('tool_drawbacks')}</h2>
                 <ul className="space-y-2">
                   {drawbacks.map((d, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
@@ -176,7 +176,7 @@ export default function ToolDetail() {
         {/* 完整描述 */}
         {tool.full_desc && (
           <div className="bg-white border border-gray-200 rounded-2xl p-5 mb-5">
-            <h2 className="text-sm font-semibold text-gray-700 mb-3">详细介绍</h2>
+            <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('tool_full_desc')}</h2>
             <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{tool.full_desc}</p>
           </div>
         )}
