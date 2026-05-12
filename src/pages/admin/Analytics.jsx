@@ -345,15 +345,35 @@ export default function Analytics() {
     const until   = getUntil()
     const sinceMs = new Date(since).getTime()
     try {
-      const { data, error } = await supabase
-        .from('analytics_events')
-        .select('*')
-        .gte('created_at', since)
-        .lte('created_at', until)
-        .order('created_at', { ascending: true })
-        .limit(50000)
-      if (error) throw error
-      await processData(data || [], sinceMs)
+      // 分页获取所有数据，避免被 Supabase 默认限制截断
+      let allData = []
+      let page = 0
+      const pageSize = 1000
+      let hasMore = true
+
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('analytics_events')
+          .select('*')
+          .gte('created_at', since)
+          .lte('created_at', until)
+          .order('created_at', { ascending: true })
+          .range(page * pageSize, (page + 1) * pageSize - 1)
+
+        if (error) throw error
+
+        if (data && data.length > 0) {
+          allData = allData.concat(data)
+          console.log(`[Analytics] 第 ${page + 1} 页加载了 ${data.length} 条记录，累计 ${allData.length} 条`)
+          page++
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
+
+      console.log(`[Analytics] 总共加载 ${allData.length} 条记录`)
+      await processData(allData, sinceMs)
       setLastRefresh(new Date())
     } catch (e) {
       console.error('analytics fetch error', e)
@@ -373,12 +393,15 @@ export default function Analytics() {
 
   // ── 数据处理 ──────────────────────────────────────────────────
   async function processData(rows, sinceMs) {
+    console.log(`[Analytics] processData 收到 ${rows.length} 条原始记录`)
     const pvRows = rows.filter(r => r.event_type === 'page_view')
+    console.log(`[Analytics] 过滤后得到 ${pvRows.length} 条 page_view 记录`)
 
     // 核心指标
     const views      = pvRows.length
     const visitorSet = new Set(pvRows.map(r => r.visitor_id).filter(Boolean))
     const visitors   = visitorSet.size
+    console.log(`[Analytics] Views: ${views}, Visitors: ${visitors}`)
     const sessionMap = {}
     pvRows.forEach(r => {
       if (!r.session_id) return
