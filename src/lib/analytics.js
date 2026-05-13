@@ -118,10 +118,11 @@ function post(body) {
 export function trackEvent(eventType, payload = {}) {
   const isPV  = eventType === 'page_view'
   const ref   = document.referrer || null
+  const pagePath = payload.page_path && !payload.page_path.includes('/undefined') ? payload.page_path : null
   const base  = {
     event_type:   eventType,
-    target_id:    payload.tool_slug   || payload.report_id    || payload.page_path || null,
-    target_name:  payload.tool_name   || payload.report_title || payload.page_path || null,
+    target_id:    payload.tool_slug   || payload.report_id    || pagePath || null,
+    target_name:  payload.tool_name   || payload.report_title || pagePath || null,
     profession:   payload.profession  || null,
     search_query: payload.search_query || null,
     visitor_id:   getVisitorId(),

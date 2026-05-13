@@ -429,7 +429,8 @@ export default function Analytics() {
     // 热门页面
     const pageMap = {}
     pvRows.forEach(r => {
-      const k = r.target_name || r.target_id; if (!k) return
+      const k = r.target_name || r.target_id
+      if (!k || k === '/undefined' || k.includes('/undefined/') || k.endsWith('/undefined')) return
       pageMap[k] = (pageMap[k] || 0) + 1
     })
     setPageRank(Object.entries(pageMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, count]) => ({ name, count })))
