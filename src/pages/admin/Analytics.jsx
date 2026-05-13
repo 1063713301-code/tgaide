@@ -345,15 +345,28 @@ export default function Analytics() {
     const until   = getUntil()
     const sinceMs = new Date(since).getTime()
     try {
-      const { data, error } = await supabase
-        .from('analytics_events')
-        .select('*')
-        .gte('created_at', since)
-        .lte('created_at', until)
-        .order('created_at', { ascending: true })
-        .limit(50000)
-      if (error) throw error
-      await processData(data || [], sinceMs, periodIdx <= 1)
+      let allData = []
+      let page = 0
+      const pageSize = 1000
+      let hasMore = true
+      while (hasMore) {
+        const { data, error } = await supabase
+          .from('analytics_events')
+          .select('*')
+          .gte('created_at', since)
+          .lte('created_at', until)
+          .order('created_at', { ascending: true })
+          .range(page * pageSize, (page + 1) * pageSize - 1)
+        if (error) throw error
+        if (data && data.length > 0) {
+          allData = allData.concat(data)
+          page++
+          hasMore = data.length === pageSize
+        } else {
+          hasMore = false
+        }
+      }
+      await processData(allData, sinceMs, periodIdx <= 1)
       setLastRefresh(new Date())
     } catch (e) {
       console.error('analytics fetch error', e)
