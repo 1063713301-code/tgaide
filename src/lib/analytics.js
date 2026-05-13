@@ -58,47 +58,19 @@ function getCachedGeo() {
   } catch { return null }
 }
 
-const CN_PROVINCES = {
-  'Beijing':'北京','Tianjin':'天津','Shanghai':'上海','Chongqing':'重庆',
-  'Hebei':'河北','Shanxi':'山西','Inner Mongolia':'内蒙古','Liaoning':'辽宁',
-  'Jilin':'吉林','Heilongjiang':'黑龙江','Jiangsu':'江苏','Zhejiang':'浙江',
-  'Anhui':'安徽','Fujian':'福建','Jiangxi':'江西','Shandong':'山东',
-  'Henan':'河南','Hubei':'湖北','Hunan':'湖南','Guangdong':'广东',
-  'Guangxi':'广西','Hainan':'海南','Sichuan':'四川','Guizhou':'贵州',
-  'Yunnan':'云南','Tibet':'西藏','Shaanxi':'陕西','Gansu':'甘肃',
-  'Qinghai':'青海','Ningxia':'宁夏','Xinjiang':'新疆',
-  'Hong Kong':'香港','Macao':'澳门','Taiwan':'台湾',
-}
 
 async function fetchGeo() {
-  const APIS = [
-    {
-      url:   'https://ipapi.co/json/',
-      parse: ({ region, city, country_name }) => ({
-        province: country_name === 'China' ? (CN_PROVINCES[region] || region || null) : (region || null),
-        city:     city || null,
-      }),
-    },
-    {
-      url:   'https://ipwho.is/',
-      parse: ({ region, city, country }) => ({
-        province: country === 'China' ? (CN_PROVINCES[region] || region || null) : (region || null),
-        city:     city || null,
-      }),
-    },
-  ]
-  for (const api of APIS) {
-    try {
-      const res = await fetch(api.url, { signal: AbortSignal.timeout(3000) })
-      if (!res.ok) continue
-      const geo = api.parse(await res.json())
-      if (geo.province) {
-        localStorage.setItem(GEO_KEY, JSON.stringify({ ...geo, ts: Date.now() }))
-      }
-      return geo
-    } catch { /* try next */ }
+  try {
+    const res = await fetch('/api/geo', { signal: AbortSignal.timeout(4000) })
+    if (!res.ok) throw new Error()
+    const { province, city } = await res.json()
+    if (province) {
+      localStorage.setItem(GEO_KEY, JSON.stringify({ province, city: city || null, ts: Date.now() }))
+    }
+    return { province: province || null, city: city || null }
+  } catch {
+    return { province: null, city: null }
   }
-  return { province: null, city: null }
 }
 
 function post(body) {
