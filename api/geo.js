@@ -22,7 +22,7 @@ export default async function handler(req) {
     const res = await fetch(`https://ipapi.co/${ip}/json/`, { signal: AbortSignal.timeout(3000) })
     if (!res.ok) throw new Error()
     const { region, city, country_name } = await res.json()
-    const province = country_name === 'China' ? (CN_PROVINCES[region] || region || null) : null
+    const province = country_name === 'China' ? (CN_PROVINCES[region] || region || null) : (country_name || null)
     return Response.json({ province, city: city || null })
   } catch {
     return Response.json({ province: null, city: null })
