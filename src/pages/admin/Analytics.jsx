@@ -345,35 +345,15 @@ export default function Analytics() {
     const until   = getUntil()
     const sinceMs = new Date(since).getTime()
     try {
-      // 分页获取所有数据，避免被 Supabase 默认限制截断
-      let allData = []
-      let page = 0
-      const pageSize = 1000
-      let hasMore = true
-
-      while (hasMore) {
-        const { data, error } = await supabase
-          .from('analytics_events')
-          .select('*')
-          .gte('created_at', since)
-          .lte('created_at', until)
-          .order('created_at', { ascending: true })
-          .range(page * pageSize, (page + 1) * pageSize - 1)
-
-        if (error) throw error
-
-        if (data && data.length > 0) {
-          allData = allData.concat(data)
-          console.log(`[Analytics] 第 ${page + 1} 页加载了 ${data.length} 条记录，累计 ${allData.length} 条`)
-          page++
-          hasMore = data.length === pageSize
-        } else {
-          hasMore = false
-        }
-      }
-
-      console.log(`[Analytics] 总共加载 ${allData.length} 条记录`)
-      await processData(allData, sinceMs)
+      const { data, error } = await supabase
+        .from('analytics_events')
+        .select('*')
+        .gte('created_at', since)
+        .lte('created_at', until)
+        .order('created_at', { ascending: true })
+        .limit(50000)
+      if (error) throw error
+      await processData(data || [], sinceMs, periodIdx <= 1)
       setLastRefresh(new Date())
     } catch (e) {
       console.error('analytics fetch error', e)
@@ -392,16 +372,13 @@ export default function Analytics() {
   }, [autoRefresh, fetchData])
 
   // ── 数据处理 ──────────────────────────────────────────────────
-  async function processData(rows, sinceMs) {
-    console.log(`[Analytics] processData 收到 ${rows.length} 条原始记录`)
+  async function processData(rows, sinceMs, useHour) {
     const pvRows = rows.filter(r => r.event_type === 'page_view')
-    console.log(`[Analytics] 过滤后得到 ${pvRows.length} 条 page_view 记录`)
 
     // 核心指标
     const views      = pvRows.length
     const visitorSet = new Set(pvRows.map(r => r.visitor_id).filter(Boolean))
     const visitors   = visitorSet.size
-    console.log(`[Analytics] Views: ${views}, Visitors: ${visitors}`)
     const sessionMap = {}
     pvRows.forEach(r => {
       if (!r.session_id) return
@@ -445,16 +422,21 @@ export default function Analytics() {
     setPageRank(Object.entries(pageMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, count]) => ({ name, count })))
 
     // 职业偏好
+    const PROF_NAMES = { lawyer:'律师', accountant:'会计', student:'学生', programmer:'程序员', designer:'设计师', marketing:'营销' }
     const profMap = {}
     rows.filter(r => r.event_type === 'profession_filter' && r.profession).forEach(r => {
       profMap[r.profession] = (profMap[r.profession] || 0) + 1
     })
     const profArr = Object.entries(profMap).sort((a, b) => b[1] - a[1])
     const maxP    = profArr[0]?.[1] || 1
-    setProfessions(profArr.map(([name, count]) => ({ name, count, pct: Math.round(count / maxP * 100) })))
+    setProfessions(profArr.map(([id, count]) => ({ name: PROF_NAMES[id] || id, count, pct: Math.round(count / maxP * 100) })))
 
-    // 搜索词
-    setSearches(rows.filter(r => r.event_type === 'search' && r.search_query).map(r => r.search_query).reverse().slice(0, 100))
+    // 搜索词（词频统计）
+    const sqMap = {}
+    rows.filter(r => r.event_type === 'search' && r.search_query).forEach(r => {
+      sqMap[r.search_query] = (sqMap[r.search_query] || 0) + 1
+    })
+    setSearches(Object.entries(sqMap).sort((a, b) => b[1] - a[1]).slice(0, 100))
 
     // 来源渠道（优先用已存 channel 字段，无则从 referrer 推断）
     const chanMap = {}
@@ -588,24 +570,10 @@ export default function Analytics() {
     // 错误事件
     setErrors(rows.filter(r => r.event_type === 'error_event').reverse().slice(0, 50))
 
-    // 趋势图：今日固定24小时 / 过去24h滚动 / 按天
+    // 趋势图（今日/过去24小时用小时，其余用天）
     const bucketMap = {}
-    if (periodIdx === 0) {
-      // 今日：0-23时固定桶
-      for (let h = 0; h < 24; h++) {
-        bucketMap[`${String(h).padStart(2, '0')}:00`] = { views: 0, visitors: new Set(), sessions: new Set() }
-      }
-      pvRows.forEach(r => {
-        const k = `${String(new Date(r.created_at).getHours()).padStart(2, '0')}:00`
-        if (bucketMap[k]) {
-          bucketMap[k].views++
-          if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
-          if (r.session_id) bucketMap[k].sessions.add(r.session_id)
-        }
-      })
-    } else if (periodIdx === 1) {
-      // 过去24小时：滚动24桶
-      for (let i = 23; i >= 0; i--) {
+    if (useHour) {
+      for (let i = 47; i >= 0; i--) {
         const d = new Date(Date.now() - i * 3600000)
         const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
         bucketMap[k] = { views: 0, visitors: new Set(), sessions: new Set() }
@@ -647,7 +615,7 @@ export default function Analytics() {
   // ── 导出快捷函数 ──────────────────────────────────────────────
   const expTools   = () => exportCSV(['排名','工具名','点击次数'], toolRank.map((r,i) => [i+1, r.name, r.count]), 'tool_rank.csv')
   const expReports = () => exportCSV(['排名','报告名','阅读次数'], reportRank.map((r,i) => [i+1, r.name, r.count]), 'report_rank.csv')
-  const expSearch  = () => exportCSV(['搜索词'], searches.map(s => [s]), 'searches.csv')
+  const expSearch  = () => exportCSV(['搜索词','次数'], searches.map(([s,c]) => [s,c]), 'searches.csv')
   const expFunnel  = () => exportCSV(['步骤','数量'], funnel.map(f => [f.label, f.value]), 'funnel.csv')
 
   // ── 渲染 ─────────────────────────────────────────────────────
@@ -742,26 +710,18 @@ export default function Analytics() {
                   for (let v = 0; v <= maxVal + niceStep; v += niceStep) yTicks.push(v)
                   const yMax = yTicks[yTicks.length - 1]
                   const yScale = v => cH - (v / yMax) * cH
-                  // X轴：每2小时一标签（今日/24h共24桶=12标签，按天8个均匀）
+                  // X轴标签间隔：按小时每2小时，按天均匀8个
                   const xStep = periodIdx <= 1 ? 2 : Math.max(1, Math.ceil(trend.length / 8))
-                  const slotW = cW / trend.length
-                  const barW = slotW - 0.5
-                  const xPos = i => PL + (i + 0.5) * slotW
+                  const barW = Math.max(2, cW / trend.length - 1)
+                  const xPos = i => PL + (i + 0.5) * (cW / trend.length)
+                  // 格式化X标签
                   const fmtLabel = (label) => {
-                    if (periodIdx === 0) {
-                      // "06:00" → "6:00 AM"
-                      const m = label.match(/^(\d+):00$/)
+                    if (periodIdx <= 1) {
+                      // "5/9 14:00" → "2:00 PM"
+                      const m = label.match(/(\d+):00$/)
                       if (m) {
                         const h = parseInt(m[1])
                         return h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
-                      }
-                    } else if (periodIdx === 1) {
-                      // rolling: 0点显示"M/D"，其余显示AM/PM
-                      const m = label.match(/^(\d+\/\d+) (\d+):00$/)
-                      if (m) {
-                        const h = parseInt(m[2])
-                        if (h === 0) return m[1]
-                        return h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
                       }
                     }
                     return label
@@ -958,7 +918,7 @@ export default function Analytics() {
                 <StatCard label="报告阅读量"  value={fmt(reportRank.reduce((s, r) => s + r.count, 0))} sub="总阅读次数" color="text-blue-600"   loading={loading} />
                 <StatCard label="工具点击量"  value={fmt(toolRank.reduce((s, r) => s + r.count, 0))}  sub="总点击次数" color="text-green-600"  loading={loading} />
                 <StatCard label="PDF 下载量"  value={fmt(funnel[3]?.value ?? 0)}                       sub="下载转化"   color="text-purple-600" loading={loading} />
-                <StatCard label="搜索次数"    value={fmt(searches.length)}                              sub="搜索词记录" color="text-orange-600" loading={loading} />
+                <StatCard label="搜索次数"    value={fmt(searches.reduce((s,[,c]) => s+c, 0))}          sub="搜索词记录" color="text-orange-600" loading={loading} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <RankTable title="工具点击 TOP 20" data={toolRank} loading={loading} onExport={expTools} />
@@ -969,8 +929,10 @@ export default function Analytics() {
               }>
                 {loading ? <Skel rows={3} /> : searches.length === 0 ? <Empty /> : (
                   <div className="flex flex-wrap gap-2">
-                    {searches.map((s, i) => (
-                      <span key={i} className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full text-sm border border-blue-100">{s}</span>
+                    {searches.map(([s, c], i) => (
+                      <span key={i} className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full text-sm border border-blue-100">
+                        {s}{c > 1 && <span className="ml-1 text-blue-400 text-xs">×{c}</span>}
+                      </span>
                     ))}
                   </div>
                 )}
