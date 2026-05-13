@@ -500,20 +500,24 @@ export default function Analytics() {
     setHourly(hourArr)
 
     // 新/老用户：当前时间段内的 visitor，查其在 sinceMs 之前是否有记录
-    const visitorIds = [...new Set(rows.map(r => r.visitor_id).filter(Boolean))]
-    let newUsers = visitorIds.length, retUsers = 0
+    const visitorIds = [...new Set(pvRows.map(r => r.visitor_id).filter(Boolean))]
+    let retUsers = 0
     if (visitorIds.length > 0) {
-      const { data: oldRows } = await supabase
-        .from('analytics_events')
-        .select('visitor_id')
-        .in('visitor_id', visitorIds.slice(0, 500))
-        .lt('created_at', new Date(sinceMs).toISOString())
-        .limit(500)
-      const returning = new Set((oldRows || []).map(r => r.visitor_id))
+      const returning = new Set()
+      const sinceIso = new Date(sinceMs).toISOString()
+      for (let i = 0; i < visitorIds.length; i += 100) {
+        const batch = visitorIds.slice(i, i + 100)
+        const { data } = await supabase
+          .from('analytics_events')
+          .select('visitor_id')
+          .in('visitor_id', batch)
+          .lt('created_at', sinceIso)
+          .limit(batch.length)
+        ;(data || []).forEach(r => returning.add(r.visitor_id))
+      }
       retUsers = returning.size
-      newUsers = visitorIds.length - retUsers
     }
-    setSegment({ newUsers, retUsers })
+    setSegment({ newUsers: visitorIds.length - retUsers, retUsers })
 
     // 访问频次
     const vidSessMap = {}
