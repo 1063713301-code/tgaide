@@ -29,7 +29,23 @@ export default function ApiApply() {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">申请 API Key</h1>
-            <p className="text-sm text-gray-500 mb-6">免费获取，用于调用 TG AI工具库数据接口</p>
+            <p className="text-sm text-gray-500 mb-4">免费获取，将 TG AI工具库数据接入你的产品</p>
+
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 space-y-2">
+              <p className="text-xs font-semibold text-blue-700 mb-2">获取 API Key 后你可以：</p>
+              {[
+                '获取全量 AI 工具列表（名称、描述、评分、价格、官网）',
+                '按职业分类筛选工具（律师 / 设计师 / 程序员等）',
+                '关键词搜索工具数据',
+                '获取单个工具的完整详情（含 TG 实测建议）',
+                '获取所有职业分类及工具数量',
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs text-blue-600">
+                  <span className="mt-0.5 flex-shrink-0">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
 
             {!key ? (
               <form onSubmit={handleSubmit} className="space-y-4">
