@@ -324,8 +324,15 @@ export default function Analytics() {
   const [retention,   setRetention]   = useState(null)
   const [visitFreq,   setVisitFreq]   = useState([])
   const [funnel,      setFunnel]      = useState([])
-  const [perfData,    setPerfData]    = useState(null)
-  const [errors,      setErrors]      = useState([])
+  const [perfData,         setPerfData]         = useState(null)
+  const [errors,           setErrors]           = useState([])
+  const [toolDwell,        setToolDwell]        = useState([])
+  const [zeroResultSearches, setZeroResultSearches] = useState([])
+  const [zeroResultLoading,  setZeroResultLoading]  = useState(false)
+  const [firstPages,       setFirstPages]       = useState([])
+  const [newUvTrend,       setNewUvTrend]       = useState([])
+  const [toolReturnRate,   setToolReturnRate]   = useState(null)
+  const [reportConversion, setReportConversion] = useState([])
 
   useEffect(() => { document.title = '数据分析 - TG AI工具库' }, [])
 
@@ -367,6 +374,7 @@ export default function Analytics() {
         }
       }
       await processData(allData, sinceMs, periodIdx <= 1)
+      await fetchZeroResultSearches(allData)
       setLastRefresh(new Date())
     } catch (e) {
       console.error('analytics fetch error', e)
@@ -374,6 +382,32 @@ export default function Analytics() {
       setLoading(false)
     }
   }, [getSince, getUntil, periodIdx])
+
+  async function fetchZeroResultSearches(rows) {
+    setZeroResultLoading(true)
+    const sqMap = {}
+    rows.filter(r => r.event_type === 'search' && r.search_query)
+        .forEach(r => { sqMap[r.search_query] = (sqMap[r.search_query] || 0) + 1 })
+    const queries = Object.keys(sqMap)
+    if (!queries.length) { setZeroResultSearches([]); setZeroResultLoading(false); return }
+    const hitSet = new Set()
+    for (let i = 0; i < queries.length; i += 20) {
+      const batch = queries.slice(i, i + 20)
+      const filters = batch.map(q => `keywords.ilike.%${q}%,name.ilike.%${q}%`).join(',')
+      const { data } = await supabase.from('tools').select('name,keywords').or(filters)
+      batch.forEach(q => {
+        const lower = q.toLowerCase()
+        if ((data || []).some(t => t.name?.toLowerCase().includes(lower) || t.keywords?.toLowerCase().includes(lower)))
+          hitSet.add(q)
+      })
+    }
+    setZeroResultSearches(
+      queries.filter(q => !hitSet.has(q))
+        .map(q => ({ name: q, count: sqMap[q] }))
+        .sort((a, b) => b.count - a.count).slice(0, 30)
+    )
+    setZeroResultLoading(false)
+  }
 
   useEffect(() => { fetchData() }, [fetchData])
 
@@ -644,6 +678,87 @@ export default function Analytics() {
       viewsPct:    Math.round(v.views / maxB * 100),
       visitorsPct: Math.round(v.visitors.size / maxB * 100),
     })))
+
+    // ── 功能1：工具详情页停留时长 ──
+    const sessionPvMap = {}
+    pvRows.forEach(r => {
+      if (!r.session_id) return
+      sessionPvMap[r.session_id] = sessionPvMap[r.session_id] || []
+      sessionPvMap[r.session_id].push(r)
+    })
+    Object.values(sessionPvMap).forEach(arr => arr.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)))
+    const toolDwellMap = {}
+    Object.values(sessionPvMap).forEach(arr => {
+      for (let i = 0; i < arr.length - 1; i++) {
+        const cur = arr[i]
+        if (!cur.target_name?.includes('/tool/')) continue
+        const dwell = new Date(arr[i+1].created_at) - new Date(cur.created_at)
+        if (dwell > 1000 && dwell < 30 * 60 * 1000) {
+          toolDwellMap[cur.target_name] = toolDwellMap[cur.target_name] || []
+          toolDwellMap[cur.target_name].push(dwell)
+        }
+      }
+    })
+    setToolDwell(
+      Object.entries(toolDwellMap)
+        .map(([name, arr]) => ({ label: name.replace(/^\/tool\//, '').replace(/\/$/, ''), value: Math.round(arr.reduce((s,v) => s+v, 0) / arr.length / 1000) }))
+        .filter(d => d.value > 0).sort((a, b) => b.value - a.value).slice(0, 15)
+    )
+
+    // ── 功能3：新用户首访路径 ──
+    const visitorFirstPv = {}
+    pvRows.forEach(r => {
+      if (!r.visitor_id || !r.target_name) return
+      if (!visitorFirstPv[r.visitor_id] || r.created_at < visitorFirstPv[r.visitor_id].created_at)
+        visitorFirstPv[r.visitor_id] = r
+    })
+    const firstPageMap = {}
+    Object.values(visitorFirstPv).forEach(r => { firstPageMap[r.target_name] = (firstPageMap[r.target_name] || 0) + 1 })
+    setFirstPages(Object.entries(firstPageMap).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([label, value]) => ({ label, value })))
+
+    // ── 功能4：每日新增 UV 趋势 ──
+    const visitorFirstDate = {}
+    pvRows.forEach(r => {
+      if (!r.visitor_id) return
+      const d = r.created_at.slice(0, 10)
+      if (!visitorFirstDate[r.visitor_id] || d < visitorFirstDate[r.visitor_id]) visitorFirstDate[r.visitor_id] = d
+    })
+    const newUvMap = {}
+    Object.values(visitorFirstDate).forEach(d => { newUvMap[d] = (newUvMap[d] || 0) + 1 })
+    setNewUvTrend(Object.entries(newUvMap).sort((a, b) => a[0].localeCompare(b[0])).map(([label, value]) => ({ label, value })))
+
+    // ── 功能5：工具点击后回访率 ──
+    const sessionAllMap = {}
+    rows.forEach(r => {
+      if (!r.session_id) return
+      sessionAllMap[r.session_id] = sessionAllMap[r.session_id] || []
+      sessionAllMap[r.session_id].push(r)
+    })
+    Object.values(sessionAllMap).forEach(arr => arr.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)))
+    let clickSessions = 0, returnSessions = 0
+    Object.values(sessionAllMap).forEach(arr => {
+      const idx = arr.findIndex(r => r.event_type === 'tool_click')
+      if (idx === -1) return
+      clickSessions++
+      if (arr.slice(idx + 1).some(r => r.event_type === 'page_view')) returnSessions++
+    })
+    setToolReturnRate(clickSessions > 0 ? { clickSessions, returnSessions, rate: Math.round(returnSessions / clickSessions * 100) } : null)
+
+    // ── 功能6：报告下载转化率 ──
+    const repCvMap = {}
+    rows.filter(r => r.event_type === 'report_view' && r.target_id).forEach(r => {
+      repCvMap[r.target_id] = repCvMap[r.target_id] || { name: r.target_name || r.target_id, views: 0, downloads: 0 }
+      repCvMap[r.target_id].views++
+    })
+    rows.filter(r => r.event_type === 'report_download' && r.target_id).forEach(r => {
+      if (!repCvMap[r.target_id]) repCvMap[r.target_id] = { name: r.target_name || r.target_id, views: 0, downloads: 0 }
+      repCvMap[r.target_id].downloads++
+    })
+    setReportConversion(
+      Object.values(repCvMap).filter(d => d.views > 0)
+        .map(d => ({ ...d, rate: Math.round(d.downloads / d.views * 100) }))
+        .sort((a, b) => b.views - a.views).slice(0, 15)
+    )
   }
 
   // ── 导出快捷函数 ──────────────────────────────────────────────
@@ -808,6 +923,10 @@ export default function Analytics() {
                 <h2 className="font-semibold text-gray-800 mb-4">UV / PV 折线趋势</h2>
                 {loading ? <Skel rows={1} h="h-32" /> : <LineChart data={trend} keys={['visitors','views']} colors={['#5288df','#ef4444']} labels={['UV','PV']} />}
               </div>
+              <div>
+                <h2 className="font-semibold text-gray-800 mb-4">每日新增 UV 趋势</h2>
+                {loading ? <Skel rows={1} h="h-32" /> : <LineChart data={newUvTrend} keys={['value']} colors={['#10b981']} labels={['新增UV']} />}
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <RankTable title="工具点击 TOP 20" data={toolRank} loading={loading} onExport={expTools} />
                 <RankTable title="报告阅读排行" data={reportRank} loading={loading} onExport={expReports} />
@@ -942,6 +1061,9 @@ export default function Analytics() {
                 </div>
                 <p className="text-xs text-gray-400 mt-4">注：留存率为跨天访问估算值，精确数据建议接入专业分析平台。</p>
               </Card>
+              <Card title="新用户首访页面 TOP 10">
+                {loading ? <Skel rows={6} /> : firstPages.length === 0 ? <Empty /> : <BarH data={firstPages} color="#10b981" />}
+              </Card>
             </div>
           )}
 
@@ -971,10 +1093,46 @@ export default function Analytics() {
                   </div>
                 )}
               </Card>
+              <Card title={`搜索无结果词（共 ${zeroResultSearches.length} 个）`}>
+                {zeroResultLoading ? <Skel rows={3} /> : zeroResultSearches.length === 0 ? <Empty /> : (
+                  <div className="flex flex-wrap gap-2">
+                    {zeroResultSearches.map((d, i) => (
+                      <span key={i} className="px-2.5 py-1 bg-red-50 text-red-600 rounded-full text-sm border border-red-100">
+                        {d.name}{d.count > 1 && <span className="ml-1 text-red-300 text-xs">×{d.count}</span>}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </Card>
+              <Card title="工具详情页平均停留时长（秒）TOP 15">
+                {loading ? <Skel rows={6} /> : toolDwell.length === 0 ? <Empty /> : <BarH data={toolDwell} color="#f59e0b" />}
+              </Card>
+              <Card title="报告下载转化率">
+                {loading ? <Skel rows={6} /> : reportConversion.length === 0 ? <Empty /> : (
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-xs text-gray-400 border-b border-gray-100">
+                        <th className="text-left pb-2">报告</th>
+                        <th className="text-right pb-2">阅读</th>
+                        <th className="text-right pb-2">下载</th>
+                        <th className="text-right pb-2">转化率</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reportConversion.map((r, i) => (
+                        <tr key={i} className="border-b border-gray-50 last:border-0">
+                          <td className="py-2 text-gray-700 truncate max-w-[160px]">{r.name}</td>
+                          <td className="py-2 text-right text-gray-500">{r.views}</td>
+                          <td className="py-2 text-right text-gray-500">{r.downloads}</td>
+                          <td className="py-2 text-right font-semibold" style={{ color: r.rate > 20 ? '#10b981' : r.rate > 5 ? '#f59e0b' : '#ef4444' }}>{r.rate}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </Card>
             </div>
           )}
-
-          {/* ─── Tab 5: 漏斗转化 ─── */}
           {activeTab === 5 && (
             <div className="p-6 space-y-6">
               <Card title="核心转化漏斗" action={
@@ -1001,10 +1159,15 @@ export default function Analytics() {
                   <p>· <strong>深度使用</strong>：report_download 事件总量（PDF 下载转化）</p>
                 </div>
               </Card>
+              {toolReturnRate && (
+                <div className="grid grid-cols-3 gap-4">
+                  <StatCard label="工具点击 Sessions" value={fmt(toolReturnRate.clickSessions)} sub="有工具点击的会话" color="text-blue-600" loading={loading} />
+                  <StatCard label="点击后回访" value={fmt(toolReturnRate.returnSessions)} sub="跳出后返回站内" color="text-green-600" loading={loading} />
+                  <StatCard label="回访率" value={`${toolReturnRate.rate}%`} sub="点击工具后回来的比例" color={toolReturnRate.rate > 30 ? 'text-green-600' : 'text-orange-500'} loading={loading} />
+                </div>
+              )}
             </div>
           )}
-
-          {/* ─── Tab 6: 性能监控 ─── */}
           {activeTab === 6 && (
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
