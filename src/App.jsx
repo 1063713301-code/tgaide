@@ -41,6 +41,7 @@ const AdminToolEditor = lazy(() => import('./pages/admin/ToolEditor'))
 const AdminReviewList = lazy(() => import('./pages/admin/ReviewList'))
 const AdminReviewEditor = lazy(() => import('./pages/admin/ReviewEditor'))
 const AdminAnalytics = lazy(() => import('./pages/admin/Analytics'))
+const ApiApply = lazy(() => import('./pages/ApiApply'))
 
 function ProtectedRoute({ children }) {
   if (!isAdminAuthenticated()) return <Navigate to="/admin" replace />
@@ -82,6 +83,7 @@ export default function App() {
           <Route path="/ai-tool-selection" element={<AIToolSelection />} />
           <Route path="/en/ai-tool-selection" element={<AIToolSelection />} />
           <Route path="/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
+          <Route path="/api-apply" element={<ApiApply />} />
           <Route path="/en/ai-tool-selection/:scene" element={<AIToolSelectionScene />} />
           <Route path="/ai-tool-selection/:scene/:id" element={<ArticleDetail type="selection" />} />
           <Route path="/en/ai-tool-selection/:scene/:id" element={<ArticleDetail type="selection" />} />
