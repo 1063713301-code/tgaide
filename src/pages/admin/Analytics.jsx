@@ -177,7 +177,7 @@ function FunnelChart({ steps }) {
 }
 
 // ─── 折线图 ───────────────────────────────────────────────────
-function LineChart({ data, keys = ['visitors','visits'], colors = ['#5288df','#a0c5f0'], labels = ['Visitors','Visits'] }) {
+function LineChart({ data, keys = ['visitors','visits'], colors = ['#5288df','#a0c5f0'], labels = ['UV','Sessions'] }) {
   if (!data?.length || data.length < 2) return <Empty />
   const W = 800, H = 120, P = 8
   const maxV = Math.max(...data.flatMap(d => keys.map(k => d[k] || 0)), 1)
@@ -296,7 +296,7 @@ function NoData({ msg = '暂无数据（需在 Supabase 执行迁移脚本并更
 
 // ─── 主组件 ───────────────────────────────────────────────────
 export default function Analytics() {
-  const [periodIdx,   setPeriodIdx]   = useState(4)
+  const [periodIdx,   setPeriodIdx]   = useState(0)
   const [customStart, setCustomStart] = useState('')
   const [customEnd,   setCustomEnd]   = useState('')
   const [useCustom,   setUseCustom]   = useState(false)
@@ -402,7 +402,8 @@ export default function Analytics() {
     const visits      = sessions.length
     const bounced     = sessions.filter(ts => ts.length === 1).length
     const bounceRate  = visits > 0 ? Math.round(bounced / visits * 100) : 0
-    const multiSess   = sessions.filter(ts => ts.length > 1)
+    // 只统计有多个页面浏览的 session，用最大最小时间差作为停留时长
+    const multiSess   = sessions.filter(ts => ts.length > 1 && (Math.max(...ts) - Math.min(...ts)) > 1000)
     const avgDuration = multiSess.length > 0
       ? multiSess.reduce((s, ts) => s + (Math.max(...ts) - Math.min(...ts)), 0) / multiSess.length
       : 0
@@ -565,7 +566,7 @@ export default function Analytics() {
     const searchCount = rows.filter(r => r.event_type === 'search').length
     const downloads   = rows.filter(r => r.event_type === 'report_download').length
     setFunnel([
-      { label: '首页访问（Visitors）',    value: visitors,               color: '#5288df' },
+      { label: '首页访问（UV）',           value: visitors,               color: '#5288df' },
       { label: '工具/内容点击',           value: toolClicks + repViews,  color: '#10b981' },
       { label: '执行搜索',               value: searchCount,             color: '#f59e0b' },
       { label: '深度使用（PDF下载）',     value: downloads,              color: '#8b5cf6' },
@@ -588,23 +589,38 @@ export default function Analytics() {
     // 错误事件
     setErrors(rows.filter(r => r.event_type === 'error_event').reverse().slice(0, 50))
 
-    // 趋势图（今日/过去24小时用小时，其余用天）
+    // 趋势图（今日用0-23时固定桶，过去24小时用滚动48小时桶，其余用天）
     const bucketMap = {}
     if (useHour) {
-      for (let i = 47; i >= 0; i--) {
-        const d = new Date(Date.now() - i * 3600000)
-        const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
-        bucketMap[k] = { views: 0, visitors: new Set(), sessions: new Set() }
-      }
-      pvRows.forEach(r => {
-        const d = new Date(r.created_at)
-        const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
-        if (bucketMap[k]) {
-          bucketMap[k].views++
-          if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
-          if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+      const isToday = periodIdx === 0
+      if (isToday) {
+        for (let h = 0; h < 24; h++) {
+          bucketMap[`${String(h).padStart(2,'0')}:00`] = { views: 0, visitors: new Set(), sessions: new Set() }
         }
-      })
+        pvRows.forEach(r => {
+          const k = `${String(new Date(r.created_at).getHours()).padStart(2,'0')}:00`
+          if (bucketMap[k]) {
+            bucketMap[k].views++
+            if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
+            if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+          }
+        })
+      } else {
+        for (let i = 47; i >= 0; i--) {
+          const d = new Date(Date.now() - i * 3600000)
+          const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
+          bucketMap[k] = { views: 0, visitors: new Set(), sessions: new Set() }
+        }
+        pvRows.forEach(r => {
+          const d = new Date(r.created_at)
+          const k = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:00`
+          if (bucketMap[k]) {
+            bucketMap[k].views++
+            if (r.visitor_id) bucketMap[k].visitors.add(r.visitor_id)
+            if (r.session_id) bucketMap[k].sessions.add(r.session_id)
+          }
+        })
+      }
     } else {
       for (let i = 29; i >= 0; i--) {
         const d = new Date(); d.setDate(d.getDate() - i)
@@ -690,12 +706,12 @@ export default function Analytics() {
         {/* 核心指标卡片 */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
-            { label: 'Visitors',  value: stats ? fmt(stats.visitors)            : '—', sub: '独立访客',   color: 'text-green-600'  },
-            { label: 'Visits',    value: stats ? fmt(stats.visits)              : '—', sub: '访问次数',   color: 'text-blue-600'   },
-            { label: 'Views',     value: stats ? fmt(stats.views)               : '—', sub: '页面浏览',   color: 'text-purple-600' },
-            { label: 'Bounce',    value: stats ? `${stats.bounceRate}%`         : '—', sub: '跳出率',     color: stats?.bounceRate > 70 ? 'text-red-500' : 'text-orange-500' },
-            { label: 'Duration',  value: stats ? fmtDuration(stats.avgDuration) : '—', sub: '平均时长',   color: 'text-teal-600'   },
-            { label: '工具点击',  value: fmt(toolRank.reduce((s, r) => s + r.count, 0)), sub: '点击总计', color: 'text-indigo-600' },
+            { label: 'UV（独立访客）', value: stats ? fmt(stats.visitors)            : '—', sub: '去重用户数',      color: 'text-green-600'  },
+            { label: 'Sessions',       value: stats ? fmt(stats.visits)              : '—', sub: '会话次数',        color: 'text-blue-600'   },
+            { label: 'PV（页面浏览）', value: stats ? fmt(stats.views)               : '—', sub: '总浏览次数',      color: 'text-purple-600' },
+            { label: '跳出率',         value: stats ? `${stats.bounceRate}%`         : '—', sub: '单页即离开',      color: stats?.bounceRate > 70 ? 'text-red-500' : 'text-orange-500' },
+            { label: '平均停留',       value: stats ? fmtDuration(stats.avgDuration) : '—', sub: '多页会话均值',    color: 'text-teal-600'   },
+            { label: '工具点击',       value: fmt(toolRank.reduce((s, r) => s + r.count, 0)), sub: '点击总计',      color: 'text-indigo-600' },
           ].map(c => <StatCard key={c.label} loading={loading} {...c} />)}
         </div>
 
@@ -761,10 +777,10 @@ export default function Analytics() {
                         return (
                           <g key={i}>
                             <rect x={x - barW/2} y={PT + yScale(b.views)} width={barW} height={viewsH} fill="#c7dcf6" rx="1">
-                              <title>{b.label}{'\n'}Visitors: {b.visitors} · Views: {b.views}</title>
+                              <title>{b.label}{'\n'}UV: {b.visitors} · PV: {b.views}</title>
                             </rect>
                             <rect x={x - barW/2} y={PT + yScale(b.visitors)} width={barW} height={visH} fill="#5288df" rx="1">
-                              <title>{b.label}{'\n'}Visitors: {b.visitors} · Views: {b.views}</title>
+                              <title>{b.label}{'\n'}UV: {b.visitors} · PV: {b.views}</title>
                             </rect>
                           </g>
                         )
@@ -784,12 +800,12 @@ export default function Analytics() {
                   )
                 })()}
                 <div className="flex justify-center gap-6 mt-2 text-xs text-gray-500">
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#5288df'}} />访客</span>
-                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#c7dcf6'}} />观点</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#5288df'}} />UV（访客）</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm inline-block" style={{background:'#c7dcf6'}} />PV（浏览量）</span>
                 </div>
               </div>
               <div>
-                <h2 className="font-semibold text-gray-800 mb-4">Visitors / Visits 折线趋势</h2>
+                <h2 className="font-semibold text-gray-800 mb-4">UV / Sessions 折线趋势</h2>
                 {loading ? <Skel rows={1} h="h-32" /> : <LineChart data={trend} colors={['#5288df','#ef4444']} />}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -886,7 +902,7 @@ export default function Analytics() {
               <Card title="地域分布（省份 TOP 15）">
                 {loading ? <Skel rows={8} />
                   : provinces.length === 0
-                  ? <NoData msg="暂无地域数据。新访客访问后将自动采集（首次访问时查询 IP 归属地）。" />
+                  ? <NoData msg="当前时间段内暂无地域数据（仅统计有省份记录的访问）。" />
                   : <BarH data={provinces} color="#34d399" />}
               </Card>
             </div>
@@ -979,7 +995,7 @@ export default function Analytics() {
               </div>
               <Card title="漏斗步骤说明">
                 <div className="text-sm text-gray-500 space-y-2">
-                  <p>· <strong>首页访问</strong>：独立 Visitor 数量（来自 visitor_id 去重）</p>
+                  <p>· <strong>首页访问</strong>：独立 UV 数量（来自 visitor_id 去重）</p>
                   <p>· <strong>工具/内容点击</strong>：tool_click + report_view 事件总量</p>
                   <p>· <strong>执行搜索</strong>：search 事件总量（主动检索意图）</p>
                   <p>· <strong>深度使用</strong>：report_download 事件总量（PDF 下载转化）</p>
