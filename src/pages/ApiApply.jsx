@@ -58,6 +58,7 @@ export default function ApiApply() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
                   <input value={email} onChange={e => setEmail(e.target.value)} required type="email" placeholder="your@email.com"
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                  <p className="text-xs text-gray-400 mt-1">邮箱用于找回 Key，不会发送邮件</p>
                 </div>
                 {error && <p className="text-sm text-red-500">{error}</p>}
                 <button type="submit" disabled={loading}
