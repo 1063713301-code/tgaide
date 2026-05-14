@@ -79,7 +79,7 @@ export default function ApiApply() {
                     {`  -H "x-api-key: ${key}"`}
                   </code>
                 </div>
-                <a href="/api-docs" className="block text-center text-sm text-blue-600 hover:text-blue-700">查看完整 API 文档 →</a>
+                <a href="/api-docs" className="block text-center text-sm text-blue-600 hover:text-blue-700">查看完整 API 文档</a>
               </div>
             )}
           </div>
