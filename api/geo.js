@@ -12,19 +12,34 @@ const CN_PROVINCES = {
   'Hong Kong':'香港','Macao':'澳门','Taiwan':'台湾',
 }
 
+// Vercel 省份代码 → 中文（ISO 3166-2:CN 子区域代码）
+const CN_REGION_CODES = {
+  'BJ':'北京','TJ':'天津','SH':'上海','CQ':'重庆',
+  'HE':'河北','SX':'山西','NM':'内蒙古','LN':'辽宁',
+  'JL':'吉林','HL':'黑龙江','JS':'江苏','ZJ':'浙江',
+  'AH':'安徽','FJ':'福建','JX':'江西','SD':'山东',
+  'HA':'河南','HB':'湖北','HN':'湖南','GD':'广东',
+  'GX':'广西','HI':'海南','SC':'四川','GZ':'贵州',
+  'YN':'云南','XZ':'西藏','SN':'陕西','GS':'甘肃',
+  'QH':'青海','NX':'宁夏','XJ':'新疆',
+  'HK':'香港','MO':'澳门','TW':'台湾',
+}
+
 export default async function handler(req) {
-  const xff = req.headers.get('x-forwarded-for') || ''
-  const ip = xff.split(',')[0].trim() || req.headers.get('x-real-ip') || ''
+  const country = req.headers.get('x-vercel-ip-country') || ''
+  const region  = req.headers.get('x-vercel-ip-country-region') || ''
+  const city    = req.headers.get('x-vercel-ip-city') || ''
 
-  if (!ip) return Response.json({ province: null, city: null })
+  if (!country) return Response.json({ province: null, city: null })
 
-  try {
-    const res = await fetch(`https://ipapi.co/${ip}/json/`, { signal: AbortSignal.timeout(3000) })
-    if (!res.ok) throw new Error()
-    const { region, city, country_name } = await res.json()
-    const province = country_name === 'China' ? (CN_PROVINCES[region] || region || null) : (country_name || null)
-    return Response.json({ province, city: city || null })
-  } catch {
-    return Response.json({ province: null, city: null })
+  let province = null
+  if (country === 'CN') {
+    province = CN_REGION_CODES[region] || null
+  } else {
+    // 非中国用户显示国家名
+    const names = new Intl.DisplayNames(['zh-CN'], { type: 'region' })
+    try { province = names.of(country) || country } catch { province = country }
   }
+
+  return Response.json({ province, city: decodeURIComponent(city) || null })
 }

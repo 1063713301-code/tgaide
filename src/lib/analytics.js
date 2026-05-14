@@ -53,8 +53,8 @@ function getCachedGeo() {
     const raw = localStorage.getItem(GEO_KEY)
     if (!raw) return null
     const { province, city, ts } = JSON.parse(raw)
-    if (Date.now() - ts > GEO_TTL) { localStorage.removeItem(GEO_KEY); return null }
-    return { province: province || null, city: city || null }
+    if (!province || Date.now() - ts > GEO_TTL) { localStorage.removeItem(GEO_KEY); return null }
+    return { province, city: city || null }
   } catch { return null }
 }
 
