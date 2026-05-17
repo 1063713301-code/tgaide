@@ -436,10 +436,24 @@ export default function Analytics() {
     const visits      = sessions.length
     const bounced     = sessions.filter(ts => ts.length === 1).length
     const bounceRate  = visits > 0 ? Math.round(bounced / visits * 100) : 0
-    // 只统计有多个页面浏览的 session，用最大最小时间差作为停留时长
-    const multiSess   = sessions.filter(ts => ts.length > 1 && (Math.max(...ts) - Math.min(...ts)) > 1000)
+    // 停留时长：用该 session 所有事件（含点击、搜索等交互）的时间跨度
+    // 只用 page_view 会漏掉用户在页面上的交互时间，导致停留时长严重偏低
+    const durMap = {}
+    rows.forEach(r => {
+      if (!r.session_id) return
+      durMap[r.session_id] = durMap[r.session_id] || []
+      durMap[r.session_id].push(new Date(r.created_at).getTime())
+    })
+    const pvSids      = Object.keys(sessionMap)
+    const multiSess   = pvSids.filter(sid => {
+      const ts = durMap[sid] || []
+      return ts.length > 1 && (Math.max(...ts) - Math.min(...ts)) > 1000
+    })
     const avgDuration = multiSess.length > 0
-      ? multiSess.reduce((s, ts) => s + (Math.max(...ts) - Math.min(...ts)), 0) / multiSess.length
+      ? multiSess.reduce((sum, sid) => {
+          const ts = durMap[sid]
+          return sum + (Math.max(...ts) - Math.min(...ts))
+        }, 0) / multiSess.length
       : 0
     setStats({ views, visitors, visits, bounceRate, avgDuration })
 
