@@ -420,7 +420,10 @@ export default function Analytics() {
 
   // ── 数据处理 ──────────────────────────────────────────────────
   async function processData(rows, sinceMs, useHour) {
-    const pvRows = rows.filter(r => r.event_type === 'page_view')
+    // 过滤掉爬虫/机器人打的无效路径（非网站真实路由）
+    const VALID_PREFIXES = ['/', '/en', '/tools', '/reviews', '/industry-reports', '/compare', '/ai-tool-selection', '/api-apply', '/api-docs']
+    const isValidPath = p => !p || VALID_PREFIXES.some(pre => p === pre || p.startsWith(pre + '/'))
+    const pvRows = rows.filter(r => r.event_type === 'page_view' && isValidPath(r.target_name))
 
     // 核心指标
     const views      = pvRows.length
