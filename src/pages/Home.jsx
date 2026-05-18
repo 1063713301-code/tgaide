@@ -7,6 +7,7 @@ import { fetchLatestArticles, fetchTools, fetchToolCount, fetchCategoryCount, fe
 import { useLang } from '../lib/i18n.jsx'
 import { SELECTION_SCENES, SCENE_ICONS } from './AIToolSelection'
 import { setSEO, orgJsonLD } from '../lib/seo'
+import { trackEvent } from '../lib/analytics'
 
 const CAREER_ICONS = {
   lawyer:     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18M5 7l7-4 7 4M5 7l3.5 7H1.5L5 7zM19 7l3.5 7h-7L19 7z"/><line x1="3" y1="21" x2="21" y2="21"/></svg>,
@@ -321,6 +322,7 @@ export default function Home() {
                     const toolDesc = (lang === 'en' && tool.description_en) ? tool.description_en : tool.description
                     return (
                     <Link key={idx} to={`/tools/${tool.slug || tool.id}`}
+                      onClick={() => trackEvent('tool_click', { tool_slug: tool.slug || tool.id, tool_name: toolName })}
                       className="flex-shrink-0 w-56 rounded-xl p-4 no-underline transition-all duration-300"
                       style={{
                         background: 'rgba(255,255,255,0.55)',

@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { supabase } from '../lib/supabase'
 import { useLang } from '../lib/i18n.jsx'
+import { trackEvent } from '../lib/analytics'
 
 function injectToolJsonLD(tool) {
   const el = document.getElementById('json-ld-tool')
@@ -128,6 +129,7 @@ export default function ToolDetail() {
           {tool.official_url && (
             <div className="mt-4 pt-4 border-t border-gray-100">
               <a href={tool.official_url} target="_blank" rel="noopener noreferrer"
+                onClick={() => trackEvent('tool_click', { tool_slug: tool.slug, tool_name: tool.name })}
                 className="inline-flex items-center gap-2 px-4 py-2 btn-primary text-sm font-medium rounded-lg transition-colors">
                 {t('tool_visit')} ↗
               </a>
