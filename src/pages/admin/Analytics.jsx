@@ -882,14 +882,8 @@ export default function Analytics() {
                   const xPos = i => PL + (i + 0.5) * (cW / trend.length)
                   // 格式化X标签
                   const fmtLabel = (label) => {
-                    if (periodIdx <= 1) {
-                      // "5/9 14:00" → "2:00 PM"
-                      const m = label.match(/(\d+):00$/)
-                      if (m) {
-                        const h = parseInt(m[1])
-                        return h === 0 ? '12:00 AM' : h < 12 ? `${h}:00 AM` : h === 12 ? '12:00 PM' : `${h-12}:00 PM`
-                      }
-                    }
+                    const m = label.match(/(\d+):00$/)
+                    if (m) return `${parseInt(m[1])}时`
                     return label
                   }
                   return (
